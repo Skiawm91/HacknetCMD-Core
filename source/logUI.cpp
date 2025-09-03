@@ -20,9 +20,9 @@
 using namespace std;
 
 string playerName;
+extern ManageInput mi;
 
 void LogUI() {
-    static ManageInput mi;
     string name;
     extern string input;
     extern string pwdtext;
@@ -33,29 +33,38 @@ void LogUI() {
         chse = 0;
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "USER");
-        mi.clearButtons();
-        mi.addButton("LOGIN", 2, 9, 20, 3);
-        mi.addButton("REGISTER", 2, 12, 20, 3);  
-        mi.addButton("GUEST", 2, 15, 20, 3);
-        mi.addButton("BACK", 2, 18, 20, 3);
-        mi.mInput([&](const string& buttonName) {
-            if (buttonName == "LOGIN") {
+        mi.btnAdd("LOGIN", 2, 9, 20, 3);
+        mi.btnAdd("REGISTER", 2, 12, 20, 3);  
+        mi.btnAdd("GUEST", 2, 15, 20, 3);
+        mi.btnAdd("BACK", 2, 18, 20, 3);
+        mi.cbCreate([&](const string& btnName) {
+            if (btnName == "LOGIN") {
                 chse = 1;
-            } else if (buttonName == "REGISTER") {
+                mouseSync = false;
+            }
+            if (btnName == "REGISTER") {
                 chse = 2;
-            } else if (buttonName == "GUEST") {
+                mouseSync = false;
+            }
+            if (btnName == "GUEST") {
                 chse = 3;
-            } else if (buttonName == "BACK") {
+                mouseSync = false;
+            }
+            if (btnName == "BACK") {
                 chse = 4;
+                mouseSync = false;
             }
         });
+        mouseSync = true;
         while (true) {
-            if (!runningMouse || !runningKb) {
-                mi.stopAll();
+            if (!mouseSync || !runningKb) {
                 break;
             }
             this_thread::sleep_for(chrono::milliseconds(10));
         }
+        mi.stopKbInput();
+        mi.btnDel(vector<string>{"LOGIN", "REGISTER", "GUEST", "BACK"});
+        mi.cbClean();
         if (escDetected) {chse = 4;}
         switch(chse) {
             case 1:

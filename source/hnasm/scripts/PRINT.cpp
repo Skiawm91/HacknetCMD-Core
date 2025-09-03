@@ -1,6 +1,6 @@
 #define _HAS_STD_BYTE 0
 #include "ASMScript.h"
-#include "../../misc/manageInput.h"
+#include "../../input/input.h"
 #ifdef _WIN32
 #include <windows.h>
 #else

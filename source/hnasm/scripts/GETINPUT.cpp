@@ -1,7 +1,7 @@
 #define _HAS_STD_BYTE 0
 #include "ASMScript.h"
 #include "../../crypto/crypto.h"
-#include "../../misc/manageInput.h"
+#include "../../input/input.h"
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -11,7 +11,7 @@
 using namespace std;
 
 string input;
-ManageInput mi;
+extern ManageInput mi;
 
 #ifdef _WIN32
 void OTTF2K() {

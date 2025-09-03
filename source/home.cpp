@@ -1,4 +1,5 @@
 ﻿#define _HAS_STD_BYTE 0
+#include "clearScreen.h"
 #include "input/input.h"
 #include "audio.h"
 #include "logUI.h"
@@ -15,14 +16,23 @@
 #include <string>
 #include <thread>
 #include <atomic>
+#include <vector>
 #include "porthack.h"
 using namespace std;
+
+ManageInput mi;
 
 int main(){
     #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
     SetConsoleTitleA("Hacknet For CMD");
+    HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+    DWORD prevMode;
+    GetConsoleMode(hIn, &prevMode);
+    DWORD mode = prevMode & ~ENABLE_QUICK_EDIT_MODE;
+    mode |= ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT | ENABLE_PROCESSED_INPUT;
+    SetConsoleMode(hIn, mode);
     #elif __APPLE__
     char path[PATH_MAX];
     uint32_t size = sizeof(path);
@@ -35,7 +45,7 @@ int main(){
     }
     cout << "\033]0;Hacknet For CMD\007";
     #endif
-    static ManageInput mi;
+    mi.mouseInput();
     int chse;
     extern string input;
     StopAudio();
@@ -44,20 +54,24 @@ int main(){
         chse = 0;
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "HOME");
-        mi.clearButtons();
-        mi.addButton("PLAY", 2, 9, 20, 3);
-        mi.addButton("QUIT", 2, 18, 20, 3);
-        mi.mInput([&](const string& buttonName) {
-            if (buttonName == "PLAY") {
+        mi.btnAdd("PLAY", 2, 9, 20, 3);
+        mi.btnAdd("QUIT", 2, 18, 20, 3);
+        mi.cbCreate([&](const string& btnName){
+            if (btnName == "PLAY") {
                 chse = 1;
-            } else if (buttonName == "QUIT") {
+                mouseSync = false;
+            }
+            if (btnName == "QUIT") {
                 chse = 4;
+                mouseSync = false;
             }
         });
-        while (runningMouse) {
+        mouseSync = true;
+        while(mouseSync) {
             this_thread::sleep_for(chrono::milliseconds(10));
         }
-        mi.stopAll();
+        mi.btnDel(vector<string>{"PLAY", "QUIT"});
+        mi.cbClean();
         switch(chse) {
             case 1:
                 LogUI();
@@ -66,7 +80,7 @@ int main(){
                 {
                     string yn;
                     #ifdef _WIN32
-                    system("cls");
+                    cls();
                     #elif __APPLE__
                     system("clear");
                     #endif
