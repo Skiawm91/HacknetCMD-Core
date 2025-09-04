@@ -24,6 +24,13 @@ void ManageInput::keyDisable(int key) {
     keyDisable(std::vector<int>{key});
 }
 
+// ✅ 新增：無參數版本 → 鎖所有
+void ManageInput::keyDisable() {
+    blockedKeys.clear();   // 清空，代表「所有按鍵都被阻止」
+    blocking = true;
+    std::thread(&ManageInput::inputLoop, this).detach();
+}
+
 void ManageInput::keyEnable() {
     blocking = false;
 }
@@ -33,7 +40,6 @@ bool ManageInput::isBlocking() const {
 }
 
 #ifdef __APPLE__ // macOS or Unix-like
-// 設定終端為非 canonical mode（即時輸入、不等待 Enter）
 void setNonBlockingInput(bool enable) {
     static struct termios oldt, newt;
     static bool configured = false;
@@ -41,9 +47,9 @@ void setNonBlockingInput(bool enable) {
     if (enable && !configured) {
         tcgetattr(STDIN_FILENO, &oldt);
         newt = oldt;
-        newt.c_lflag &= ~(ICANON | ECHO); // 關掉輸入緩衝與輸出
+        newt.c_lflag &= ~(ICANON | ECHO);
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-        fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK); // 非阻塞
+        fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
         configured = true;
     } else if (!enable && configured) {
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
@@ -58,9 +64,15 @@ void ManageInput::inputLoop() {
     while (blocking) {
         if (_kbhit()) {
             int key = _getch();
+
+            // 如果 blockedKeys 為空 → 全部阻止
+            if (blockedKeys.empty()) {
+                continue;
+            }
+
             for (int blocked : blockedKeys) {
                 if (key == blocked) {
-                    // 阻止輸出
+                    // 吃掉，不輸出
                     break;
                 }
             }
@@ -78,6 +90,11 @@ void ManageInput::inputLoop() {
         if (select(STDIN_FILENO + 1, &set, NULL, NULL, &timeout) > 0) {
             char ch;
             if (read(STDIN_FILENO, &ch, 1) > 0) {
+                // 如果 blockedKeys 為空 → 全部阻止
+                if (blockedKeys.empty()) {
+                    continue;
+                }
+
                 for (int blocked : blockedKeys) {
                     if ((int)ch == blocked) {
                         // 吃掉，不輸出

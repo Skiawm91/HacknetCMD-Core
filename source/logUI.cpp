@@ -27,6 +27,7 @@ void LogUI() {
     extern string input;
     extern string pwdtext;
     extern string shatext;
+    mi.keyEnable();
     int chse;
     string shapwd, tgshapwd;
     while(true) {
@@ -57,21 +58,20 @@ void LogUI() {
         });
         mouseSync = true;
         while (true) {
-            if (!mouseSync || !runningKb) {
+            if (!mouseSync || !enterDetected || !escDetected) {
+                mouseSync = false;
+                enterDetected = false;
+                escDetected = false;
                 break;
             }
             this_thread::sleep_for(chrono::milliseconds(10));
         }
-        mi.stopKbInput();
         mi.btnDel(vector<string>{"LOGIN", "REGISTER", "GUEST", "BACK"});
         mi.cbClean();
-        if (escDetected) {chse = 4;}
         switch(chse) {
             case 1:
                 while(true) {
                     HNASM("logUI/login.chns", "NAME");
-                    while (runningKb);
-                    mi.stopKbInput();
                     if (escDetected) break;
                     transform(input.begin(), input.end(), input.begin(), ::tolower);
                     name = input;
@@ -84,9 +84,9 @@ void LogUI() {
                             istringstream iss(line);
                             iss >> tgshapwd;
                             HNASM("logUI/login.chns", "PASSWD");
-                            while (runningPwd);
-                            mi.stopPwdInput();
-                            if (escDetected) break;
+                            while(!escDetected || !enterDetected);
+                            escDetected = false;
+                            enterDetected = false;
                             SHA256Encrypt(input);
                             shapwd = shatext;
                             if (shapwd == tgshapwd) {
@@ -112,26 +112,31 @@ void LogUI() {
                     while (true) {
                         HNASM("logUI/register.chns", "REGISTER");
                         HNASM("logUI/register.chns", "NAME");
-                        while (runningKb);
-                        mi.stopKbInput();
-                        if (escDetected) break;
+                        inputMasked = false;
+                        while(!escDetected || !enterDetected);
+                        escDetected = false;
+                        enterDetected = false;
                         transform(input.begin(), input.end(), input.begin(), ::tolower);
                         name = input;
                         HNASM("logUI/register.chns", "PASSWD");
-                        while (runningPwd);
-                        mi.stopPwdInput();
-                        if (escDetected) break;
+                        while(!escDetected || !enterDetected);
+                        inputMasked = true;
+                        escDetected = false;
+                        enterDetected = false;
                         pwd[0] = input;
                         HNASM("logUI/register.chns", "CONFIRM");
-                        while (runningPwd);
-                        mi.stopPwdInput();
-                        if (escDetected) break;
+                        inputMasked = true;
+                        while(!escDetected || !enterDetected);
+                        escDetected = false;
+                        enterDetected = false;
                         pwd[1] = input;
                         HNASM("logUI/register.chns", "DETAILS");
                         while(true) {
                             HNASM("logUI/register.chns", "CONFIRM2");
-                            while (runningKb);
-                            mi.stopKbInput();
+                            inputMasked = false;
+                            while(!escDetected || !enterDetected);
+                            escDetected = false;
+                            enterDetected = false;
                             try {chse = stoi(input);} catch (const invalid_argument) {chse = 0;}
                             if (chse == 2) {
                                 break;

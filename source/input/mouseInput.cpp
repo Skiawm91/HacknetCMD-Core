@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <chrono>
 
-atomic<bool> mouseSync{false};
+atomic<bool> mouseSync;
 
 void ManageInput::mouseInput() {
 #ifdef _WIN32
@@ -12,20 +12,13 @@ void ManageInput::mouseInput() {
 
     runningMouse = true;
     mouseThread = thread([this]() {
-        HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
-        DWORD prevMode;
-        GetConsoleMode(hIn, &prevMode);
-
-        // 停用 Quick Edit，啟用滑鼠事件
-        DWORD mode = prevMode & ~ENABLE_QUICK_EDIT_MODE;
-        mode |= ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT | ENABLE_PROCESSED_INPUT;
-        SetConsoleMode(hIn, mode);
+        bool pressed = false; // 控制一次點擊只觸發一次
 
         INPUT_RECORD ir;
         DWORD readCount;
-        bool pressed = false; // 控制一次點擊只觸發一次
 
         while (runningMouse) {
+            // 只讀滑鼠事件，不干擾鍵盤
             if (ReadConsoleInput(hIn, &ir, 1, &readCount) && readCount == 1) {
                 if (ir.EventType == MOUSE_EVENT) {
                     auto &me = ir.Event.MouseEvent;
@@ -38,11 +31,9 @@ void ManageInput::mouseInput() {
 
                         for (auto &b : buttons) {
                             if (pointInButton(x, y, b)) {
-                                {
-                                    lock_guard<mutex> lock(cbMutex);
-                                    if (currentCallback) currentCallback(b.name);
-                                }
-                                mouseSync = false; // 控制外部 loop
+                                lock_guard<mutex> lock(cbMutex);
+                                if (currentCallback) currentCallback(b.name);
+                                mouseSync = false;
                                 break;
                             }
                         }
@@ -55,9 +46,6 @@ void ManageInput::mouseInput() {
                 this_thread::sleep_for(chrono::milliseconds(5));
             }
         }
-
-        // 恢復原本 console mode
-        SetConsoleMode(hIn, prevMode);
     });
 #endif
 }

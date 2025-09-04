@@ -1,4 +1,6 @@
+#define _HAS_STD_BYTE 0
 #pragma once
+#include <windows.h>
 #include <vector>
 #include <atomic>
 #include <string>
@@ -8,6 +10,8 @@
 using namespace std;
 
 extern atomic<bool> escDetected;
+extern atomic<bool> enterDetected;
+extern atomic<bool> inputMasked;
 extern atomic<bool> runningKb;
 extern atomic<bool> runningPwd;
 extern atomic<bool> runningMouse;
@@ -20,18 +24,18 @@ struct Button {
 
 class ManageInput {
 public:
+    HANDLE hIn;
     // 鍵盤功能
     void keyDisable(const vector<int>& keys);
     void keyDisable(int key);
+    void keyDisable();
     void keyEnable();
     bool isBlocking() const;
     using Callback = function<void(const string&)>;
 
-    void kbInput(const string& prompt, Callback cb, int exitCode);
-    void stopKbInput();
-
-    void pwdInput(const string &prompt, Callback cb, int exitCode);
-    void stopPwdInput();
+    void kbInput();   // 啟動監聽
+    void stopKb();    // 停止監聽
+    string getInput(); // 取得輸入後的字串
 
     // 滑鼠功能
     void mouseInput();                   // 啟動滑鼠 thread
@@ -43,8 +47,7 @@ public:
 
     // 停止全部
     void stopAll() {
-        stopKbInput();
-        stopPwdInput();
+        stopKb();
         stopMouse();
     };
 
@@ -53,7 +56,10 @@ private:
     vector<int> blockedKeys;
     atomic<bool> blocking{false};
     void inputLoop();
-    thread kbInputThread;
+    thread kbThread;
+    atomic<bool> running{false};
+    string lastInput;
+    mutex inputMutex;
     thread pwdInputThread;
 
     // 滑鼠

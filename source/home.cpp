@@ -27,12 +27,13 @@ int main(){
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
     SetConsoleTitleA("Hacknet For CMD");
-    HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
+    mi.hIn = GetStdHandle(STD_INPUT_HANDLE);
     DWORD prevMode;
-    GetConsoleMode(hIn, &prevMode);
+    GetConsoleMode(mi.hIn, &prevMode);
     DWORD mode = prevMode & ~ENABLE_QUICK_EDIT_MODE;
     mode |= ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT | ENABLE_PROCESSED_INPUT;
-    SetConsoleMode(hIn, mode);
+    SetConsoleMode(mi.hIn, mode);
+
     #elif __APPLE__
     char path[PATH_MAX];
     uint32_t size = sizeof(path);
@@ -45,6 +46,7 @@ int main(){
     }
     cout << "\033]0;Hacknet For CMD\007";
     #endif
+    mi.kbInput();
     mi.mouseInput();
     int chse;
     extern string input;

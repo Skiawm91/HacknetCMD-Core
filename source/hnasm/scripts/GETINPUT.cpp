@@ -30,9 +30,10 @@ void OTTF2K() {
 
 void HNScript::GETINPUT(const string& content) {
     input.clear();
-    mi.kbInput(content, [](const string& text) {
-        input = text;
-    }, 27);
+    cout << content;
+    inputMasked = false;
+    while(!enterDetected);
+    input = mi.getInput();
 }
 
 void HNScript::GETINPUTR(const string& content) {
@@ -42,17 +43,18 @@ void HNScript::GETINPUTR(const string& content) {
     #else
     cout << "\033[F\033[2K";
     #endif
-    mi.kbInput(content, [](const string& text){
-        input = text;
-    }, 27);
+    cout << content;
+    inputMasked = false;
+    while(!enterDetected);
+    input = mi.getInput();
 }
 
 void HNScript::GETINPUTPWD(const string& content) {
     input.clear();
-    mi.pwdInput(content, [](const string& pwdText) {
-        input = pwdText;
-    }, 27);
-    mi.stopPwdInput();
+    cout << content;
+    inputMasked = true;
+    while(!enterDetected);
+    input = mi.getInput();
 }
 
 void HNScript::GETINPUTPWDR(const string& content) {
@@ -62,7 +64,8 @@ void HNScript::GETINPUTPWDR(const string& content) {
     #else
     cout << "\033[F\033[2K";
     #endif
-    mi.pwdInput(("\r" + content), [](const string& pwdText) {
-        input = pwdText;
-    }, 27);
+    cout << content;
+    inputMasked = true;
+    while(!enterDetected);
+    input = mi.getInput();
 }
