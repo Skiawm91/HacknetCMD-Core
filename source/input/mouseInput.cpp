@@ -23,7 +23,6 @@ void ManageInput::mouseInput() {
                 if (ir.EventType == MOUSE_EVENT) {
                     auto &me = ir.Event.MouseEvent;
 
-                    // 左鍵按下且之前沒按下
                     if ((me.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED) && !pressed) {
                         pressed = true;
                         int x = me.dwMousePosition.X;
@@ -39,11 +38,12 @@ void ManageInput::mouseInput() {
                         }
                     }
 
-                    // 左鍵放開時重置 pressed
                     if (me.dwButtonState == 0) pressed = false;
+                } else {
+                    // ⚠️ 把不是滑鼠的事件丟回去，不要吃掉鍵盤
+                    DWORD written;
+                    WriteConsoleInput(hIn, &ir, 1, &written);
                 }
-            } else {
-                this_thread::sleep_for(chrono::milliseconds(5));
             }
         }
     });

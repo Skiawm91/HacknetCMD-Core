@@ -53,6 +53,7 @@ int main(){
     StopAudio();
     PlayAudio("AmbientDroneClipped.wav");
     while(true) {
+        mi.keyDisable();
         chse = 0;
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "HOME");
@@ -69,9 +70,7 @@ int main(){
             }
         });
         mouseSync = true;
-        while(mouseSync) {
-            this_thread::sleep_for(chrono::milliseconds(10));
-        }
+        mi.async(3);
         mi.btnDel(vector<string>{"PLAY", "QUIT"});
         mi.cbClean();
         switch(chse) {

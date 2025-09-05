@@ -32,8 +32,6 @@ void HNScript::GETINPUT(const string& content) {
     input.clear();
     cout << content;
     inputMasked = false;
-    while(!enterDetected);
-    input = mi.getInput();
 }
 
 void HNScript::GETINPUTR(const string& content) {
@@ -45,16 +43,12 @@ void HNScript::GETINPUTR(const string& content) {
     #endif
     cout << content;
     inputMasked = false;
-    while(!enterDetected);
-    input = mi.getInput();
 }
 
 void HNScript::GETINPUTPWD(const string& content) {
     input.clear();
     cout << content;
     inputMasked = true;
-    while(!enterDetected);
-    input = mi.getInput();
 }
 
 void HNScript::GETINPUTPWDR(const string& content) {
@@ -66,6 +60,4 @@ void HNScript::GETINPUTPWDR(const string& content) {
     #endif
     cout << content;
     inputMasked = true;
-    while(!enterDetected);
-    input = mi.getInput();
 }

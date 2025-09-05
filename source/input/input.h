@@ -45,7 +45,42 @@ public:
     void cbClean();                      // 清理 callback
     void stopMouse();                    // 停止滑鼠 thread
 
-    // 停止全部
+    // 全部
+    void async(const int type) {
+        if (type == 1) {
+            while (true) {
+                if (!mouseSync) {
+                    break;
+                }
+                if (enterDetected) {
+                    mouseSync = false;
+                    break;
+                }
+                if (escDetected) {
+                    mouseSync = false;
+                    break;
+                }
+                this_thread::sleep_for(chrono::milliseconds(10));
+            }
+        } else if (type == 2) {
+            while (true) {
+                if (enterDetected) {
+                    break;
+                }
+                if (escDetected) {
+                    break;
+                }
+                this_thread::sleep_for(chrono::milliseconds(10));
+            } 
+        } else if (type == 3) {
+            while (true) {
+                if (!mouseSync) {
+                    break;
+                }
+                this_thread::sleep_for(chrono::milliseconds(10));
+            } 
+        }
+    }
     void stopAll() {
         stopKb();
         stopMouse();

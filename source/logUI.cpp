@@ -27,13 +27,14 @@ void LogUI() {
     extern string input;
     extern string pwdtext;
     extern string shatext;
-    mi.keyEnable();
     int chse;
     string shapwd, tgshapwd;
     while(true) {
+        mi.keyEnable();
         chse = 0;
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "USER");
+                cout << enterDetected << escDetected << endl;
         mi.btnAdd("LOGIN", 2, 9, 20, 3);
         mi.btnAdd("REGISTER", 2, 12, 20, 3);  
         mi.btnAdd("GUEST", 2, 15, 20, 3);
@@ -57,14 +58,12 @@ void LogUI() {
             }
         });
         mouseSync = true;
-        while (true) {
-            if (!mouseSync || !enterDetected || !escDetected) {
-                mouseSync = false;
-                enterDetected = false;
-                escDetected = false;
-                break;
-            }
-            this_thread::sleep_for(chrono::milliseconds(10));
+        mi.async(1);
+        if (escDetected) {
+            escDetected = false;
+            chse = 4;
+        } else if (enterDetected) {
+            enterDetected = false;
         }
         mi.btnDel(vector<string>{"LOGIN", "REGISTER", "GUEST", "BACK"});
         mi.cbClean();
@@ -72,7 +71,14 @@ void LogUI() {
             case 1:
                 while(true) {
                     HNASM("logUI/login.chns", "NAME");
-                    if (escDetected) break;
+                    mi.async(2);
+                    if (escDetected) {
+                        escDetected = false;
+                        break;
+                    } else if (enterDetected) {
+                        enterDetected = false;
+                        input = mi.getInput();
+                    }
                     transform(input.begin(), input.end(), input.begin(), ::tolower);
                     name = input;
                     {
@@ -84,9 +90,14 @@ void LogUI() {
                             istringstream iss(line);
                             iss >> tgshapwd;
                             HNASM("logUI/login.chns", "PASSWD");
-                            while(!escDetected || !enterDetected);
-                            escDetected = false;
-                            enterDetected = false;
+                            mi.async(2);
+                            if (escDetected) {
+                                escDetected = false;
+                                break;
+                            } else if (enterDetected) {
+                                enterDetected = false;
+                                input = mi.getInput();
+                            }
                             SHA256Encrypt(input);
                             shapwd = shatext;
                             if (shapwd == tgshapwd) {
@@ -112,31 +123,46 @@ void LogUI() {
                     while (true) {
                         HNASM("logUI/register.chns", "REGISTER");
                         HNASM("logUI/register.chns", "NAME");
-                        inputMasked = false;
-                        while(!escDetected || !enterDetected);
-                        escDetected = false;
-                        enterDetected = false;
-                        transform(input.begin(), input.end(), input.begin(), ::tolower);
+                        mi.async(2);
+                        if (escDetected) {
+                            escDetected = false;
+                            break;
+                        } else if (enterDetected) {
+                            enterDetected = false;
+                            input = mi.getInput();
+                        }
                         name = input;
                         HNASM("logUI/register.chns", "PASSWD");
-                        while(!escDetected || !enterDetected);
-                        inputMasked = true;
-                        escDetected = false;
-                        enterDetected = false;
+                        mi.async(2);
+                        if (escDetected) {
+                            escDetected = false;
+                            break;
+                        } else if (enterDetected) {
+                            enterDetected = false;
+                            input = mi.getInput();
+                        }
                         pwd[0] = input;
                         HNASM("logUI/register.chns", "CONFIRM");
-                        inputMasked = true;
-                        while(!escDetected || !enterDetected);
-                        escDetected = false;
-                        enterDetected = false;
+                        mi.async(2);
+                        if (escDetected) {
+                            escDetected = false;
+                            break;
+                        } else if (enterDetected) {
+                            enterDetected = false;
+                            input = mi.getInput();
+                        }
                         pwd[1] = input;
                         HNASM("logUI/register.chns", "DETAILS");
                         while(true) {
                             HNASM("logUI/register.chns", "CONFIRM2");
-                            inputMasked = false;
-                            while(!escDetected || !enterDetected);
-                            escDetected = false;
-                            enterDetected = false;
+                            mi.async(2);
+                            if (escDetected) {
+                                escDetected = false;
+                                break;
+                            } else if (enterDetected) {
+                                enterDetected = false;
+                                input = mi.getInput();
+                            }
                             try {chse = stoi(input);} catch (const invalid_argument) {chse = 0;}
                             if (chse == 2) {
                                 break;
@@ -144,10 +170,12 @@ void LogUI() {
                                 if (!filesystem::exists("config")) {
                                     filesystem::create_directory("config");
                                 }
+                                    string nameOrigin = name;
+                                    transform(name.begin(), name.end(), name.begin(), ::tolower);
                                     filesystem::create_directory("config/" + name);
                                     ofstream file("config/" + name + "/name.hund");
                                     if (file.is_open()) {
-                                        file << name << endl;
+                                        file << nameOrigin << endl;
                                         file.close();
                                     }
                                     if (pwd[0] == pwd[1]) {
@@ -169,6 +197,7 @@ void LogUI() {
                 }
                 break;
             case 3:
+                playerName = "Guest";
                 Boot();
                 return;
             case 4:

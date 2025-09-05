@@ -26,7 +26,9 @@ void ManageInput::keyDisable(int key) {
 
 // ✅ 新增：無參數版本 → 鎖所有
 void ManageInput::keyDisable() {
-    blockedKeys.clear();   // 清空，代表「所有按鍵都被阻止」
+    vector<int> allKeys;
+    for (int i = 0; i < 256; ++i) allKeys.push_back(i); // 0~255 都鎖住
+    blockedKeys = allKeys;
     blocking = true;
     std::thread(&ManageInput::inputLoop, this).detach();
 }

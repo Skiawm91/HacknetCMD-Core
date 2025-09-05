@@ -1,6 +1,7 @@
 #include "input.h"
 #include <conio.h>
 #include <iostream>
+#include <atomic>
 using namespace std;
 
 atomic<bool> escDetected;
