@@ -30,15 +30,14 @@ void LogUI() {
     int chse;
     string shapwd, tgshapwd;
     while(true) {
-        mi.keyEnable();
+        mi.kbEnable();
         chse = 0;
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "USER");
-                cout << enterDetected << escDetected << endl;
-        mi.btnAdd("LOGIN", 2, 9, 20, 3);
-        mi.btnAdd("REGISTER", 2, 12, 20, 3);  
-        mi.btnAdd("GUEST", 2, 15, 20, 3);
-        mi.btnAdd("BACK", 2, 18, 20, 3);
+        mi.btnAdd("LOGIN", 2, 8, 20, 3);
+        mi.btnAdd("REGISTER", 2, 11, 20, 3);  
+        mi.btnAdd("GUEST", 2, 14, 20, 3);
+        mi.btnAdd("BACK", 2, 17, 20, 3);
         mi.cbCreate([&](const string& btnName) {
             if (btnName == "LOGIN") {
                 chse = 1;
@@ -154,16 +153,26 @@ void LogUI() {
                         pwd[1] = input;
                         HNASM("logUI/register.chns", "DETAILS");
                         while(true) {
-                            HNASM("logUI/register.chns", "CONFIRM2");
-                            mi.async(2);
+                            mi.btnAdd("CONFIRM", 1, 8, 20, 3);
+                            mi.btnAdd("CANCEL", 1, 11, 20, 3);
+                            mi.cbCreate([&](const string& btnName){
+                                if (btnName == "CONFIRM") {
+                                    // do nothing
+                                }
+                                if (btnName == "CANCEL") {
+                                    chse = 2;
+                                }
+                            });
+                            mouseSync = true;
+                            mi.async(1);
                             if (escDetected) {
                                 escDetected = false;
-                                break;
+                                chse = 2;
                             } else if (enterDetected) {
                                 enterDetected = false;
-                                input = mi.getInput();
                             }
-                            try {chse = stoi(input);} catch (const invalid_argument) {chse = 0;}
+                            mi.btnDel(vector<string>{"CONFIRM", "CANCEL"});
+                            mi.cbClean();
                             if (chse == 2) {
                                 break;
                             } else {

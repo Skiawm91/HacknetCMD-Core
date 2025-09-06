@@ -53,12 +53,12 @@ int main(){
     StopAudio();
     PlayAudio("AmbientDroneClipped.wav");
     while(true) {
-        mi.keyDisable();
+        mi.kbDisable();
         chse = 0;
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "HOME");
-        mi.btnAdd("PLAY", 2, 9, 20, 3);
-        mi.btnAdd("QUIT", 2, 18, 20, 3);
+        mi.btnAdd("PLAY", 2, 8, 20, 3);
+        mi.btnAdd("QUIT", 2, 17, 20, 3);
         mi.cbCreate([&](const string& btnName){
             if (btnName == "PLAY") {
                 chse = 1;

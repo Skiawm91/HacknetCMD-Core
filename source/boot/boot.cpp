@@ -1,7 +1,7 @@
 #define _HAS_STD_BYTE 0
 #include "boot.h"
 #include "../hnasm/hnasm.h"
-#include "../noobornonoob.h"
+#include "../getIP.h"
 #include <iostream>
 #include <string>
 #ifdef _WIN32
@@ -30,6 +30,6 @@ void Boot() {
         Sleep(rand() % 501);
     }
     HNASM("boot.chns", "BOOT");
-    Noobornonoob();
+    GetIP();
     return;
 }

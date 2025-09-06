@@ -1,28 +1,28 @@
 BEGIN_REGISTER
 CLEAR
-PRINT -- New Hacknet User Registration --
+PRINT  -- New Hacknet User Registration --
 END_REGISTER
 BEGIN_NAME
-GETINPUT USERNAME : 
+GETINPUT  USERNAME : 
 END_NAME
 BEGIN_PASSWD
-GETINPUTPWD PASSWORD : 
+GETINPUTPWD  PASSWORD : 
 END_PASSWD
 BEGIN_CONFIRM
-GETINPUTPWD CONFIRM PASS : 
+GETINPUTPWD  CONFIRM PASS : 
 END_CONFIRM
 BEGIN_DETAILS
-PRINT  -- Details Confirmed --
-PRINT WARNING : Once created, a session's language cannot be changed
-PRINT READY - PRESS ENTER TO CONFIRM
-PRINT --------------------------------------------------------
-PRINT 1) CONFIRM
-PRINT 2) CANCEL
-PRINT
+PRINT   -- Details Confirmed --
+PRINT  WARNING : Once created, a session's language cannot be changed
+PRINT  READY - PRESS ENTER TO CONFIRM
+PRINT  --------------------------------------------------------
+PRINT  ____________________
+PRINT  | Confirm          |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | Cancel           |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_DETAILS
-BEGIN_CONFIRM2
-GETINPUTR > 
-END_CONFIRM2
 BEGIN_USEDNAME
 PRINT This name already used!
 WAIT 3

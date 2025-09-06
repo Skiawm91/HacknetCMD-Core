@@ -1,1 +1,19 @@
-新增滑鼠點擊
+Hacknet4CMD C++ Edition // Goals
+
+[0.1.0]
+完成Batch版本的進度 (完成, Release)
+
+[0.2.0]
+Mac 支援 (完成, Beta 1/2)
+HNScript (完成, Beta 2)
+帳號登入註冊功能 (完成, Beta 2)
+進階輸入功能 (Only Windows, Beta 3)
+改進GUI (完成, Beta 3)
+重寫Tutorial及CMD介面 (WIP, Beta 3)
+
+[0.3.0]
+...
+
+開發人員：
+1. Skiawm91
+2. ChatGPT

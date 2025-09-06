@@ -8,6 +8,7 @@ atomic<bool> escDetected;
 atomic<bool> enterDetected;
 atomic<bool> inputMasked;
 atomic<bool> runningKb;
+atomic<bool> kbEnabled;
 
 void ManageInput::kbInput() {
     if (running) return; // 避免重複啟動
@@ -17,6 +18,10 @@ void ManageInput::kbInput() {
     kbThread = thread([this]() {
         string buffer;
         while (running) {
+            if (!kbEnabled) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                continue; // 🔥 鍵盤停用時不讀事件
+            }
             if (_kbhit()) {
                 char c = _getch();
 

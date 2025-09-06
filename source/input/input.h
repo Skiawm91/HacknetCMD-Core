@@ -12,6 +12,7 @@ using namespace std;
 extern atomic<bool> escDetected;
 extern atomic<bool> enterDetected;
 extern atomic<bool> inputMasked;
+extern atomic<bool> kbEnabled;
 extern atomic<bool> runningKb;
 extern atomic<bool> runningPwd;
 extern atomic<bool> runningMouse;
@@ -26,11 +27,16 @@ class ManageInput {
 public:
     HANDLE hIn;
     // 鍵盤功能
-    void keyDisable(const vector<int>& keys);
-    void keyDisable(int key);
-    void keyDisable();
-    void keyEnable();
-    bool isBlocking() const;
+    void kbDisable() {
+        kbEnabled = false;
+    }    // 停用鍵盤輸入
+    void kbEnable() {
+        kbEnabled = true;
+    }     // 啟用鍵盤輸入
+    bool isKbEnabled() const {
+        return kbEnabled;
+    }
+
     using Callback = function<void(const string&)>;
 
     void kbInput();   // 啟動監聽
