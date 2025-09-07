@@ -9,10 +9,9 @@ HNScript (完成, Beta 2)
 帳號登入註冊功能 (完成, Beta 2)
 進階輸入功能 (Only Windows, Beta 3)
 改進GUI (完成, Beta 3)
-重寫Tutorial及CMD介面 (WIP, Beta 3)
 
 [0.3.0]
-...
+重寫Tutorial及CMD介面 (WIP)
 
 開發人員：
 1. Skiawm91

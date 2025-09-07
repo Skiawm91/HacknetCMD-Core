@@ -57,6 +57,7 @@ void LogUI() {
             }
         });
         mouseSync = true;
+        mi.spReset();
         mi.async(1);
         if (escDetected) {
             escDetected = false;
@@ -70,6 +71,7 @@ void LogUI() {
             case 1:
                 while(true) {
                     HNASM("logUI/login.chns", "NAME");
+                    mi.spReset();
                     mi.async(2);
                     if (escDetected) {
                         escDetected = false;
@@ -89,6 +91,7 @@ void LogUI() {
                             istringstream iss(line);
                             iss >> tgshapwd;
                             HNASM("logUI/login.chns", "PASSWD");
+                            mi.spReset();
                             mi.async(2);
                             if (escDetected) {
                                 escDetected = false;
@@ -122,6 +125,7 @@ void LogUI() {
                     while (true) {
                         HNASM("logUI/register.chns", "REGISTER");
                         HNASM("logUI/register.chns", "NAME");
+                        mi.spReset();
                         mi.async(2);
                         if (escDetected) {
                             escDetected = false;
@@ -132,6 +136,7 @@ void LogUI() {
                         }
                         name = input;
                         HNASM("logUI/register.chns", "PASSWD");
+                        mi.spReset();
                         mi.async(2);
                         if (escDetected) {
                             escDetected = false;
@@ -142,6 +147,7 @@ void LogUI() {
                         }
                         pwd[0] = input;
                         HNASM("logUI/register.chns", "CONFIRM");
+                        mi.spReset();
                         mi.async(2);
                         if (escDetected) {
                             escDetected = false;
@@ -151,6 +157,7 @@ void LogUI() {
                             input = mi.getInput();
                         }
                         pwd[1] = input;
+                        chse = 0;
                         HNASM("logUI/register.chns", "DETAILS");
                         while(true) {
                             mi.btnAdd("CONFIRM", 1, 8, 20, 3);
@@ -164,6 +171,7 @@ void LogUI() {
                                 }
                             });
                             mouseSync = true;
+                            mi.spReset();
                             mi.async(1);
                             if (escDetected) {
                                 escDetected = false;

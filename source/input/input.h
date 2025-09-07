@@ -43,6 +43,7 @@ public:
     void stopKb();    // 停止監聽
     string getInput(); // 取得輸入後的字串
 
+    void spReset();
     // 滑鼠功能
     void mouseInput();                   // 啟動滑鼠 thread
     void btnAdd(const string& name, int x, int y, int w, int h);
@@ -102,7 +103,8 @@ private:
     string lastInput;
     mutex inputMutex;
     thread pwdInputThread;
-
+    // 在 ManageInput 類中新增成員變數：
+    COORD startPos;
     // 滑鼠
     vector<Button> buttons;
     atomic<bool> runningMouse{false};

@@ -10,6 +10,8 @@
 #include "cmd.h"
 using namespace std;
 
+// HacknetStory hs;
+
 void Cmd() {
     extern ManageInput mi;
     extern string playerName;
@@ -26,18 +28,20 @@ void Cmd() {
     ifstream saveFile("config/" + lowerName + "/save.hnd");
     if (saveFile.is_open()) {
         while (getline(saveFile, line)) {
-            if (line == "434F4E4649472E5455544F5249414C3A46414C5345") {
+            // if (line == "434F4E4649472E5455544F5249414C3A46414C5345") {
                 HNASM("terminal/initial.chns", "HELPMSG");
                 break;
-            } else {
-                HNASM("terminal/initial.chns", "TUTORIAL");
-                break;
-            }
+            // } else {
+                // HNASM("terminal/initial.chns", "TUTORIAL");
+                // s.Tutorial();
+                // break;
+            // }
         }
     }
     while (true) {
         cout << targetIP << "> ";
         inputMasked = false;
+        mi.spReset();
         mi.async(2);
         if (enterDetected) {
             enterDetected = false;
@@ -45,14 +49,16 @@ void Cmd() {
         } else if (escDetected) {
             escDetected = false;
         }
-    }
-    istringstream iss(fullCommand);
-    string cmd;
-    cmd.clear();
-    while (iss >> cmd) {
-        command.push_back(cmd);
-    }
-    if (command[0] == "connect") {
-        if (command[1] == ipAddress) targetIP = ipAddress + "@";
+        istringstream iss(fullCommand);
+        string cmd;
+        cmd.clear();
+        command.clear();
+        while (iss >> cmd) {
+            command.push_back(cmd);
+        }
+        if (command[0] == "connect") {
+            if (command[1] == ipAddress) targetIP = ipAddress + "@";
+        }
+        if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
     }
 }
