@@ -48,10 +48,10 @@ int main(){
         chdir(dir);
     }
     cout << "\033]0;Hacknet For CMD\007";
-    tcgetattr(STDIN_FILENO, &origTermios);   // 保存原始設定
+    tcgetattr(STDIN_FILENO, &origTermios);
     termios raw = origTermios;
-    raw.c_lflag &= ~(ICANON | ECHO);        // 關閉行緩衝 + 回顯
-    raw.c_cc[VMIN]  = 1;                    // 每次讀 1 個字元
+    raw.c_lflag &= ~(ICANON | ECHO);
+    raw.c_cc[VMIN] = 1;
     raw.c_cc[VTIME] = 0;
     tcsetattr(STDIN_FILENO, TCSANOW, &raw);
     #endif
