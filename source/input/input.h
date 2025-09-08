@@ -1,6 +1,9 @@
 #define _HAS_STD_BYTE 0
 #pragma once
+#ifdef _WIN32
 #include <windows.h>
+#else
+#endif
 #include <vector>
 #include <atomic>
 #include <string>
@@ -25,7 +28,9 @@ struct Button {
 
 class ManageInput {
 public:
+    #ifdef _WIN32
     HANDLE hIn;
+    #endif
     // 鍵盤功能
     void kbDisable() {
         kbEnabled = false;
@@ -104,7 +109,11 @@ private:
     mutex inputMutex;
     thread pwdInputThread;
     // 在 ManageInput 類中新增成員變數：
+    #ifdef _WIN32
     COORD startPos;
+    #else
+    int startCol;
+    #endif
     // 滑鼠
     vector<Button> buttons;
     atomic<bool> runningMouse{false};

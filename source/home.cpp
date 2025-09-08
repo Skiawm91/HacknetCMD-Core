@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <libgen.h>
 #include <mach-o/dyld.h>
+#include <termios.h>
 #endif
 #include <iostream>
 #include <cstdlib>
@@ -20,6 +21,9 @@
 #include "porthack.h"
 using namespace std;
 
+#ifndef _WIN32
+termios origTermios;
+#endif
 ManageInput mi;
 
 int main(){
@@ -33,7 +37,6 @@ int main(){
     DWORD mode = prevMode & ~ENABLE_QUICK_EDIT_MODE;
     mode |= ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT | ENABLE_PROCESSED_INPUT;
     SetConsoleMode(mi.hIn, mode);
-
     #elif __APPLE__
     char path[PATH_MAX];
     uint32_t size = sizeof(path);
@@ -45,6 +48,12 @@ int main(){
         chdir(dir);
     }
     cout << "\033]0;Hacknet For CMD\007";
+    tcgetattr(STDIN_FILENO, &origTermios);
+    termios newt = origTermios;
+    newt.c_lflag &= ~(ICANON | ECHO); // 關閉行緩衝 + 回顯
+    newt.c_cc[VMIN]  = 1;
+    newt.c_cc[VTIME] = 0;
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
     #endif
     mi.kbInput();
     mi.mouseInput();
@@ -86,12 +95,19 @@ int main(){
                     system("clear");
                     #endif
                     while(true) {
+                        mi.kbEnable();
                         cout << "Are you sure to quit Hacknet? (y/n)\n";
                         cout << "choose: ";
-                        cin >> yn;
-                        if (yn=="y") {
-                            return 0;
-                        } else if (yn=="n") {
+                        mi.async(2);
+                        if (escDetected) {
+                            escDetected = false;
+                        } else if (enterDetected) {
+                            enterDetected = false;
+                            yn = mi.getInput();
+                        }
+                        if (yn == "y") {
+                            exit(1);
+                        } else if (yn == "n") {
                             break;
                         }
                     }

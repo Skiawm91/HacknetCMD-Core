@@ -1,3 +1,4 @@
+#include "audio.h"
 #include "input/input.h"
 #include "hnasm/hnasm.h"
 #include "clearScreen.h"
@@ -13,6 +14,8 @@ using namespace std;
 // HacknetStory hs;
 
 void Cmd() {
+    StopAudio();
+    PlayAudio("Revolve.wav");
     extern ManageInput mi;
     extern string playerName;
     string lowerName;

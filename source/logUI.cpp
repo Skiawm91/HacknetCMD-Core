@@ -15,8 +15,6 @@
 #include <filesystem>
 #include <sstream>
 #include <algorithm>
-#include <thread>
-#include <atomic>
 using namespace std;
 
 string playerName;
