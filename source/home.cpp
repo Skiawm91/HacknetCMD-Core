@@ -48,15 +48,19 @@ int main(){
         chdir(dir);
     }
     cout << "\033]0;Hacknet For CMD\007";
-    tcgetattr(STDIN_FILENO, &origTermios);
-    termios newt = origTermios;
-    newt.c_lflag &= ~(ICANON | ECHO); // 關閉行緩衝 + 回顯
-    newt.c_cc[VMIN]  = 1;
-    newt.c_cc[VTIME] = 0;
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    tcgetattr(STDIN_FILENO, &origTermios);   // 保存原始設定
+    termios raw = origTermios;
+    raw.c_lflag &= ~(ICANON | ECHO);        // 關閉行緩衝 + 回顯
+    raw.c_cc[VMIN]  = 1;                    // 每次讀 1 個字元
+    raw.c_cc[VTIME] = 0;
+    tcsetattr(STDIN_FILENO, TCSANOW, &raw);
     #endif
+    #ifdef _WIN32
     mi.kbInput();
     mi.mouseInput();
+    #elif __APPLE__
+    mi.input();
+    #endif
     int chse;
     extern string input;
     StopAudio();
