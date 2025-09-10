@@ -12,6 +12,7 @@
 #include <mutex>
 using namespace std;
 
+extern string kbPrompt;
 extern atomic<bool> escDetected;
 extern atomic<bool> enterDetected;
 extern atomic<bool> inputMasked;
@@ -60,8 +61,10 @@ public:
     void cbClean();                      // 清理 callback
 
     // macOS / 整合版輸入
+    #ifdef __APPLE__
     void input(); // 結合鍵盤 + VT100 滑鼠，支持 kbEnable/kbDisable & mouseSync
-
+    void stopInput();
+    #endif
     // 同步等待
     void async(const int type) {
         if (type == 1) {
@@ -77,12 +80,17 @@ public:
             while (true) {
                 if (enterDetected || escDetected) break;
                 this_thread::sleep_for(chrono::milliseconds(10));
-            } 
+            }
         } else if (type == 3) {
             while (true) {
                 if (!mouseSync) break;
+                if (escDetected) {
+                    escDetected = false;
+                } else if (enterDetected) {
+                    enterDetected = false;
+                }
                 this_thread::sleep_for(chrono::milliseconds(10));
-            } 
+            }
         }
     }
 
@@ -107,8 +115,7 @@ private:
     #ifdef _WIN32
     COORD startPos;
     #else
-    int startCol{-1};
-    thread inputThread;
+    int startCol = 0;
     #endif
 
     // 滑鼠

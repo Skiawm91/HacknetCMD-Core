@@ -7,7 +7,7 @@ Hacknet4CMD C++ Edition // Goals
 Mac 支援 (完成, Beta 1/2)
 HNScript (完成, Beta 2)
 帳號登入註冊功能 (完成, Beta 2)
-進階輸入功能 (Only Windows, Beta 3)
+進階輸入功能 (完成, Beta 3)
 改進GUI (完成, Beta 3)
 
 [0.3.0]

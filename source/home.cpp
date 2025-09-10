@@ -54,6 +54,8 @@ int main(){
     raw.c_cc[VMIN] = 1;
     raw.c_cc[VTIME] = 0;
     tcsetattr(STDIN_FILENO, TCSANOW, &raw);
+    cout << "\033[?1000h";
+    cout.flush();
     #endif
     #ifdef _WIN32
     mi.kbInput();
@@ -101,7 +103,8 @@ int main(){
                     while(true) {
                         mi.kbEnable();
                         cout << "Are you sure to quit Hacknet? (y/n)\n";
-                        cout << "choose: ";
+                        kbPrompt = "choose: ";
+                        mi.spReset();
                         mi.async(2);
                         if (escDetected) {
                             escDetected = false;

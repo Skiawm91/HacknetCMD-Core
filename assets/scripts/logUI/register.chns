@@ -22,6 +22,7 @@ PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINT  ____________________
 PRINT  | Cancel           |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+GETINPUT
 END_DETAILS
 BEGIN_USEDNAME
 PRINT This name already used!

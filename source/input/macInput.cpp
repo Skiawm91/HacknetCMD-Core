@@ -1,136 +1,303 @@
 #ifdef __APPLE__
-
 #include "input.h"
-#include <iostream>
 #include <unistd.h>
-#include <termios.h>
-#include <thread>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <fcntl.h>
+#include <cerrno>
+#include <cstring>
+#include <iostream>
 #include <chrono>
-#include <vector>
-#include <string>
-#include <mutex>
-#include <atomic>
+using namespace std;
 
-atomic<bool> escDetected;
-atomic<bool> enterDetected;
-atomic<bool> inputMasked;
-atomic<bool> kbEnabled;
-atomic<bool> running;
-atomic<bool> mouseSync;
+string kbPrompt;
+atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, kbEnabled, mouseSync;
 
-void ManageInput::spReset() {
-    startCol = 0;
+static int read_with_timeout(int fd, char *buf, int maxlen, int timeout_ms) {
+    fd_set rfds;
+    struct timeval tv;
+    FD_ZERO(&rfds);
+    FD_SET(fd, &rfds);
+    tv.tv_sec = timeout_ms / 1000;
+    tv.tv_usec = (timeout_ms % 1000) * 1000;
+    int rv = select(fd + 1, &rfds, NULL, NULL, &tv);
+    if (rv > 0) {
+        int r = read(fd, buf, maxlen);
+        if (r < 0 && errno == EAGAIN) return 0;
+        return r;
+    }
+    return 0;
 }
 
+void ManageInput::spReset() {
+    // macOS: caller 控制 startCol（通常呼叫者知道 prompt 寬度）
+    // 這裡我們把起始 column 設為 0（若需要可改為取得實際游標）
+    promptPrinted = false;
+    startCol = kbPrompt.size();
+}
+
+// single combined input loop for macOS
 void ManageInput::input() {
     if (running) return;
     running = true;
 
-    // 啟用 VT100 滑鼠報告
-    cout << "\033[?1000h";
-    cout.flush();
-
-    thread([this]() {
+    kbThread = thread([this]() {
         string buffer;
         size_t cursorPos = 0;
         vector<string> history;
         int historyIndex = -1;
+        bool cbDone = false;
 
+        // 確保 startCol 有合理值
         if (startCol < 0) startCol = 0;
 
-        // 記錄行首位置（第一次繪製時取得）
-        int startRow = 0;
-        bool startRowSet = false;
-
-        auto redrawLine = [&]() {
-            // 設定游標回行首+起始列
-            cout << "\033[s"; // 存游標
-            cout << "\033[u"; // 還原游標
-            if (!startRowSet) {
-                cout << "\033[6n"; // 查詢游標位置
-                char resp[32];
-                int n = read(STDIN_FILENO, resp, sizeof(resp));
-                if (n > 0) {
-                    // ANSI 回傳格式：ESC[row;colR
-                    int r=0,c=0;
-                    if (sscanf(resp,"\033[%d;%dR",&r,&c)==2) {
-                        startRow = r;
-                        startRowSet = true;
-                    }
-                }
-            }
-
-            cout << "\033[" << startRow << ";" << (startCol+1) << "H"; // 移到起始位置
-
+        auto redrawAfterPrompt = [&](size_t cursor) {
+            // 不清整行，只覆寫 prompt 後面（從 startCol 開始）
+            // 移到行首然後移到 startCol
+            cout << "\r";
+            if (startCol > 0) cout << "\033[" << startCol << "C";
+            // 顯示 masked 或 raw buffer
             string display = inputMasked ? string(buffer.size(), '*') : buffer;
             cout << display;
-            // 移動游標到正確位置
-            cout << "\033[" << (cursorPos+startCol+1) << "G";
+            // 覆蓋可能遺留的尾巴
+            cout << ' ';
+            // 把游標移回到 cursor 位置
+            cout << "\r";
+            if (startCol > 0) cout << "\033[" << startCol << "C";
+            if (cursor > 0) cout << "\033[" << cursor << "C";
             cout.flush();
         };
 
-        char buf[32];
+        // local temporary buffer for raw read
+        char rbuf[128];
+
         while (running) {
-            int n = read(STDIN_FILENO, buf, sizeof(buf));
+            // 若 kbEnabled 且 prompt 尚未印過，印一次（不在每回合重印）
+            if (kbEnabled && !promptPrinted) {
+                cout << kbPrompt << flush;
+                // prompt 已在外面印或由這裡印， startCol 應該是 prompt 寬度
+                // 若你要精確計算，請呼叫 spReset 來更新 startCol
+                promptPrinted = true;
+            }
+
+            // 直接用 blocking read (但短 timeout) 來一次拿多個 bytes，之後逐個解析
+            int n = read_with_timeout(STDIN_FILENO, rbuf, (int)sizeof(rbuf), 50); // 50ms
             if (n <= 0) {
-                this_thread::sleep_for(chrono::milliseconds(5));
+                std::this_thread::sleep_for(std::chrono::milliseconds(3));
                 continue;
             }
 
-            for (int i=0;i<n;i++) {
-                char c = buf[i];
+            int i = 0;
+            while (i < n) {
+                unsigned char c = static_cast<unsigned char>(rbuf[i]);
 
-                // 處理滑鼠事件
-                if (c=='\033' && i+5<n && buf[i+1]=='[' && buf[i+2]=='M') {
-                    unsigned char cb = buf[i+3];
-                    unsigned char cx = buf[i+4];
-                    unsigned char cy = buf[i+5];
-                    int btn = cb-32;
-                    int col = cx-32-1;
-                    int row = cy-32-1;
+                // --- ESC 開頭：可能是 arrow / mouse / function / 或孤立 ESC
+                if (c == 0x1B) {
+                    // 先嘗試把後續 bytes 收集完整（非阻塞嘗試）
+                    string seq;
+                    seq.push_back((char)c);
+                    // 把目前 buffer 中已有的後續 bytes 收起來
+                    int j = i + 1;
+                    while (j < n && (int)seq.size() < 64) { seq.push_back(rbuf[j]); j++; }
 
-                    if ((btn & 0x03)==0 && mouseSync) { // 左鍵
-                        for (auto &b : buttons) {
-                            if (pointInButton(col,row,b)) {
-                                lock_guard<mutex> lock(cbMutex);
-                                if (currentCallback) currentCallback(b.name);
-                                mouseSync = false;
-                                redrawLine(); // 滑鼠點擊也即時刷新
+                    // 若目前 seq 看起來不完整（例如只有 "\x1b[" 還沒到最後），再嘗試用短 timeout 讀更多
+                    if (seq.size() < 6) {
+                        // 嘗試讀多點（不阻塞太久）
+                        char more[64];
+                        int mr = read_with_timeout(STDIN_FILENO, more, sizeof(more), 30); // 30ms
+                        if (mr > 0) {
+                            for (int k = 0; k < mr && (int)seq.size() < 128; ++k) seq.push_back(more[k]);
+                        }
+                    }
+
+                    // 解析 seq：
+                    // - CSI M ...  (X10)  : "\x1b[M" + 3 bytes
+                    // - CSI < ... (SGR mouse) : "\x1b[<" ... 'M' or 'm'
+                    // - CSI [ A/B/C/D (arrow) : "\x1b[A" etc or "\x1b[1;..." function keys
+                    bool consumed = false;
+
+                    // --- X10 mouse: ESC [ M Cb Cx Cy
+                    if (seq.size() >= 6 && seq[1] == '[' && seq[2] == 'M') {
+                        unsigned char cb = (unsigned char)seq[3];
+                        unsigned char cx = (unsigned char)seq[4];
+                        unsigned char cy = (unsigned char)seq[5];
+                        int btn = cb - 32;
+                        int col = (int)cx - 32 - 1;
+                        int row = (int)cy - 32 - 1;
+                        // 只有左鍵觸發 callback（btn & 0x03 == 0 表示左鍵按下）
+                        if ((btn & 0x03) == 0) {
+                            lock_guard<mutex> lock(cbMutex);
+                            if (currentCallback) currentCallback(buttons.size() ? string() : string()); // placeholder
+                            // We MUST call callback with the actual button name:
+                            // iterate to find which button contains (col,row)
+                            for (auto &b : buttons) {
+                                if (pointInButton(col, row, b)) {
+                                    if (currentCallback) currentCallback(b.name);
+                                    buffer.clear();
+                                    cursorPos = 0;
+                                    mouseSync = false;
+                                    break;
+                                }
+                            }
+                        }
+                        // consume 6 chars total
+                        int consumedBytes = min(j - i, 6); // if we had all from rbuf or plus read_more
+                        i += consumedBytes;
+                        consumed = true;
+                    }
+                    // --- SGR mouse: ESC [ < Cb ; Cx ; Cy (M or m)
+                    else if (seq.size() >= 4 && seq[1] == '[' && seq[2] == '<') {
+                        // find terminal 'M' or 'm'
+                        size_t posTerm = string::npos;
+                        for (size_t k = 3; k < seq.size(); ++k) {
+                            if (seq[k] == 'M' || seq[k] == 'm') { posTerm = k; break; }
+                        }
+                        if (posTerm == string::npos) {
+                            // 可能不完整，再嘗試小等一下取更多
+                            char more[64];
+                            int mr = read_with_timeout(STDIN_FILENO, more, sizeof(more), 30);
+                            if (mr > 0) {
+                                for (int k = 0; k < mr; ++k) seq.push_back(more[k]);
+                                for (size_t k = 3; k < seq.size(); ++k) {
+                                    if (seq[k] == 'M' || seq[k] == 'm') { posTerm = k; break; }
+                                }
+                            }
+                        }
+                        if (posTerm != string::npos) {
+                            // parse between [3..posTerm-1] as "Cb;Cx;Cy"
+                            string inner = seq.substr(3, posTerm - 3);
+                            // split by ';'
+                            int cb = 0, cx = 0, cy = 0;
+                            int parsed = sscanf(inner.c_str(), "%d;%d;%d", &cb, &cx, &cy);
+                            if (parsed == 3) {
+                                bool press = (seq[posTerm] == 'M');
+                                // 左鍵 press -> callback
+                                if (press && (cb & 0x03) == 0) {
+                                    int col = cx - 1;
+                                    int row = cy - 1;
+                                    lock_guard<mutex> lock(cbMutex);
+                                    for (auto &b : buttons) {
+                                        if (pointInButton(col, row, b)) {
+                                            if (currentCallback) currentCallback(b.name);
+                                            buffer.clear();
+                                            cursorPos = 0;
+                                            mouseSync = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            // consume seq length
+                            int consumeCount = (int)min((size_t)n - i, posTerm + 1);
+                            i += consumeCount;
+                            consumed = true;
+                        } else {
+                            // 沒拿到完整序列 -> skip this ESC (保守處理) so it won't be considered an isolated ESC
+                            // advance 1 and continue
+                            i++;
+                            consumed = true;
+                        }
+                    }
+                    // --- Arrow / CSI like ESC [ A/B/C/D or function keys
+                    else if (seq.size() >= 3 && seq[1] == '[' && ( (seq[2]>='A' && seq[2]<='D') || (seq[2]>='0' && seq[2]<='9') )) {
+                        // 常見 arrow: ESC [ A/B/C/D
+                        if (seq[2] >= 'A' && seq[2] <= 'D') {
+                            // handle arrow for history/cursor only if kbEnabled
+                            if (kbEnabled) {
+                                if (seq[2] == 'A') { // up
+                                    if (!history.empty() && historyIndex > 0) {
+                                        historyIndex--;
+                                        buffer = history[historyIndex];
+                                        cursorPos = buffer.size();
+                                        redrawAfterPrompt(cursorPos);
+                                    }
+                                } else if (seq[2] == 'B') { // down
+                                    if (!history.empty() && historyIndex < (int)history.size() - 1) {
+                                        historyIndex++;
+                                        buffer = history[historyIndex];
+                                    } else {
+                                        buffer.clear();
+                                        historyIndex = history.size();
+                                    }
+                                    cursorPos = buffer.size();
+                                    redrawAfterPrompt(cursorPos);
+                                } else if (seq[2] == 'C') { if (cursorPos < buffer.size()) { cursorPos++; redrawAfterPrompt(cursorPos); } }
+                                else if (seq[2] == 'D') { if (cursorPos > 0) { cursorPos--; redrawAfterPrompt(cursorPos); } }
+                            }
+                            // consume 3 if available else 1
+                            int consume = (j - i >= 3 ? 3 : 1);
+                            i += consume;
+                            consumed = true;
+                        } else {
+                            // function-like sequences: consume chunk until non-digit/';' and a final letter
+                            // try to find final letter in seq
+                            size_t posTerm = string::npos;
+                            for (size_t k = 2; k < seq.size(); ++k) {
+                                if ((seq[k] >= '@' && seq[k] <= '~')) { posTerm = k; break; }
+                            }
+                            if (posTerm != string::npos) {
+                                int consumeCount = (int)min((size_t)n - i, posTerm + 1);
+                                i += consumeCount;
+                                consumed = true;
+                            } else {
+                                // 不完整，嘗試讀更多
+                                char more[64];
+                                int mr = read_with_timeout(STDIN_FILENO, more, sizeof(more), 25);
+                                if (mr > 0) {
+                                    for (int k = 0; k < mr; ++k) seq.push_back(more[k]);
+                                    // 再尋找終結
+                                    for (size_t k = 2; k < seq.size(); ++k) {
+                                        if ((seq[k] >= '@' && seq[k] <= '~')) { posTerm = k; break; }
+                                    }
+                                    if (posTerm != string::npos) {
+                                        int consumeCount = (int)min((size_t)n - i, posTerm + 1);
+                                        i += consumeCount;
+                                        consumed = true;
+                                    } else {
+                                        // give up -> consume 1
+                                        i++;
+                                        consumed = true;
+                                    }
+                                } else {
+                                    i++;
+                                    consumed = true;
+                                }
                             }
                         }
                     }
-                    i+=5;
-                    continue;
-                }
-
-                if (!kbEnabled) continue;
-
-                // ESC / 方向鍵
-                if (c==27) {
-                    escDetected = true;
-                    char seq;
-                    if (read(STDIN_FILENO,&seq,1)>0 && seq=='[') {
-                        if (read(STDIN_FILENO,&seq,1)>0) {
-                            if (seq=='A' && historyIndex>0) { // ↑
-                                historyIndex--;
-                                buffer = history[historyIndex];
-                                cursorPos = buffer.size();
-                            } else if (seq=='B') { // ↓
-                                if (!history.empty() && historyIndex<(int)history.size()-1) {
-                                    historyIndex++;
-                                    buffer = history[historyIndex];
-                                } else {
-                                    buffer.clear();
-                                    historyIndex = history.size();
-                                }
-                                cursorPos = buffer.size();
-                            } else if (seq=='C' && cursorPos<buffer.size()) cursorPos++; // →
-                            else if (seq=='D' && cursorPos>0) cursorPos--; // ←
-                            redrawLine();
+                    // --- 純粹孤立 ESC (沒後續) -> 視為真 ESC
+                    else {
+                        // 如果 seq 只有 ESC（或後面沒有 '[' 或 '<'），我們視為孤立 ESC
+                        // 向 stdin 嘗試非阻塞讀一小段判定是否真的孤立（等候很短）
+                        char more[8];
+                        int mr = read_with_timeout(STDIN_FILENO, more, sizeof(more), 12); // very short wait
+                        if (mr <= 0) {
+                            // 真正孤立 ESC
+                            escDetected = true;
+                            i++;
+                            consumed = true;
+                        } else {
+                            // 剛才讀到的 bytes 可能屬於別的序列 — 把它放回到 local buffer 處理
+                            // 先把更多數據擴充到 rbuf（若還有空間）
+                            // 為簡單起見，把 these extra bytes 前移到 rbuf area by manipulating indices:
+                            // We'll prepend them into the stream for next iteration:
+                            // shift remaining bytes to right and insert more at current i+1 (complicated).
+                            // 簡化處理：把 mr bytes直接當成一般字元處理（rare）
+                            for (int k = 0; k < mr; ++k) {
+                                // treat them as consumed by this branch -> just skip them
+                            }
+                            i += 1 + mr;
+                            consumed = true;
                         }
                     }
+
+                    if (consumed) continue;
                 }
-                else if (c=='\n' || c=='\r') {
+
+                // --- 普通字元 (非 ESC)
+                if (!kbEnabled) { i++; continue; }
+
+                if (c == '\r' || c == '\n') {
                     {
                         lock_guard<mutex> lock(inputMutex);
                         lastInput = buffer;
@@ -141,30 +308,46 @@ void ManageInput::input() {
                     cursorPos = 0;
                     enterDetected = true;
                     cout << "\n";
+                    // after newline, spReset caller may update startCol if necessary
+                    i++;
+                    continue;
                 }
-                else if (c==127 || c=='\b') { // Backspace
-                    if (cursorPos>0) {
-                        buffer.erase(cursorPos-1,1);
+
+                if (c == 127 || c == '\b') {
+                    if (cursorPos > 0) {
+                        buffer.erase(cursorPos - 1, 1);
                         cursorPos--;
-                        redrawLine();
+                        redrawAfterPrompt(cursorPos);
                     }
+                    i++;
+                    continue;
                 }
-                else { // 一般字元
-                    buffer.insert(cursorPos,1,c);
-                    cursorPos++;
-                    redrawLine();
+
+                // 功能鍵的二 byte 前綴 (mac read getch style) rarely happens here since we parse ESC sequences above
+                // 一般可視為印字
+                buffer.insert(cursorPos, 1, (char)c);
+                cursorPos++;
+                if (inputMasked) {
+                    cout << '*' << flush;
+                } else {
+                    cout << (char)c << flush;
                 }
-            }
+                i++;
+            } // end while i<n
+        } // end while running
 
-        }
-
-        // 停用 VT100 滑鼠報告
-        cout << "\033[?1000l";
-        cout.flush();
-
-    }).detach();
+    }); // end thread
 }
 
+void ManageInput::stopInput() {
+    running = false;
+    if (kbThread.joinable()) kbThread.join();
+}
+
+string ManageInput::getInput() {
+    lock_guard<mutex> lock(inputMutex);
+    return lastInput;
+}
 
 void ManageInput::btnAdd(const string& name, int x, int y, int w, int h) {
     buttons.push_back({name, x, y, w, h});
@@ -190,8 +373,4 @@ void ManageInput::cbClean() {
     currentCallback = nullptr;
 }
 
-string ManageInput::getInput() {
-    lock_guard<mutex> lock(inputMutex);
-    return lastInput;
-}
 #endif

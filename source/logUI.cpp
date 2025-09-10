@@ -55,7 +55,6 @@ void LogUI() {
             }
         });
         mouseSync = true;
-        mi.spReset();
         mi.async(1);
         if (escDetected) {
             escDetected = false;

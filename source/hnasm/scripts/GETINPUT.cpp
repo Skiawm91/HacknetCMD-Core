@@ -30,7 +30,7 @@ void OTTF2K() {
 
 void HNScript::GETINPUT(const string& content) {
     input.clear();
-    cout << content;
+    kbPrompt = content;
     inputMasked = false;
 }
 
@@ -41,13 +41,13 @@ void HNScript::GETINPUTR(const string& content) {
     #else
     cout << "\033[F\033[2K";
     #endif
-    cout << content;
+    kbPrompt = content;
     inputMasked = false;
 }
 
 void HNScript::GETINPUTPWD(const string& content) {
     input.clear();
-    cout << content;
+    kbPrompt = content;
     inputMasked = true;
 }
 
@@ -58,6 +58,6 @@ void HNScript::GETINPUTPWDR(const string& content) {
     #else
     cout << "\033[F\033[2K";
     #endif
-    cout << content;
+    kbPrompt = content;
     inputMasked = true;
 }

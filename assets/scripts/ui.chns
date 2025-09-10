@@ -39,7 +39,6 @@ PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINT   ____________________
 PRINT   | Back             |
 PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-GETINPUT
 END_USER
 
 BEGIN_NULL
