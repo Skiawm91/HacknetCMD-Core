@@ -7,27 +7,15 @@
 #include <mutex>
 #include <conio.h>
 #include <windows.h>
+#include <string>
 using namespace std;
 
+string kbPrompt;
 atomic<bool> escDetected;
 atomic<bool> enterDetected;
 atomic<bool> inputMasked;
 atomic<bool> runningKb;
 atomic<bool> kbEnabled;
-
-int kbhit() {
-    struct timeval tv = {0, 0};
-    fd_set fds;
-    FD_ZERO(&fds);
-    FD_SET(STDIN_FILENO, &fds);
-    return select(STDIN_FILENO+1, &fds, nullptr, nullptr, &tv);
-}
-
-char getch() {
-    char c = 0;
-    read(STDIN_FILENO, &c, 1);
-    return c;
-}
 
 void ManageInput::kbInput() {
     if (running) return;
@@ -65,7 +53,7 @@ void ManageInput::kbInput() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
                 continue;
             }
-
+            cout << kbPrompt << flush;
             if (_kbhit()) {
                 char c = _getch();
 

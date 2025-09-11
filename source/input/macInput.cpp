@@ -60,7 +60,7 @@ void ManageInput::input() {
             string display = inputMasked ? string(buffer.size(), '*') : buffer;
             cout << display;
             // 覆蓋可能遺留的尾巴
-            cout << ' ';
+            cout << "\033[K";
             // 把游標移回到 cursor 位置
             cout << "\r";
             if (startCol > 0) cout << "\033[" << startCol << "C";

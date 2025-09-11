@@ -42,8 +42,8 @@ void Cmd() {
         }
     }
     while (true) {
-        cout << targetIP << "> ";
         inputMasked = false;
+        kbPrompt = targetIP + "> ";
         mi.spReset();
         mi.async(2);
         if (enterDetected) {
