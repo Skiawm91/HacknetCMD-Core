@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #include "audio.h"
 #include "input/input.h"
 #include "hnasm/hnasm.h"

@@ -36,6 +36,8 @@ void ManageInput::mouseInput() {
                             if (pointInButton(x, y, b)) {
                                 lock_guard<mutex> lock(cbMutex);
                                 if (currentCallback) currentCallback(b.name);
+                                buffer.clear();
+                                cursorPos = 0;
                                 mouseSync = false;
                                 break;
                             }

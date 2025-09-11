@@ -114,6 +114,10 @@ private:
     // 在 ManageInput 類中新增成員變數：
     #ifdef _WIN32
     COORD startPos;
+    size_t startCol = 0;
+    size_t prevBufferLength = 0;
+    string buffer;
+    size_t cursorPos = 0;
     #else
     int startCol = 0;
     #endif

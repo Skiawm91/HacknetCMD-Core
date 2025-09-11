@@ -11,19 +11,13 @@
 using namespace std;
 
 string kbPrompt;
-atomic<bool> escDetected;
-atomic<bool> enterDetected;
-atomic<bool> inputMasked;
-atomic<bool> runningKb;
-atomic<bool> kbEnabled;
+atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, runningKb, kbEnabled;
 
 void ManageInput::kbInput() {
     if (running) return;
     running = true;
     runningKb = true;
         kbThread = thread([this]() {
-        string buffer;
-        size_t cursorPos = 0;
         vector<string> history;
         int historyIndex = -1;
 
@@ -36,13 +30,19 @@ void ManageInput::kbInput() {
         startPos = csbi.dwCursorPosition;
 
         auto redrawLine = [&](size_t cursor) {
-            SetConsoleCursorPosition(hOut, startPos);
-            string display = inputMasked ? string(buffer.size(), '*') : buffer;
-            cout << display << ' '; // 空格覆蓋尾巴
-            // 移動游標到 cursor 位置
+            HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
             COORD pos = startPos;
-            pos.X += static_cast<SHORT>(cursor);
+            pos.X += static_cast<SHORT>(startCol);
             SetConsoleCursorPosition(hOut, pos);
+            string display = inputMasked ? string(buffer.size(), '*') : buffer;
+            cout << display;
+            if (prevBufferLength > buffer.size()) {
+                cout << string(prevBufferLength - buffer.size(), ' ');
+            }
+            pos.X = static_cast<SHORT>(startCol + cursor + startPos.X);
+            SetConsoleCursorPosition(hOut, pos);
+            cout.flush();
+            prevBufferLength = buffer.size();
         };
 
         while (running) {
@@ -53,7 +53,10 @@ void ManageInput::kbInput() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
                 continue;
             }
-            cout << kbPrompt << flush;
+            if (!promptPrinted) {
+                cout << kbPrompt << flush;
+                promptPrinted = true;
+            }
             if (_kbhit()) {
                 char c = _getch();
 
@@ -115,10 +118,13 @@ void ManageInput::kbInput() {
 }
 
 void ManageInput::spReset() {
+    promptPrinted = false;
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hOut, &csbi);
     startPos = csbi.dwCursorPosition;
+    startCol = kbPrompt.size();
+    prevBufferLength = 0;
 }
 
 void ManageInput::stopKb() {
