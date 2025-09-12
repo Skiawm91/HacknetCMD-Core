@@ -39,22 +39,17 @@ void LogUI() {
         mi.cbCreate([&](const string& btnName) {
             if (btnName == "LOGIN") {
                 chse = 1;
-                mouseSync = false;
             }
             if (btnName == "REGISTER") {
                 chse = 2;
-                mouseSync = false;
             }
             if (btnName == "GUEST") {
                 chse = 3;
-                mouseSync = false;
             }
             if (btnName == "BACK") {
                 chse = 4;
-                mouseSync = false;
             }
         });
-        mouseSync = true;
         mi.async(1);
         if (escDetected) {
             escDetected = false;

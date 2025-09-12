@@ -18,10 +18,8 @@ extern atomic<bool> enterDetected;
 extern atomic<bool> inputMasked;
 extern atomic<bool> kbEnabled;
 extern atomic<bool> running;
-#ifdef _WIN32
 extern atomic<bool> runningKb;
 extern atomic<bool> runningMouse;
-#endif
 extern atomic<bool> mouseSync;
 
 struct Button {
@@ -67,7 +65,8 @@ public:
     #endif
     // 同步等待
     void async(const int type) {
-        if (type == 1) {
+        if (type == 1) { // Mouse + Keyboard
+            mouseSync = true;
             while (true) {
                 if (!mouseSync) break;
                 if (enterDetected || escDetected) {
@@ -76,12 +75,13 @@ public:
                 }
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
-        } else if (type == 2) {
+        } else if (type == 2) { // Only Keyboard
             while (true) {
                 if (enterDetected || escDetected) break;
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
-        } else if (type == 3) {
+        } else if (type == 3) { // Only Mouse
+            mouseSync = true;
             while (true) {
                 if (!mouseSync) break;
                 if (escDetected) {
@@ -109,7 +109,6 @@ private:
     atomic<bool> running{false};
     string lastInput;
     mutex inputMutex;
-    thread pwdInputThread;
 
     // 在 ManageInput 類中新增成員變數：
     #ifdef _WIN32

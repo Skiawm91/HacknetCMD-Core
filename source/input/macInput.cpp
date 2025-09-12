@@ -327,11 +327,7 @@ void ManageInput::input() {
                 // 一般可視為印字
                 buffer.insert(cursorPos, 1, (char)c);
                 cursorPos++;
-                if (inputMasked) {
-                    cout << '*' << flush;
-                } else {
-                    cout << (char)c << flush;
-                }
+                redrawAfterPrompt(cursorPos);
                 i++;
             } // end while i<n
         } // end while running

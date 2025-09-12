@@ -77,14 +77,11 @@ int main(){
         mi.cbCreate([&](const string& btnName){
             if (btnName == "PLAY") {
                 chse = 1;
-                mouseSync = false;
             }
             if (btnName == "QUIT") {
                 chse = 4;
-                mouseSync = false;
             }
         });
-        mouseSync = true;
         mi.async(3);
         mi.btnDel(vector<string>{"PLAY", "QUIT"});
         mi.cbClean();
@@ -95,13 +92,10 @@ int main(){
             case 4:
                 {
                     string yn;
-                    #ifdef _WIN32
                     cls();
-                    #elif __APPLE__
-                    system("clear");
-                    #endif
                     while(true) {
                         mi.kbEnable();
+                        inputMasked = false;
                         cout << "Are you sure to quit Hacknet? (y/n)\n";
                         kbPrompt = "choose: ";
                         mi.spReset();
