@@ -11,7 +11,7 @@
 using namespace std;
 
 string kbPrompt;
-atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, kbEnabled, mouseSync;
+atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, inputAte, kbEnabled, mouseSync;
 
 static int read_with_timeout(int fd, char *buf, int maxlen, int timeout_ms) {
     fd_set rfds;
@@ -52,6 +52,7 @@ void ManageInput::input() {
         if (startCol < 0) startCol = 0;
 
         auto redrawAfterPrompt = [&](size_t cursor) {
+            if (inputAte) return;
             // 不清整行，只覆寫 prompt 後面（從 startCol 開始）
             // 移到行首然後移到 startCol
             cout << "\r";

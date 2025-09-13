@@ -11,14 +11,10 @@
 #include <libgen.h>
 #include <mach-o/dyld.h>
 #include <termios.h>
-#endif
 #include <iostream>
-#include <cstdlib>
+#endif
 #include <string>
-#include <thread>
-#include <atomic>
 #include <vector>
-#include "porthack.h"
 using namespace std;
 
 #ifndef _WIN32
@@ -91,24 +87,25 @@ int main(){
                 break;
             case 4:
                 {
-                    string yn;
-                    cls();
                     while(true) {
-                        mi.kbEnable();
-                        inputMasked = false;
-                        cout << "Are you sure to quit Hacknet? (y/n)\n";
-                        kbPrompt = "choose: ";
-                        mi.spReset();
-                        mi.async(2);
-                        if (escDetected) {
-                            escDetected = false;
-                        } else if (enterDetected) {
-                            enterDetected = false;
-                            yn = mi.getInput();
-                        }
-                        if (yn == "y") {
+                        chse = 0;
+                        HNASM("ui.chns", "QUIT");
+                        mi.btnAdd("QUIT", 1, 2, 20, 3);
+                        mi.btnAdd("CANCEL", 1, 5, 20, 3);
+                        mi.cbCreate([&](const string& btnName){
+                            if (btnName == "QUIT") {
+                                chse = 1;
+                            }
+                            if (btnName == "CANCEL") {
+                                chse = 2;
+                            }
+                        });
+                        mi.async(3);
+                        mi.btnDel(vector<string>{"QUIT", "CANCEL"});
+                        mi.cbClean();
+                        if (chse == 1) {
                             exit(1);
-                        } else if (yn == "n") {
+                        } else if (chse == 2) {
                             break;
                         }
                     }

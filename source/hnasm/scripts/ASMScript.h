@@ -14,5 +14,6 @@ class HNScript {
         void GETINPUTR(const string& content);
         void GETINPUTPWD(const string& content);
         void GETINPUTPWDR(const string& content);
+        void GETINPUTNUL(const string& content);
         void GOTO(const string& targetFile, const string& content);
 };

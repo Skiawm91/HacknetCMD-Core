@@ -6,9 +6,5 @@
 #endif
 
 void HNScript::CLEAR(){
-    #ifdef _WIN32
     cls();
-    #else
-    system("clear");
-    #endif
 }

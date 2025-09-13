@@ -5,7 +5,6 @@
 #include "crypto/crypto.h"
 #include "boot/boot.h"
 #include "cmd.h"
-#include <iostream>
 #include <string>
 #ifdef _WIN32
 #include <windows.h>

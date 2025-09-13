@@ -11,7 +11,7 @@
 using namespace std;
 
 string kbPrompt;
-atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, runningKb, kbEnabled;
+atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, inputAte, runningKb, kbEnabled;
 
 void ManageInput::kbInput() {
     if (running) return;
@@ -30,6 +30,7 @@ void ManageInput::kbInput() {
         startPos = csbi.dwCursorPosition;
 
         auto redrawLine = [&](size_t cursor) {
+            if (inputAte) return;
             HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
             COORD pos = startPos;
             pos.X += static_cast<SHORT>(startCol);

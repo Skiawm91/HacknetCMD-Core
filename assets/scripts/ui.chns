@@ -25,6 +25,19 @@ PRINT   | Quit             |
 PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_HOME
 
+BEGIN_QUIT
+CLEAR
+PRINT
+PRINT  Are you sure?
+PRINT   ____________________
+PRINT   | Quit             |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ____________________
+PRINT   | Cancel           |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_QUIT
+
+
 BEGIN_USER
 PRINT
 PRINT   ____________________

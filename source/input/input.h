@@ -16,6 +16,7 @@ extern string kbPrompt;
 extern atomic<bool> escDetected;
 extern atomic<bool> enterDetected;
 extern atomic<bool> inputMasked;
+extern atomic<bool> inputAte;
 extern atomic<bool> kbEnabled;
 extern atomic<bool> running;
 extern atomic<bool> runningKb;

@@ -1,15 +1,14 @@
 #define _HAS_STD_BYTE 0
+#include "cmd.h"
 #include "audio.h"
 #include "input/input.h"
 #include "hnasm/hnasm.h"
 #include "clearScreen.h"
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <algorithm>
 #include <vector>
-#include "cmd.h"
 using namespace std;
 
 // HacknetStory hs;
@@ -43,7 +42,7 @@ void Cmd() {
         }
     }
     while (true) {
-        inputMasked = false;
+        inputMasked = inputAte = false;
         kbPrompt = targetIP + "> ";
         mi.spReset();
         mi.async(2);
