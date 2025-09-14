@@ -11,6 +11,7 @@
 #include <unistd.h>
 #endif
 #include <fstream>
+#include <ctime>
 using namespace std;
 
 #ifndef _WIN32
@@ -28,18 +29,21 @@ void Boot() {
         HNASM("boot.chns", "XSERVER");
         HNASM("boot.chns", "COMPLETE");
     } else {
+        srand((unsigned int)time(nullptr));
         HNASM("ui.chns", "LOGO2");
         HNASM("ui.chns", "NULL");
         string loading;
+        string block = "=";
         string preLoading = "--------------------";
+        string spaces(48, ' ');
         for (int i = 1; i <= 100; ++i) {
             if (i % 5 == 0) {
-                loading += "=";
+                loading += block;
                 preLoading = preLoading.substr(0, 20 - i / 5);
+                cout << "\r" << spaces << "[" << loading << preLoading << "]" << flush;
             }
-        cout << "\r                                                [" << loading << preLoading << "]" << flush;
-        Sleep(150);
-    }
+            Sleep(150 + rand() % 11);
+        }
     }
     Initial();
     return;
