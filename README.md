@@ -38,3 +38,5 @@ cd Hacknet-For-CMD-Cpp
 * [Skiawm91](https://github.com/Skiawm91)
 * [AhQiang](https://github.com/Hoyiqiang)
 * [65536Java](https://github.com/65536Java)
+## [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition) is here!
+

@@ -1,4 +1,5 @@
 BEGIN_INITIAL
+CLEAR
 PRINTWFW Initializing ␣ . . . . . . . .
 PRINTWFW L o a d i n g ␣ m o d u l e s . . . . . . Complete
 PRINTWFW L o a d i n g ␣ n o d e s . . . . . . Complete

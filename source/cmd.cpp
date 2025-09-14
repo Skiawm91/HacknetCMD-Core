@@ -22,7 +22,6 @@ void Cmd() {
     lowerName.resize(playerName.size());
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
     extern string ipAddress;
-    cls();
     string targetIP;
     string fullCommand;
     vector<string> command;
