@@ -1,10 +1,10 @@
-#include "ASMScript.h"
+#include "CHNScript.h"
 #include "../hnasm.h"
 #include <sstream>
 #include <string>
 using namespace std;
 
-void HNScript::GOTO(const string& targetFile, const string& content) {
+void CHNScript::GOTO(const string& targetFile, const string& content) {
     istringstream iss(content);
     string partName;
     iss >> partName;

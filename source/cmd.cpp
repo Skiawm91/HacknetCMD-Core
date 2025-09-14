@@ -11,7 +11,7 @@
 #include <vector>
 using namespace std;
 
-// HacknetStory hs;
+// HacknetStory hnStory;
 
 void Cmd() {
     StopAudio();
@@ -27,30 +27,33 @@ void Cmd() {
     string fullCommand;
     vector<string> command;
     string line;
-    HNASM("terminal/initial.chns", "INITIAL");
     ifstream saveFile("config/" + lowerName + "/save.hnd");
     if (saveFile.is_open()) {
         while (getline(saveFile, line)) {
-            // if (line == "434F4E4649472E5455544F5249414C3A46414C5345") {
+            if (line == "434F4E4649472E5455544F5249414C3A46414C5345") {
+                HNASM("terminal/initial.chns", "INITIAL");
                 HNASM("terminal/initial.chns", "HELPMSG");
                 break;
-            // } else {
+            } else {
+                HNASM("tutorial/failsafe.chns", "FAILSAFE");
+                HNASM("terminal/initial.chns", "INITIAL");
                 // HNASM("terminal/initial.chns", "TUTORIAL");
                 // s.Tutorial();
-                // break;
-            // }
+                break;
+            }
         }
     }
+    inputMasked = inputAte = false;
+    kbPrompt = targetIP + "> ";
+    mi.spReset();
     while (true) {
-        inputMasked = inputAte = false;
-        kbPrompt = targetIP + "> ";
-        mi.spReset();
         mi.async(2);
         if (enterDetected) {
             enterDetected = false;
             fullCommand = mi.getInput();
         } else if (escDetected) {
             escDetected = false;
+            continue;
         }
         istringstream iss(fullCommand);
         string cmd;
@@ -63,5 +66,8 @@ void Cmd() {
             if (command[1] == ipAddress) targetIP = ipAddress + "@";
         }
         if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
+        inputMasked = inputAte = false;
+        kbPrompt = targetIP + "> ";
+        mi.spReset(); // Is one of a kind method.
     }
 }

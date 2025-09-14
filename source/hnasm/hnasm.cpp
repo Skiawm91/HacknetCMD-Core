@@ -1,5 +1,5 @@
 #include "hnasm.h"
-#include "scripts/ASMScript.h"
+#include "scripts/CHNScript.h"
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -20,24 +20,24 @@ void HNASM(const string& fileName, const string& partName) {
         if (readcmd) {
             command.clear();
             content.clear();
-            HNScript s;
+            CHNScript chns;
             istringstream got(line);
             got >> command;
             getline(got, content);
             if (!content.empty() && content[0] == ' ') {content = content.substr(1);}
             content = regex_replace(content, regex(R"(\$\{PLAYER\})"), playerName); // replace
-            if (command=="WAIT") {s.WAIT(content);}
-            else if (command=="CLEAR") {s.CLEAR();}
-            else if (command=="PRINT") {s.PRINT(content);}
-            else if (command=="PRINTR") {s.PRINTR(content);}
-            else if (command=="PRINTWFW") {s.PRINTWFW(content);}
-            else if (command=="PLAYAUDIO") {s.PLAYAUDIO(content);}
-            else if (command=="GETINPUT") {s.GETINPUT(content);}
-            else if (command=="GETINPUTR") {s.GETINPUTR(content);}
-            else if (command=="GETINPUTPWD") {s.GETINPUTPWD(content);}
-            else if (command=="GETINPUTPWDR") {s.GETINPUTPWDR(content);}
-            else if (command=="GETINPUTNUL") {s.GETINPUTNUL(content);}
-            else if (command=="GOTO") {s.GOTO(fileName, content);}
+            if (command=="WAIT") {chns.WAIT(content);}
+            else if (command=="CLEAR") {chns.CLEAR();}
+            else if (command=="PRINT") {chns.PRINT(content);}
+            else if (command=="PRINTR") {chns.PRINTR(content);}
+            else if (command=="PRINTWFW") {chns.PRINTWFW(content);}
+            else if (command=="PLAYAUDIO") {chns.PLAYAUDIO(content);}
+            else if (command=="GETINPUT") {chns.GETINPUT(content);}
+            else if (command=="GETINPUTR") {chns.GETINPUTR(content);}
+            else if (command=="GETINPUTPWD") {chns.GETINPUTPWD(content);}
+            else if (command=="GETINPUTPWDR") {chns.GETINPUTPWDR(content);}
+            else if (command=="GETINPUTNUL") {chns.GETINPUTNUL(content);}
+            else if (command=="GOTO") {chns.GOTO(fileName, content);}
         }
     }
 }

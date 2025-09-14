@@ -1,4 +1,4 @@
-#include "getIP.h"
+#include "initial.h"
 #include "input/input.h"
 #include "cmd.h"
 #include <string>
@@ -44,7 +44,7 @@ std::string generatePublicIP() {
 
 string ipAddress;
 
-void GetIP() {
+void Initial() {
     extern string playerName;
     string lowerName;
     lowerName.resize(playerName.size());

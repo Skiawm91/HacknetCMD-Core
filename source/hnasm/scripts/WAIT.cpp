@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "ASMScript.h"
+#include "CHNScript.h"
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -13,12 +13,12 @@ using namespace std;
 inline void Sleep(const int& ms) {usleep(ms * 1000);}
 #endif
 
-void HNScript::WAIT(const string& content) {
+void CHNScript::WAIT(const string& content) {
     string arg[2];
     istringstream args(content);
     args >> arg[0] >> arg[1];
     try {
         double seconds = stod(arg[0]);
         Sleep(static_cast<int>(seconds * 1000));
-    } catch (const invalid_argument) {}
+    } catch (...) {}
 }

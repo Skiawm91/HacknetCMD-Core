@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "ASMScript.h"
+#include "CHNScript.h"
 #include "../../crypto/crypto.h"
 #include "../../input/input.h"
 #ifdef _WIN32
@@ -28,13 +28,13 @@ void OTTF2K() {
 }
 #endif
 
-void HNScript::GETINPUT(const string& content) {
+void CHNScript::GETINPUT(const string& content) {
     kbPrompt = content;
     inputMasked = false;
     inputAte = false;
 }
 
-void HNScript::GETINPUTR(const string& content) {
+void CHNScript::GETINPUTR(const string& content) {
     #ifdef _WIN32
     OTTF2K();
     #else
@@ -45,19 +45,19 @@ void HNScript::GETINPUTR(const string& content) {
     inputAte = false;
 }
 
-void HNScript::GETINPUTPWD(const string& content) {
+void CHNScript::GETINPUTPWD(const string& content) {
     kbPrompt = content;
     inputMasked = true;
     inputAte = false;
 }
 
-void HNScript::GETINPUTPWDR(const string& content) {
+void CHNScript::GETINPUTPWDR(const string& content) {
     kbPrompt = content;
     inputMasked = true;
     inputAte = false;
 }
 
-void HNScript::GETINPUTNUL(const string& content) {
+void CHNScript::GETINPUTNUL(const string& content) {
     kbPrompt = content;
     inputMasked = false; // In fact, idk:)
     inputAte = true;

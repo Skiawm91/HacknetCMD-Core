@@ -2,7 +2,7 @@
 #undef goto
 #include <string>
 using namespace std;
-class HNScript {
+class CHNScript {
     public:
         void CLEAR();
         void WAIT(const string& content);

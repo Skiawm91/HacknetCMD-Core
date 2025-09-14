@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "ASMScript.h"
+#include "CHNScript.h"
 #include "../../audio.h"
 #include <string>
 #ifdef _WIN32
@@ -8,7 +8,7 @@
 #include <sstream>
 using namespace std;
 
-void HNScript::PLAYAUDIO(const string& content) {
+void CHNScript::PLAYAUDIO(const string& content) {
     string arg1;
     istringstream args(content);
     args >> arg1;

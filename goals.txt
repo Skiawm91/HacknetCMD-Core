@@ -1,4 +1,4 @@
-Hacknet4CMD C++ Edition // Goals
+Hacknet4CMD: C++ Edition // Goals
 
 [0.1.0]
 完成Batch版本的進度 (完成, Release)
@@ -12,6 +12,7 @@ HNScript (完成, Beta 2)
 
 [0.3.0]
 重寫Tutorial及CMD介面 (WIP)
+設定介面 (預計)
 
 開發人員：
 1. Skiawm91

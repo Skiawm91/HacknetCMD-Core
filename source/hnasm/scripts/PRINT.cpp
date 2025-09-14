@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "ASMScript.h"
+#include "CHNScript.h"
 #include "../../input/input.h"
 #ifdef _WIN32
 #include <windows.h>
@@ -17,7 +17,7 @@ using namespace std;
 inline void Sleep(const int& ms) {usleep(ms * 1000);}
 #endif
 
-void HNScript::PRINT(const string& content) {
+void CHNScript::PRINT(const string& content) {
     if (content.empty()) {
         cout << endl;
     } else {
@@ -25,7 +25,7 @@ void HNScript::PRINT(const string& content) {
     }
 }
 
-void HNScript::PRINTR(const string& content) {
+void CHNScript::PRINTR(const string& content) {
     if (content.empty()) {
         cout << "\r";
     } else {
@@ -33,7 +33,7 @@ void HNScript::PRINTR(const string& content) {
     }
 }
 
-void HNScript::PRINTWFW(const string& content) {
+void CHNScript::PRINTWFW(const string& content) {
     vector<string> text;
     istringstream iss(content);
     string word;
