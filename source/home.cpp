@@ -24,9 +24,29 @@ ManageInput mi;
 
 int main(){
     #ifdef _WIN32
+    // 初始化: 編碼
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
+    // 初始化: 視窗大小/字體
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD bufferSize;
+    bufferSize.X = 120;
+    bufferSize.Y = 30;
+    SetConsoleScreenBufferSize(hOut, bufferSize);
+    SMALL_RECT windowSize;
+    windowSize.Left = 0;
+    windowSize.Top = 0;
+    windowSize.Right = bufferSize.X - 1;
+    windowSize.Bottom = bufferSize.Y - 1;
+    SetConsoleWindowInfo(hOut, TRUE, &windowSize);
+    CONSOLE_FONT_INFOEX cfi;
+    cfi.cbSize = sizeof(cfi);
+    GetCurrentConsoleFontEx(hOut, FALSE, &cfi);
+    wcscpy_s(cfi.FaceName, L"Cascadia Mono");
+    SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
+    // 初始化: 標題
     SetConsoleTitleA("Hacknet For CMD");
+    // 初始化: 終端機輸入
     mi.hIn = GetStdHandle(STD_INPUT_HANDLE);
     DWORD prevMode;
     GetConsoleMode(mi.hIn, &prevMode);
@@ -34,6 +54,7 @@ int main(){
     mode |= ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT | ENABLE_PROCESSED_INPUT;
     SetConsoleMode(mi.hIn, mode);
     #elif __APPLE__
+    // 初始化: 資料夾位置
     char path[PATH_MAX];
     uint32_t size = sizeof(path);
     if (_NSGetExecutablePath(path, &size) == 0) {
@@ -43,7 +64,12 @@ int main(){
         char* dir = dirname(path_copy);
         chdir(dir);
     }
+    // 初始化: 視窗大小
+    cout << "\033[8;30;120t";
+    cout.flush();
+    // 初始化: 標題
     cout << "\033]0;Hacknet For CMD\007";
+    // 初始化: 終端機輸入
     tcgetattr(STDIN_FILENO, &origTermios);
     termios raw = origTermios;
     raw.c_lflag &= ~(ICANON | ECHO);
