@@ -180,7 +180,12 @@ void LogUI() {
                                 }
                                     string nameOrigin = name;
                                     transform(name.begin(), name.end(), name.begin(), ::tolower);
-                                    filesystem::create_directory("config/" + name);
+                                    try {
+                                        filesystem::create_directory("config/" + name);
+                                    } catch(...) {
+                                        HNASM("logUI/register.chns", "RESERVED");
+                                        break;
+                                    }
                                     ofstream file("config/" + name + "/name.hund");
                                     if (file.is_open()) {
                                         file << nameOrigin << endl;
