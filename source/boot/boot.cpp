@@ -1,5 +1,6 @@
 #define _HAS_STD_BYTE 0
 #include "boot.h"
+#include "../misc/config.h"
 #include "../audio.h"
 #include "../hnasm/hnasm.h"
 #include "../initial.h"
@@ -17,11 +18,11 @@ using namespace std;
 #ifndef _WIN32
 inline void Sleep(const int& ms) {usleep(ms * 1000);}
 #endif
+extern Config cfg;
 
 void Boot() {
     StopAudio();
-    bool verbose = true;
-    if (verbose) {
+    if (cfg.settings.verbose) {
         HNASM("boot.chns", "BOOT");
         HNASM("boot.chns", "OSCONFIG");
         HNASM("boot.chns", "BOOTCFG");

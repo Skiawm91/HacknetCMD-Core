@@ -1,0 +1,11 @@
+BEGIN_VERBOSE_1
+PRINT   ____________________
+PRINT   | Verbose: On      |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VERBOSE_1
+
+BEGIN_VERBOSE_0
+PRINT   ____________________
+PRINT   | Verbose: Off     |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VERBOSE_0

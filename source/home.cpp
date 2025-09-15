@@ -1,4 +1,5 @@
 ﻿#define _HAS_STD_BYTE 0
+#include "misc/config.h"
 #include "clearScreen.h"
 #include "input/input.h"
 #include "audio.h"
@@ -15,11 +16,13 @@
 #endif
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 #ifndef _WIN32
 termios origTermios;
 #endif
+Config cfg;
 ManageInput mi;
 
 int main(){
@@ -95,21 +98,41 @@ int main(){
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "HOME");
         mi.btnAdd("PLAY", 2, 8, 20, 3);
+        mi.btnAdd("SETTINGS", 2, 14, 20, 3);
         mi.btnAdd("QUIT", 2, 17, 20, 3);
         mi.cbCreate([&](const string& btnName){
-            if (btnName == "PLAY") {
-                chse = 1;
-            }
-            if (btnName == "QUIT") {
-                chse = 4;
-            }
+            if (btnName == "PLAY") chse = 1;
+            if (btnName == "SETTINGS") chse = 3;
+            if (btnName == "QUIT") chse = 4;
         });
         mi.async(3);
-        mi.btnDel(vector<string>{"PLAY", "QUIT"});
+        mi.btnDel(vector<string>{"PLAY", "SETTINGS", "QUIT"});
         mi.cbClean();
         switch(chse) {
             case 1:
                 LogUI();
+                break;
+            case 3:
+                while(true) {
+                    cls();
+                    mi.kbEnable();
+                    HNASM("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
+                    mi.btnAdd("VERBOSE", 0, 0, 20, 3);
+                    mi.cbCreate([](const string& btnName){
+                        if (btnName == "VERBOSE") cfg.settings.verbose = !cfg.settings.verbose;
+                    });
+                    mi.async(1);
+                    if (enterDetected) {
+                        enterDetected = false;
+                    } else if (escDetected) {
+                        escDetected = false;
+                        mi.btnDel(vector<string>{"VERBOSE"});
+                        mi.cbClean();
+                        break;
+                    }
+                    mi.btnDel(vector<string>{"VERBOSE"});
+                    mi.cbClean();
+                }
                 break;
             case 4:
                 {
