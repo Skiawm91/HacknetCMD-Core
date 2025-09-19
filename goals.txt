@@ -12,6 +12,7 @@ HNScript (完成, Beta 2)
 
 [0.3.0]
 重寫Tutorial及CMD介面 (WIP)
+整理代碼 / 檔案 (WIP)
 設定介面 (預計)
 
 開發人員：

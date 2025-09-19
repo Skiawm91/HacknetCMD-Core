@@ -1,9 +1,8 @@
 #define _HAS_STD_BYTE 0
-#include "cmd.h"
-#include "audio.h"
+#include "os.h"
+#include "../function/function.h"
 #include "input/input.h"
 #include "hnasm/hnasm.h"
-#include "clearScreen.h"
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -11,11 +10,11 @@
 #include <vector>
 using namespace std;
 
+extern Function func;
 // HacknetStory hnStory;
 
-void Cmd() {
-    StopAudio();
-    PlayAudio("Revolve.wav");
+void hnfcOS::CommandPrompt() {
+    func.audio.play("Revolve.wav");
     extern ManageInput mi;
     extern string playerName;
     string lowerName;

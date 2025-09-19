@@ -1,10 +1,9 @@
 #define _HAS_STD_BYTE 0
-#include "logUI.h"
+#include "UI.h"
 #include "input/input.h"
 #include "hnasm/hnasm.h"
 #include "crypto/crypto.h"
-#include "boot/boot.h"
-#include "cmd.h"
+#include "../hnfcOS/os.h"
 #include <string>
 #ifdef _WIN32
 #include <windows.h>
@@ -18,8 +17,9 @@ using namespace std;
 
 string playerName;
 extern ManageInput mi;
+extern hnfcOS os;
 
-void LogUI() {
+void UserInterface::Login() {
     string name;
     extern string input;
     extern string pwdtext;
@@ -101,7 +101,7 @@ void LogUI() {
                                     istringstream iss(line);
                                     iss >> playerName;
                                 }
-                                Boot();
+                                os.Boot();
                                 return;
                             } else {
                                 HNASM("logUI/login.chns", "ERROR");
@@ -211,7 +211,7 @@ void LogUI() {
                 break;
             case 3:
                 playerName = "Guest";
-                Boot();
+                os.Boot();
                 return;
             case 4:
                 return;

@@ -1,12 +1,12 @@
-#include "initial.h"
-#include "input/input.h"
-#include "cmd.h"
+#include "os.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <random>
 using namespace std;
+
+extern hnfcOS os;
 
 bool isPublicIP(int a, int b, int c, int d) {
     if (a == 10) return false;                 // 10.0.0.0/8
@@ -25,10 +25,10 @@ bool isPublicIP(int a, int b, int c, int d) {
     return true;
 }
 
-std::string generatePublicIP() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(0, 255);
+string generatePublicIP() {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dist(0, 255);
 
     int a, b, c, d;
     do {
@@ -44,7 +44,7 @@ std::string generatePublicIP() {
 
 string ipAddress;
 
-void Initial() {
+void hnfcOS::Initial() {
     extern string playerName;
     string lowerName;
     lowerName.resize(playerName.size());
@@ -61,7 +61,7 @@ void Initial() {
                 } else {
                     ipAddress = "127.0.0.1";
                 }
-                Cmd();
+                os.CommandPrompt();
                 return;
             }
         }
@@ -69,7 +69,7 @@ void Initial() {
     while(true) {
         if (lowerName == "guest") {
             ipAddress = generatePublicIP();
-            Cmd();
+            os.CommandPrompt();
             return;
         } else {
             ofstream ipFile("config/" + lowerName + "/ip.hnd");
@@ -83,7 +83,7 @@ void Initial() {
                 saveFile << "434F4E4649472E474F5449503A54525545" << endl;
                 saveFile.close();
             }
-            Cmd();
+            os.CommandPrompt();
             return;
         }
     }

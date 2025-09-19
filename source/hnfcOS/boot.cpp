@@ -1,9 +1,8 @@
 #define _HAS_STD_BYTE 0
-#include "boot.h"
-#include "../misc/config.h"
-#include "../audio.h"
+#include "os.h"
+#include "../config/config.h"
+#include "../function/function.h"
 #include "../hnasm/hnasm.h"
-#include "../initial.h"
 #include <iostream>
 #include <string>
 #ifdef _WIN32
@@ -19,9 +18,11 @@ using namespace std;
 inline void Sleep(const int& ms) {usleep(ms * 1000);}
 #endif
 extern Config cfg;
+extern Function func;
+extern hnfcOS os;
 
-void Boot() {
-    StopAudio();
+void hnfcOS::Boot() {
+    func.audio.stop();
     if (cfg.settings.verbose) {
         HNASM("boot.chns", "BOOT");
         HNASM("boot.chns", "OSCONFIG");
@@ -46,6 +47,6 @@ void Boot() {
             Sleep(150 + rand() % 11);
         }
     }
-    Initial();
+    os.Initial();
     return;
 }

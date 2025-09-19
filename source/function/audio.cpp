@@ -1,6 +1,6 @@
 // Mac audio play/stop by GPT
 #define _HAS_STD_BYTE 0
-#include "audio.h"
+#include "function.h"
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__
@@ -15,10 +15,10 @@
 using namespace std;
 
 #ifdef _WIN32
-void PlayAudio(const string& soundFile) {
+void Function::Audio::play(const string& soundFile) {
     PlaySoundA(("assets/musics/" + soundFile).c_str(), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 }
-void StopAudio() {
+void Function::Audio::stop() {
     PlaySoundA(NULL, NULL, 0);
 }
 #elif __APPLE__
@@ -103,13 +103,13 @@ static void playerFunc(string filepath) {
     ExtAudioFileDispose(ctx.audioFile);
 }
 
-void PlayAudio(const string& soundFile) {
+void Function::Audio::play(const string& soundFile) {
     if (keepPlaying.load()) return;
     keepPlaying = true;
     playerThread = thread(playerFunc, "assets/musics/" + soundFile);
 }
 
-void StopAudio() {
+void Function::Audio::stop() {
     if (!keepPlaying.load()) return;
     keepPlaying = false;
     if (playerThread.joinable()) playerThread.join();
