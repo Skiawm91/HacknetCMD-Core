@@ -54,7 +54,7 @@ void hnfcOS::Initial() {
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
     cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E474F5449503A54525545"});
     if (cfg.data.loaded) {
-        if (cfg.data.loadNumber = 0) {
+        if (cfg.data.loadNumber == 0) {
             ipAddress = cfg.data.load("config/" + lowerName + "/ip.hnd", 0);
             os.CommandPrompt();
             return;

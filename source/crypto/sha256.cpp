@@ -41,6 +41,6 @@ string SHA256Encrypt(const string& rawText) {
     stringstream ss;
     for(int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
         ss << hex << setw(2) << setfill('0') << (int)hash[i];
-    return = ss.str();
+    return ss.str();
 }
 #endif
