@@ -12,9 +12,6 @@ vector<string> newLine;
 void Config::Data::save(const string& filePath, const string& data) {
     line.clear();
     newLine.clear();
-    if (!filesystem::exists("config")) {
-        filesystem::create_directory("config");
-    }
     ifstream inFile(filePath);
     if (inFile.is_open()) {
         while(getline(inFile, line)) {
@@ -22,6 +19,8 @@ void Config::Data::save(const string& filePath, const string& data) {
         }
         newLine.push_back(data);
         inFile.close();
+    } else {
+        newLine.push_back(data);
     }
     ofstream outFile(filePath);
     if (outFile.is_open()) {
@@ -34,19 +33,21 @@ void Config::Data::save(const string& filePath, const string& data) {
 void Config::Data::replace(const string& filePath, const string& targetData, const string& data) {
     line.clear();
     newLine.clear();
-    if (!filesystem::exists("config")) {
-        filesystem::create_directory("config");
-    }
     ifstream inFile(filePath);
     if (inFile.is_open()) {
+        bool found = false;
         while(getline(inFile, line)) {
             if (line == targetData) {
+                found = true;
                 newLine.push_back(data);
             } else {
                 newLine.push_back(line);
             }
         }
+        if (!found) newLine.push_back(data);
         inFile.close();
+    } else {
+        newLine.push_back(data);
     }
     ofstream outFile(filePath);
     if (outFile.is_open()) {
@@ -57,18 +58,40 @@ void Config::Data::replace(const string& filePath, const string& targetData, con
     }
 }
 
-void Config::Data::load(const string& filePath, const string& targetData) {
+void Config::Data::load(const string& filePath, const vector<string>& targetData) {
     line.clear();
-    if (!filesystem::exists("config")) {
-        filesystem::create_directory("config");
-    }
+    this->loaded = false;
     ifstream inFile(filePath);
     if (inFile.is_open()) {
         while(getline(inFile, line)) {
-            if (line == targetData) {
-                // idk
+            int i = 0;
+            for (const auto &td : targetData) {
+                if (line == td) {
+                    this->loaded = true;
+                    this->loadNumber = i;
+                    break;
+                }
+                ++i;
             }
         }
         inFile.close();
     }
+}
+
+string Config::Data::load(const string& filePath, const int targetLine) {
+    line.clear();
+    this->loaded = false;
+    ifstream inFile(filePath);
+    if (inFile.is_open()) {
+        int i = 0;
+        while(getline(inFile, line)) {
+            if (i == targetLine) {
+                this->loaded = true;
+                break;
+            }
+            ++i;
+        }
+        inFile.close();
+    }
+    return line;
 }

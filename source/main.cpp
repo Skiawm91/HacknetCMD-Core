@@ -13,6 +13,7 @@
 #include <termios.h>
 #include <iostream>
 #endif
+#include <filesystem>
 using namespace std;
 
 // 初始化 class 部分
@@ -80,6 +81,9 @@ int main() {
     cout << "\033[?1000h";
     cout.flush();
     #endif
+    // 初始化: 建立Config資料夾 / 載入配置檔案
+    if (!filesystem::exists("config")) filesystem::create_directory("config");
+    cfg.reload();
     // 初始化: 輸入
     #ifdef _WIN32
     mi.kbInput();

@@ -1,8 +1,8 @@
 #define _HAS_STD_BYTE 0
 #include "os.h"
 #include "../function/function.h"
-#include "input/input.h"
-#include "hnasm/hnasm.h"
+#include "../input/input.h"
+#include "../hnasm/hnasm.h"
 #include <fstream>
 #include <sstream>
 #include <string>

@@ -25,47 +25,46 @@ END_LOGO2
 
 BEGIN_HOME
 PRINT
-PRINT   ____________________
-PRINT   | Play             |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINT   ____________________
-PRINT   | Mods             |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINT   ____________________
-PRINT   | Settings         |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINT   ____________________
-PRINT   | Quit             |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Play                       |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Mods                       |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Settings                   |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Quit                       |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_HOME
 
 BEGIN_QUIT
 CLEAR
 PRINT
 PRINT  Are you sure?
-PRINT   ____________________
-PRINT   | Quit             |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINT   ____________________
-PRINT   | Cancel           |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Confirm                    |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Cancel                     |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_QUIT
-
 
 BEGIN_USER
 PRINT
-PRINT   ____________________
-PRINT   | Login            |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINT   ____________________
-PRINT   | Register         |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINT   ____________________
-PRINT   | Play with Guest  |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINT   ____________________
-PRINT   | Back             |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Login                      |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Register                   |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Play with Guest            |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT   ______________________________
+PRINT   | Back                       |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 GETINPUTNUL
 END_USER
 

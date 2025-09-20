@@ -9,3 +9,27 @@ PRINT   ____________________
 PRINT   | Verbose: Off     |
 PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_VERBOSE_0
+
+BEGIN_LANGUAGE_0
+PRINT   ____________________
+PRINT   | English          |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_LANGUAGE_0
+
+BEGIN_LANGUAGE_1
+PRINT   ____________________
+PRINT   | 繁體中文         |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_LANGUAGE_1
+
+BEGIN_LANGUAGE_2
+PRINT   ____________________
+PRINT   | Custom           |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_LANGUAGE_2
+
+BEGIN_BACK
+PRINT   ____________________
+PRINT   | Back             |
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_BACK

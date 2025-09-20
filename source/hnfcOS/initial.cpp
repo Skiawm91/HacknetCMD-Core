@@ -1,11 +1,14 @@
 #include "os.h"
+#include "../config/config.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
 #include <random>
+#include <vector>
 using namespace std;
 
+extern Config cfg;
 extern hnfcOS os;
 
 bool isPublicIP(int a, int b, int c, int d) {
@@ -48,22 +51,13 @@ void hnfcOS::Initial() {
     extern string playerName;
     string lowerName;
     lowerName.resize(playerName.size());
-    string line;
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
-    ifstream saveFile("config/" + lowerName + "/save.hnd");
-    if (saveFile.is_open()) {
-        while (getline(saveFile, line)) {
-            if (line == "434F4E4649472E474F5449503A54525545") {
-                ifstream ipFile("config/" + lowerName + "/ip.hnd");
-                if (ipFile.is_open()) {
-                    getline(ipFile, line);
-                    ipAddress = line;
-                } else {
-                    ipAddress = "127.0.0.1";
-                }
-                os.CommandPrompt();
-                return;
-            }
+    cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E474F5449503A54525545"});
+    if (cfg.data.loaded) {
+        if (cfg.data.loadNumber = 0) {
+            ipAddress = cfg.data.load("config/" + lowerName + "/ip.hnd", 0);
+            os.CommandPrompt();
+            return;
         }
     }
     while(true) {
@@ -72,17 +66,9 @@ void hnfcOS::Initial() {
             os.CommandPrompt();
             return;
         } else {
-            ofstream ipFile("config/" + lowerName + "/ip.hnd");
-            if (ipFile.is_open()) {
-                ipAddress = generatePublicIP();
-                ipFile << ipAddress << endl;
-                ipFile.close();
-            }
-            ofstream saveFile("config/" + lowerName + "/save.hnd");
-            if (saveFile.is_open()) {
-                saveFile << "434F4E4649472E474F5449503A54525545" << endl;
-                saveFile.close();
-            }
+            ipAddress = generatePublicIP();
+            cfg.data.save("config/" + lowerName + "/ip.hnd", ipAddress);
+            cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
             os.CommandPrompt();
             return;
         }

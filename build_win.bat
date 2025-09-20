@@ -17,7 +17,7 @@ set files=
 for /r "source" %%f in (*.cpp) do (
     set files=!files! "%%f"
 )
-cl /EHsc /nologo /std:c++20 /utf-8 /FeBuild\\Hacknet4CMD.exe /FoBuild\ !files! /link icon.res advapi32.lib winmm.lib user32.lib windowsapp.lib
+cl /EHsc /nologo /std:c++20 /utf-8 /FeBuild\\HacknetCMD.exe /FoBuild\ !files! /link icon.res advapi32.lib winmm.lib user32.lib windowsapp.lib
 if exist build\*.obj (
     del /F /Q build\*.obj
 )
@@ -26,4 +26,4 @@ echo Done.
 echo Press Enter to Run Application.
 pause > nul
 cd build
-start Hacknet4CMD.exe
+start HacknetCMD.exe

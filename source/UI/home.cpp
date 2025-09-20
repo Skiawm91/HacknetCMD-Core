@@ -1,16 +1,13 @@
 ﻿#define _HAS_STD_BYTE 0
 #include "UI.h"
-#include "function/function.h"
-#include "config/config.h"
+#include "../function/function.h"
 #include "../input/input.h"
 #include "../hnasm/hnasm.h"
-#include <filesystem>
-#include <fstream>
+#include <vector>
 using namespace std;
 
 extern ManageInput mi;
 extern Function func;
-extern Config cfg;
 extern UserInterface UI;
 
 void UserInterface::Home(){
@@ -22,9 +19,9 @@ void UserInterface::Home(){
         chse = 0;
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "HOME");
-        mi.btnAdd("PLAY", 2, 8, 20, 3);
-        mi.btnAdd("SETTINGS", 2, 14, 20, 3);
-        mi.btnAdd("QUIT", 2, 17, 20, 3);
+        mi.btnAdd("PLAY", 2, 8, 30, 3);
+        mi.btnAdd("SETTINGS", 2, 14, 30, 3);
+        mi.btnAdd("QUIT", 2, 17, 30, 3);
         mi.cbCreate([&](const string& btnName){
             if (btnName == "PLAY") chse = 1;
             if (btnName == "SETTINGS") chse = 3;
@@ -38,51 +35,18 @@ void UserInterface::Home(){
                 UI.Login();
                 break;
             case 3:
-                while(true) {
-                    func.cmd.clear();
-                    mi.kbEnable();
-                    HNASM("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
-                    mi.btnAdd("VERBOSE", 0, 0, 20, 3);
-                    mi.cbCreate([](const string& btnName){
-                        if (btnName == "VERBOSE") {
-                            cfg.settings.verbose = !cfg.settings.verbose;
-                            if (!filesystem::exists("config")) {
-                                filesystem::create_directory("config");
-                            }
-                            ofstream cfgFile("config/config.hund");
-                            if (cfgFile.is_open()) {
-                                cfgFile << "VERBOSE=" << cfg.settings.verbose << endl;
-                                cfgFile.close();
-                            }
-                        }
-                    });
-                    mi.async(1);
-                    if (enterDetected) {
-                        enterDetected = false;
-                    } else if (escDetected) {
-                        escDetected = false;
-                        mi.btnDel(vector<string>{"VERBOSE"});
-                        mi.cbClean();
-                        break;
-                    }
-                    mi.btnDel(vector<string>{"VERBOSE"});
-                    mi.cbClean();
-                }
+                UI.Settings();
                 break;
             case 4:
                 {
                     while(true) {
                         chse = 0;
                         HNASM("ui.chns", "QUIT");
-                        mi.btnAdd("QUIT", 1, 2, 20, 3);
-                        mi.btnAdd("CANCEL", 1, 5, 20, 3);
+                        mi.btnAdd("QUIT", 0, 2, 30, 3);
+                        mi.btnAdd("CANCEL", 0, 5, 30, 3);
                         mi.cbCreate([&](const string& btnName){
-                            if (btnName == "QUIT") {
-                                chse = 1;
-                            }
-                            if (btnName == "CANCEL") {
-                                chse = 2;
-                            }
+                            if (btnName == "QUIT") chse = 1;
+                            if (btnName == "CANCEL") chse = 2;
                         });
                         mi.async(3);
                         mi.btnDel(vector<string>{"QUIT", "CANCEL"});

@@ -1,8 +1,9 @@
 #define _HAS_STD_BYTE 0
 #include "UI.h"
-#include "input/input.h"
-#include "hnasm/hnasm.h"
-#include "crypto/crypto.h"
+#include "../input/input.h"
+#include "../config/config.h"
+#include "../hnasm/hnasm.h"
+#include "../crypto/crypto.h"
 #include "../hnfcOS/os.h"
 #include <string>
 #ifdef _WIN32
@@ -17,37 +18,27 @@ using namespace std;
 
 string playerName;
 extern ManageInput mi;
+extern Config cfg;
 extern hnfcOS os;
 
 void UserInterface::Login() {
-    string name;
-    extern string input;
-    extern string pwdtext;
-    extern string shatext;
+    string input, shapwd;
+    string name, tgshapwd;
     int chse;
-    string shapwd, tgshapwd;
     while(true) {
         mi.kbEnable();
         chse = 0;
         HNASM("ui.chns", "LOGO");
         HNASM("ui.chns", "USER");
-        mi.btnAdd("LOGIN", 2, 8, 20, 3);
-        mi.btnAdd("REGISTER", 2, 11, 20, 3);  
-        mi.btnAdd("GUEST", 2, 14, 20, 3);
-        mi.btnAdd("BACK", 2, 17, 20, 3);
+        mi.btnAdd("LOGIN", 2, 8, 30, 3);
+        mi.btnAdd("REGISTER", 2, 11, 30, 3);  
+        mi.btnAdd("GUEST", 2, 14, 30, 3);
+        mi.btnAdd("BACK", 2, 17, 30, 3);
         mi.cbCreate([&](const string& btnName) {
-            if (btnName == "LOGIN") {
-                chse = 1;
-            }
-            if (btnName == "REGISTER") {
-                chse = 2;
-            }
-            if (btnName == "GUEST") {
-                chse = 3;
-            }
-            if (btnName == "BACK") {
-                chse = 4;
-            }
+            if (btnName == "LOGIN") chse = 1;
+            if (btnName == "REGISTER") chse = 2;
+            if (btnName == "GUEST") chse = 3;
+            if (btnName == "BACK") chse = 4;
         });
         mi.async(1);
         if (escDetected) {
@@ -74,13 +65,9 @@ void UserInterface::Login() {
                     transform(input.begin(), input.end(), input.begin(), ::tolower);
                     name = input;
                     {
-                        ifstream file("config/" + name + "/pw.hnud");
-                        if (!file) {HNASM("logUI/login.chns", "ERROR");}
+                        tgshapwd = cfg.data.load("config/" + name + "/pw.hnud", 0);
+                        if (!cfg.data.loaded) HNASM("logUI/login.chns", "ERROR");
                         else {
-                            string line;
-                            getline(file, line);
-                            istringstream iss(line);
-                            iss >> tgshapwd;
                             HNASM("logUI/login.chns", "PASSWD");
                             mi.spReset();
                             mi.async(2);
@@ -91,16 +78,9 @@ void UserInterface::Login() {
                                 enterDetected = false;
                                 input = mi.getInput();
                             }
-                            SHA256Encrypt(input);
-                            shapwd = shatext;
+                            shapwd = SHA256Encrypt(input);
                             if (shapwd == tgshapwd) {
-                                ifstream file("config/" + name + "/name.hund");
-                                if (file) {
-                                    string line;
-                                    getline(file, line);
-                                    istringstream iss(line);
-                                    iss >> playerName;
-                                }
+                                playerName = cfg.data.load("config/" + name + "/name.hund", 0);
                                 os.Boot();
                                 return;
                             } else {
@@ -154,12 +134,7 @@ void UserInterface::Login() {
                             mi.btnAdd("CONFIRM", 1, 8, 20, 3);
                             mi.btnAdd("CANCEL", 1, 11, 20, 3);
                             mi.cbCreate([&](const string& btnName){
-                                if (btnName == "CONFIRM") {
-                                    // do nothing
-                                }
-                                if (btnName == "CANCEL") {
-                                    chse = 2;
-                                }
+                                if (btnName == "CANCEL") chse = 2;
                             });
                             mouseSync = true;
                             mi.spReset();
@@ -175,30 +150,18 @@ void UserInterface::Login() {
                             if (chse == 2) {
                                 break;
                             } else {
-                                if (!filesystem::exists("config")) {
-                                    filesystem::create_directory("config");
+                                string nameOrigin = name;
+                                transform(name.begin(), name.end(), name.begin(), ::tolower);
+                                try {
+                                    filesystem::create_directory("config/" + name);
+                                } catch(...) {
+                                    HNASM("logUI/register.chns", "RESERVED");
+                                    break;
                                 }
-                                    string nameOrigin = name;
-                                    transform(name.begin(), name.end(), name.begin(), ::tolower);
-                                    try {
-                                        filesystem::create_directory("config/" + name);
-                                    } catch(...) {
-                                        HNASM("logUI/register.chns", "RESERVED");
-                                        break;
-                                    }
-                                    ofstream file("config/" + name + "/name.hund");
-                                    if (file.is_open()) {
-                                        file << nameOrigin << endl;
-                                        file.close();
-                                    }
-                                    if (pwd[0] == pwd[1]) {
-                                    SHA256Encrypt(pwd[1]);
-                                    shapwd = shatext;
-                                    ofstream file("config/" + name + "/pw.hnud");
-                                    if (file.is_open()) {
-                                        file << shapwd << endl;
-                                        file.close();
-                                    }
+                                cfg.data.save("config/" + name + "/name.hund", nameOrigin);
+                                if (pwd[0] == pwd[1]) {
+                                    shapwd = SHA256Encrypt(pwd[1]);
+                                    cfg.data.save("config/" + name + "/pw.hnud", shapwd);
                                     return;
                                 } else {
                                     HNASM("logUI/register.chns", "INVCONFIRM");

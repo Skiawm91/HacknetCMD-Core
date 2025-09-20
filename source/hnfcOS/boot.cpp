@@ -12,6 +12,7 @@
 #endif
 #include <fstream>
 #include <ctime>
+#include <vector>
 using namespace std;
 
 #ifndef _WIN32

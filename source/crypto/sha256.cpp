@@ -16,16 +16,14 @@ using namespace Windows::Storage::Streams;
 #include <iomanip>
 using namespace std;
 
-string shatext;
-
 #ifdef _WIN32
-void SHA256Encrypt(const string& rawtext) {
+string SHA256Encrypt(const string& rawText) {
     static bool apartmentInitialized = false;
     if (!apartmentInitialized) {
         init_apartment();
         apartmentInitialized = true;
     }
-    auto data = CryptographicBuffer::ConvertStringToBinary(to_hstring(rawtext), BinaryStringEncoding::Utf8);
+    auto data = CryptographicBuffer::ConvertStringToBinary(to_hstring(rawText), BinaryStringEncoding::Utf8);
     HashAlgorithmProvider hashProvider = HashAlgorithmProvider::OpenAlgorithm(HashAlgorithmNames::Sha256());
     IBuffer hashBuffer = hashProvider.HashData(data);
     com_array<uint8_t> hashData;
@@ -34,15 +32,15 @@ void SHA256Encrypt(const string& rawtext) {
     for (uint8_t b : hashData) {
         ss << hex << setw(2) << setfill('0') << (int)b;
     }
-    shatext = ss.str();
+    return ss.str();
 }
 #elif __APPLE__
-void SHA256Encrypt(const string& rawtext) {
+string SHA256Encrypt(const string& rawText) {
     unsigned char hash[CC_SHA256_DIGEST_LENGTH];
-    CC_SHA256(rawtext.c_str(), (CC_LONG)rawtext.size(), hash);
+    CC_SHA256(rawText.c_str(), (CC_LONG)rawText.size(), hash);
     stringstream ss;
     for(int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
         ss << hex << setw(2) << setfill('0') << (int)hash[i];
-    shatext = ss.str();
+    return = ss.str();
 }
 #endif

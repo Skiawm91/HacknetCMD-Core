@@ -10,7 +10,6 @@
 #include <sstream>
 using namespace std;
 
-string input;
 extern ManageInput mi;
 
 #ifdef _WIN32

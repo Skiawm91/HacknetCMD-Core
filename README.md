@@ -1,7 +1,7 @@
-# Hacknet4CMD: C++ Edition
-Hacknet4CMD is a legacy project, last updated about 1 year ago yet.
+# Hacknet for CMD: Cpp Edition
+"Hacknet for CMD" is a legacy project, last updated about 1 year ago yet.
 <br/>
-This game likely Hacknet, from Steam (I guess you already know).
+This game likely Hacknet from Steam (I guess you already know).
 <br/>
 <br/>
 Before make C++ ver, I just joined "Hacknet For CMD | Official Server" from Discord.
@@ -16,9 +16,9 @@ So, I made a program remade Hacknet4CMD in a day.
 <br/>
 With C++, just like "Minecraft: Bedrock Edition" lol.
 ## How to use?
-1. Download from [Releases](https://github.com/Skiawm91/Hacknet-For-CMD-Cpp/releases)
+1. Download from [Releases](https://github.com/Skiawm91/HacknetCMD-Cpp/releases)
 2. Extract file.
-3. Open "Hacknet"
+3. Open "HacknetCMD".
 4. Enjoy!
 ## I don't want to use release, but how to build?
 ### Requirements
@@ -27,8 +27,8 @@ With C++, just like "Minecraft: Bedrock Edition" lol.
 ### Step
 1. Clone repository
 ```
-git clone https://github.com/Skiawm91/Hacknet-For-CMD-Cpp.git
-cd Hacknet-For-CMD-Cpp
+git clone https://github.com/Skiawm91/HacknetCMD-Cpp.git
+cd HacknetCMD-Cpp
 ```
 2. Run `build_win.bat` for Windows
 2. Run `build_mac.command` for macOS
