@@ -42,8 +42,8 @@ void UserInterface::Home(){
                     while(true) {
                         chse = 0;
                         HNASM("ui.chns", "QUIT");
-                        mi.btnAdd("QUIT", 0, 2, 30, 3);
-                        mi.btnAdd("CANCEL", 0, 5, 30, 3);
+                        mi.btnAdd("QUIT", 1, 2, 30, 3);
+                        mi.btnAdd("CANCEL", 1, 5, 30, 3);
                         mi.cbCreate([&](const string& btnName){
                             if (btnName == "QUIT") chse = 1;
                             if (btnName == "CANCEL") chse = 2;

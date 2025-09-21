@@ -28,18 +28,9 @@ int main() {
     // 初始化: 編碼
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
-    // 初始化: 視窗大小/字體
+    // 初始化: 基本視窗大小/字體
+    func.cmd.resize(120, 30);
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD bufferSize;
-    bufferSize.X = 120;
-    bufferSize.Y = 30;
-    SetConsoleScreenBufferSize(hOut, bufferSize);
-    SMALL_RECT windowSize;
-    windowSize.Left = 0;
-    windowSize.Top = 0;
-    windowSize.Right = bufferSize.X - 1;
-    windowSize.Bottom = bufferSize.Y - 1;
-    SetConsoleWindowInfo(hOut, TRUE, &windowSize);
     CONSOLE_FONT_INFOEX cfi;
     cfi.cbSize = sizeof(cfi);
     GetCurrentConsoleFontEx(hOut, FALSE, &cfi);
@@ -65,9 +56,8 @@ int main() {
         char* dir = dirname(path_copy);
         chdir(dir);
     }
-    // 初始化: 視窗大小
-    cout << "\033[8;30;120t";
-    cout.flush();
+    // 初始化: 基本視窗大小
+    func.cmd.resize(120, 30);
     // 初始化: 標題
     cout << "\033]0;Hacknet for CMD\007";
     // 初始化: 終端機輸入

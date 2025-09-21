@@ -12,23 +12,30 @@ extern Function func;
 void UserInterface::Settings() {
     bool back = false;
     while(!back) {
-        func.cmd.clear();
         mi.kbEnable();
         // 重新載入Config
         cfg.reload();
+        func.cmd.clear();
+        HNASM("settings.chns", "TITLE");
         HNASM("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
         HNASM("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
+        HNASM("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
         HNASM("settings.chns", "BACK");
-        mi.btnAdd("VERBOSE", 0, 1, 20, 3);
-        mi.btnAdd("LANGUAGE", 0, 4, 20, 3);
-        mi.btnAdd("BACK", 0, 7, 20, 3);
+        mi.btnAdd("VERBOSE", 1, 1, 20, 3);
+        mi.btnAdd("LANGUAGE", 1, 4, 20, 3);
+        mi.btnAdd("CMDSIZE", 1, 7, 20, 3);
+        mi.btnAdd("BACK", 1, 10, 20, 3);
         mi.cbCreate([&](const string& btnName){
             if (btnName == "VERBOSE") cfg.data.replace("config/config.hnd", "VERBOSE=" + to_string(cfg.settings.verbose), "VERBOSE=" + to_string(!cfg.settings.verbose));
             if (btnName == "LANGUAGE") {
                 if (cfg.settings.language == 2) cfg.data.replace("config/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=0");
                 else cfg.data.replace("config/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=" + to_string(cfg.settings.language + 1));
             }
-            if (btnName == "BACK") back = true; 
+            if (btnName == "CMDSIZE") {
+                if (cfg.settings.cmdsize == 3) cfg.data.replace("config/config.hnd", "CMDSIZE=" + to_string(cfg.settings.cmdsize), "CMDSIZE=0");
+                else cfg.data.replace("config/config.hnd", "CMDSIZE=" + to_string(cfg.settings.cmdsize), "CMDSIZE=" + to_string(cfg.settings.cmdsize + 1));
+            }
+            if (btnName == "BACK") back = true;
         });
         mi.async(1);
         if (enterDetected) {
@@ -37,7 +44,7 @@ void UserInterface::Settings() {
             escDetected = false;
             back = true;
         }
-        mi.btnDel(vector<string>{"VERBOSE", "LANGUAGE" ,"BACK"});
+        mi.btnDel(vector<string>{"VERBOSE", "LANGUAGE", "CMDSIZE" ,"BACK"});
         mi.cbClean();
     }
 }

@@ -6,6 +6,7 @@ public:
     struct Settings {
         bool verbose = true;
         int language = 0;
+        int cmdsize = 0;
     };
     Settings settings;
     struct Data {

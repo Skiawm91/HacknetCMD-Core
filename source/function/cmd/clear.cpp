@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "function.h"
+#include "../function.h"
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -17,6 +17,6 @@ void Function::CMD::clear() {
     FillConsoleOutputAttribute(hOut, csbi.wAttributes, csbi.dwSize.X * csbi.dwSize.Y, topLeft, &count);
     SetConsoleCursorPosition(hOut, topLeft);
     #else
-    std::cout << "\033[2J\033[H" << std::flush;
+    std::cout << "\033[3J\033[H\033[2J" << std::flush;
     #endif
 }

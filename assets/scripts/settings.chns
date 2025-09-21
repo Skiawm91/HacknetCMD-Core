@@ -1,35 +1,63 @@
+BEGIN_TITLE
+PRINT  Settings
+END_TITLE
+
 BEGIN_VERBOSE_1
-PRINT   ____________________
-PRINT   | Verbose: On      |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | Verbose: On      |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_VERBOSE_1
 
 BEGIN_VERBOSE_0
-PRINT   ____________________
-PRINT   | Verbose: Off     |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | Verbose: Off     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_VERBOSE_0
 
 BEGIN_LANGUAGE_0
-PRINT   ____________________
-PRINT   | English          |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | English          |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_LANGUAGE_0
 
 BEGIN_LANGUAGE_1
-PRINT   ____________________
-PRINT   | 繁體中文         |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | 繁體中文         |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_LANGUAGE_1
 
 BEGIN_LANGUAGE_2
-PRINT   ____________________
-PRINT   | Custom           |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | Custom           |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_LANGUAGE_2
 
+BEGIN_CMDSIZE_0
+PRINT  ____________________
+PRINT  | CMD Size: 1x     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_CMDSIZE_0
+
+BEGIN_CMDSIZE_1
+PRINT  ____________________
+PRINT  | CMD Size: 2x     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_CMDSIZE_1
+
+BEGIN_CMDSIZE_2
+PRINT  ____________________
+PRINT  | CMD Size: 3x     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_CMDSIZE_2
+
+BEGIN_CMDSIZE_3
+PRINT  ____________________
+PRINT  | CMD Size: 4x     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_CMDSIZE_3
+
 BEGIN_BACK
-PRINT   ____________________
-PRINT   | Back             |
-PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | Back             |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_BACK
