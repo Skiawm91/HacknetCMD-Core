@@ -15,8 +15,5 @@ void Config::reload() {
     // CMDSIZE
     data.load("config/config.hnd", vector<string>{"CMDSIZE=0", "CMDSIZE=1", "CMDSIZE=2", "CMDSIZE=3"});
     if (data.loaded) settings.cmdsize = data.loadNumber;
-    if (settings.cmdsize == 0) func.cmd.resize(120, 30);
-    else if (settings.cmdsize == 1) func.cmd.resize(240, 60);
-    else if (settings.cmdsize == 2) func.cmd.resize(360, 90);
-    else if (settings.cmdsize == 3) func.cmd.resize(480, 120);
+    func.cmd.resize(120 * (settings.cmdsize + 1), 30 * (settings.cmdsize + 1));
 }

@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #include "../function.h"
 #ifdef _WIN32
 #include <windows.h>
