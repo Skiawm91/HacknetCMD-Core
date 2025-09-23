@@ -10,16 +10,20 @@ using namespace std;
 void Function::CMD::resize(const int x, const int y) {
     #ifdef _WIN32
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD bufferSize;
-    bufferSize.X = x;
-    bufferSize.Y = y;
-    SetConsoleScreenBufferSize(hOut, bufferSize);
-    SMALL_RECT windowSize;
-    windowSize.Left = 0;
-    windowSize.Top = 0;
-    windowSize.Right = bufferSize.X - 1;
-    windowSize.Bottom = bufferSize.Y - 1;
-    SetConsoleWindowInfo(hOut, TRUE, &windowSize);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(hOut, &csbi);
+    int curX = csbi.dwSize.X;
+    int curY = csbi.dwSize.Y;
+    bool enlarge = (x > curX) || (y > curY);
+    COORD bufferSize = {(SHORT)x, (SHORT)y};
+    SMALL_RECT windowSize = {0, 0, (SHORT)(x - 1), (SHORT)(y - 1)};
+    if (enlarge) {
+        SetConsoleScreenBufferSize(hOut, bufferSize);
+        SetConsoleWindowInfo(hOut, TRUE, &windowSize);
+    } else {
+        SetConsoleWindowInfo(hOut, TRUE, &windowSize);
+        SetConsoleScreenBufferSize(hOut, bufferSize);
+    }
     #elif __APPLE__
     cout << "\033[8;" << y << ";" << x << "t";
     cout.flush();

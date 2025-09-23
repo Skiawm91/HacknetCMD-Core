@@ -1,21 +1,35 @@
-BEGIN_FAILSAFE
+BEGIN_FAILSAFE_EN
 CLEAR
 WAIT 2
-PRINTWFW - ␣ 1 4 天 期 限 已 到 期 ␣ : ␣ 正 在 初 始 化 ␣ F A I L S A F E -
+PRINTWFW - 1 4 ␣ D A Y ␣ T I M E R ␣ E X P I R E D ␣ : ␣ I N I T I A L I Z I N G ␣ F A I L S A F E -
 WAIT 1
-PRINTWFW - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+PRINTWFW _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 WAIT 1
-PRINTWFW 嗨 ，
+PRINTWFW H i .
 WAIT 1
-PRINT ...
+PRINTWFW . ␣ . ␣ .
 WAIT 1
-PRINTWFW 這 件 事 不 對 勁 . . . ， 比 我 想 像 中 的 還 要 複 雜 . . .。
+PRINTWFW T h i s ␣ i s ␣ s t r a n g e . . . ␣ S t r a n g e r ␣ t h a n ␣ I ␣ e x p e c t e d .
+WAIT 1 
+PRINTWFW I ␣ g u e s s ␣ I ' m ␣ s u p p o s e d ␣ t o ␣ w r i t e ␣ t h i s ␣ i n ␣ p a s t ␣ t e n s e , ␣ t h o u g h ␣ I ␣ h a r d l y ␣ f e e l ␣ l i k e ␣ a d m i t t i n g ␣ i t ' s ␣ o v e r .
+WAIT 1 
+PRINTWFW M y ␣ n a m e ␣ i s ␣ G i g a B y t e , ␣ a n d ␣ i f ␣ y o u ' r e ␣ r e a d i n g ␣ t h i s , ␣ I ' m ␣ a l r e a d y ␣ d e a d .
+WAIT 6
+END_FAILSAFE_EN
+
+BEGIN_FAILSAFE_CHT
+CLEAR
+WAIT 2
+PRINTWFW - 1 4 天 期 限 已 到 期 ␣ : ␣ 正 在 初 始 化 ␣ F A I L S A F E -
+WAIT 1
+PRINTWFW _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+WAIT 1
+PRINTWFW 嗨 。
+WAIT 1
+PRINTWFW 這 件 事 不 對 勁 . . . . . . ， 比 我 想 像 中 的 還 要 複 雜 。
 WAIT 1
 PRINTWFW 我 本 來 想 說 我 應 該 用 過 去 式 來 寫 這 段 話 ， 不 過 恐 怕 . . . . . . 這 件 事 還 沒 有 結 束 。
 WAIT 1
 PRINTWFW 我 的 名 字 叫 ␣ G i g a B y t e ␣ 當 你 看 到 這 則 訊 息 時 ， 我 已 經 死 了 . . . . . . 。
-WAIT 3
-PRINT
-PRINT ...
-WAIT 3
-END_FAILSAFE
+WAIT 6
+END_FAILSAFE_CHT

@@ -45,7 +45,7 @@ string generatePublicIP() {
            std::to_string(c) + "." + std::to_string(d);
 }
 
-string ipAddress;
+string playerIP;
 
 void hnfcOS::Initial() {
     extern string playerName;
@@ -55,22 +55,15 @@ void hnfcOS::Initial() {
     cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E474F5449503A54525545"});
     if (cfg.data.loaded) {
         if (cfg.data.loadNumber == 0) {
-            ipAddress = cfg.data.load("config/" + lowerName + "/ip.hnd", 0);
+            playerIP = cfg.data.load("config/" + lowerName + "/imfo.hnd", 2);
             os.CommandPrompt();
             return;
         }
-    }
-    while(true) {
-        if (lowerName == "guest") {
-            ipAddress = generatePublicIP();
-            os.CommandPrompt();
-            return;
-        } else {
-            ipAddress = generatePublicIP();
-            cfg.data.save("config/" + lowerName + "/ip.hnd", ipAddress);
-            cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
-            os.CommandPrompt();
-            return;
-        }
+    } else {
+        playerIP = generatePublicIP();
+        cfg.data.save("config/" + lowerName + "/info.hnd", playerIP);
+        cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
+        os.CommandPrompt();
+        return;
     }
 }

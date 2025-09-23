@@ -4,9 +4,9 @@
 class Config {
 public:
     struct Settings {
-        bool verbose = true;
-        int language = 0;
-        int cmdsize = 0;
+        bool verbose = true; // On
+        int language = 0; // English
+        int cmdsize = 0; // 1x
     };
     Settings settings;
     struct Data {

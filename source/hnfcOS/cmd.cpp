@@ -17,10 +17,11 @@ void hnfcOS::CommandPrompt() {
     func.audio.play("Revolve.wav");
     extern ManageInput mi;
     extern string playerName;
+    extern string playerLang;
+    extern string playerIP;
     string lowerName;
     lowerName.resize(playerName.size());
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
-    extern string ipAddress;
     string targetIP;
     string fullCommand;
     vector<string> command;
@@ -33,7 +34,7 @@ void hnfcOS::CommandPrompt() {
                 HNASM("terminal/initial.chns", "HELPMSG");
                 break;
             } else {
-                HNASM("tutorial/failsafe.chns", "FAILSAFE");
+                HNASM("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
                 HNASM("terminal/initial.chns", "INITIAL");
                 // HNASM("terminal/initial.chns", "TUTORIAL");
                 // s.Tutorial();
@@ -61,7 +62,7 @@ void hnfcOS::CommandPrompt() {
             command.push_back(cmd);
         }
         if (command[0] == "connect") {
-            if (command[1] == ipAddress) targetIP = ipAddress + "@";
+            if (command[1] == playerIP) targetIP = playerIP + "@";
         }
         if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
         inputMasked = inputAte = false;

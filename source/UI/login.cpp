@@ -16,10 +16,17 @@
 #include <algorithm>
 using namespace std;
 
-string playerName;
+string playerName, playerLang;
 extern ManageInput mi;
 extern Config cfg;
 extern hnfcOS os;
+
+string toLangName(const int langCode) {
+    if (langCode == 0) return "EN";
+    if (langCode == 1) return "CHT";
+    if (langCode == 2) return "CUSTOM";
+    return "EN";
+}
 
 void UserInterface::Login() {
     string input, shapwd;
@@ -32,12 +39,10 @@ void UserInterface::Login() {
         HNASM("ui.chns", "USER");
         mi.btnAdd("LOGIN", 2, 8, 30, 3);
         mi.btnAdd("REGISTER", 2, 11, 30, 3);  
-        mi.btnAdd("GUEST", 2, 14, 30, 3);
         mi.btnAdd("BACK", 2, 17, 30, 3);
         mi.cbCreate([&](const string& btnName) {
             if (btnName == "LOGIN") chse = 1;
             if (btnName == "REGISTER") chse = 2;
-            if (btnName == "GUEST") chse = 3;
             if (btnName == "BACK") chse = 4;
         });
         mi.async(1);
@@ -47,7 +52,7 @@ void UserInterface::Login() {
         } else if (enterDetected) {
             enterDetected = false;
         }
-        mi.btnDel(vector<string>{"LOGIN", "REGISTER", "GUEST", "BACK"});
+        mi.btnDel(vector<string>{"LOGIN", "REGISTER", "BACK"});
         mi.cbClean();
         switch(chse) {
             case 1:
@@ -65,7 +70,7 @@ void UserInterface::Login() {
                     transform(input.begin(), input.end(), input.begin(), ::tolower);
                     name = input;
                     {
-                        tgshapwd = cfg.data.load("config/" + name + "/pw.hnud", 0);
+                        tgshapwd = cfg.data.load("config/" + name + "/pw.hnd", 0);
                         if (!cfg.data.loaded) HNASM("logUI/login.chns", "ERROR");
                         else {
                             HNASM("logUI/login.chns", "PASSWD");
@@ -80,7 +85,8 @@ void UserInterface::Login() {
                             }
                             shapwd = SHA256Encrypt(input);
                             if (shapwd == tgshapwd) {
-                                playerName = cfg.data.load("config/" + name + "/name.hund", 0);
+                                playerName = cfg.data.load("config/" + name + "/info.hnd", 0);
+                                playerLang = cfg.data.load("config/" + name + "/info.hnd", 1);
                                 os.Boot();
                                 return;
                             } else {
@@ -147,9 +153,8 @@ void UserInterface::Login() {
                             }
                             mi.btnDel(vector<string>{"CONFIRM", "CANCEL"});
                             mi.cbClean();
-                            if (chse == 2) {
-                                break;
-                            } else {
+                            if (chse == 2) break;
+                            else {
                                 string nameOrigin = name;
                                 transform(name.begin(), name.end(), name.begin(), ::tolower);
                                 try {
@@ -158,24 +163,21 @@ void UserInterface::Login() {
                                     HNASM("logUI/register.chns", "RESERVED");
                                     break;
                                 }
-                                cfg.data.save("config/" + name + "/name.hund", nameOrigin);
+                                cfg.data.save("config/" + name + "/info.hnd", nameOrigin);
                                 if (pwd[0] == pwd[1]) {
                                     shapwd = SHA256Encrypt(pwd[1]);
-                                    cfg.data.save("config/" + name + "/pw.hnud", shapwd);
-                                    return;
+                                    cfg.data.save("config/" + name + "/pw.hnd", shapwd);
                                 } else {
                                     HNASM("logUI/register.chns", "INVCONFIRM");
                                     break;
                                 }
+                                cfg.data.save("config/" + name + "/info.hnd", toLangName(cfg.settings.language));
+                                return;
                             }
                         }
                     }
                 }
                 break;
-            case 3:
-                playerName = "Guest";
-                os.Boot();
-                return;
             case 4:
                 return;
             default:
