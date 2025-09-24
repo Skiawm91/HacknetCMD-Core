@@ -8,6 +8,7 @@
 #include <cstring>
 #include <iostream>
 #include <chrono>
+#include <codecvt>
 using namespace std;
 
 string kbPrompt;
@@ -33,7 +34,7 @@ void ManageInput::spReset() {
     // macOS: caller 控制 startCol（通常呼叫者知道 prompt 寬度）
     // 這裡我們把起始 column 設為 0（若需要可改為取得實際游標）
     promptPrinted = false;
-    startCol = kbPrompt.size();
+    startCol = ([](const string& s){wstring_convert<codecvt_utf8<char32_t>, char32_t> conv; auto u32 = conv.from_bytes(s); size_t w=0; for(char32_t ch:u32) w+= (ch<=0x7F?1:2); return w; })(kbPrompt);
 }
 
 // single combined input loop for macOS

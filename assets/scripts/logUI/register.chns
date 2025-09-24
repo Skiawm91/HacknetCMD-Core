@@ -2,16 +2,32 @@ BEGIN_REGISTER
 CLEAR
 PRINT  -- New Hacknet User Registration --
 END_REGISTER
-BEGIN_NAME
+
+BEGIN_NAME_EN
 GETINPUT  USERNAME : 
-END_NAME
-BEGIN_PASSWD
+END_NAME_EN
+
+BEGIN_NAME_CHT
+GETINPUT  使用者名稱 : 
+END_NAME_CHT
+
+BEGIN_PASSWD_EN
 GETINPUTPWD  PASSWORD : 
-END_PASSWD
-BEGIN_CONFIRM
+END_PASSWD_EN
+
+BEGIN_PASSWD_CHT
+GETINPUTPWD  密碼 : 
+END_PASSWD_CHT
+
+BEGIN_CONFIRM_EN
 GETINPUTPWD  CONFIRM PASS : 
-END_CONFIRM
-BEGIN_DETAILS
+END_CONFIRM_EN
+
+BEGIN_CONFIRM_CHT
+GETINPUTPWD  確認密碼 : 
+END_CONFIRM_CHT
+
+BEGIN_DETAILS_EN
 PRINT   -- Details Confirmed --
 PRINT  WARNING : Once created, a session's language cannot be changed
 PRINT  READY - PRESS ENTER TO CONFIRM
@@ -23,15 +39,32 @@ PRINT  ____________________
 PRINT  | Cancel           |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 GETINPUTNUL
-END_DETAILS
+END_DETAILS_EN
+
+BEGIN_DETAILS_CHT
+PRINT   -- 資訊已確認 --
+PRINT  警告 : 一旦創建，該存檔的語言無法再更改
+PRINT  準備好了 - 按下 ENTER 來確認
+PRINT  --------------------------------------------------------
+PRINT  ____________________
+PRINT  | Confirm          |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | Cancel           |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+GETINPUTNUL
+END_DETAILS_CHT
+
 BEGIN_USEDNAME
 PRINT This name already used!
 WAIT 3
 END_USEDNAME
+
 BEGIN_INVCONFIRM
 PRINT Invalid to confirm password!
 WAIT 3
 END_INVCONFIRM
+
 BEGIN_RESERVED
 PRINT The name is reserved in this system!
 WAIT 3

@@ -2,6 +2,7 @@
 #include "UI.h"
 #include "../input/input.h"
 #include "../config/config.h"
+#include "../misc/misc.h"
 #include "../hnasm/hnasm.h"
 #include "../crypto/crypto.h"
 #include "../hnfcOS/os.h"
@@ -18,15 +19,9 @@ using namespace std;
 
 string playerName, playerLang;
 extern ManageInput mi;
+extern Misc misc;
 extern Config cfg;
 extern hnfcOS os;
-
-string toLangName(const int langCode) {
-    if (langCode == 0) return "EN";
-    if (langCode == 1) return "CHT";
-    if (langCode == 2) return "CUSTOM";
-    return "EN";
-}
 
 void UserInterface::Login() {
     string input, shapwd;
@@ -57,7 +52,7 @@ void UserInterface::Login() {
         switch(chse) {
             case 1:
                 while(true) {
-                    HNASM("logUI/login.chns", "NAME");
+                    HNASM("logUI/login.chns", "NAME_" + misc.toLangName(cfg.settings.language));
                     mi.spReset();
                     mi.async(2);
                     if (escDetected) {
@@ -73,7 +68,7 @@ void UserInterface::Login() {
                         tgshapwd = cfg.data.load("config/" + name + "/pw.hnd", 0);
                         if (!cfg.data.loaded) HNASM("logUI/login.chns", "ERROR");
                         else {
-                            HNASM("logUI/login.chns", "PASSWD");
+                            HNASM("logUI/login.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
                             mi.spReset();
                             mi.async(2);
                             if (escDetected) {
@@ -101,7 +96,7 @@ void UserInterface::Login() {
                     string pwd[2];
                     while (true) {
                         HNASM("logUI/register.chns", "REGISTER");
-                        HNASM("logUI/register.chns", "NAME");
+                        HNASM("logUI/register.chns", "NAME_" + misc.toLangName(cfg.settings.language));
                         mi.spReset();
                         mi.async(2);
                         if (escDetected) {
@@ -112,7 +107,7 @@ void UserInterface::Login() {
                             input = mi.getInput();
                         }
                         name = input;
-                        HNASM("logUI/register.chns", "PASSWD");
+                        HNASM("logUI/register.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
                         mi.spReset();
                         mi.async(2);
                         if (escDetected) {
@@ -123,7 +118,7 @@ void UserInterface::Login() {
                             input = mi.getInput();
                         }
                         pwd[0] = input;
-                        HNASM("logUI/register.chns", "CONFIRM");
+                        HNASM("logUI/register.chns", "CONFIRM_" + misc.toLangName(cfg.settings.language));
                         mi.spReset();
                         mi.async(2);
                         if (escDetected) {
@@ -135,7 +130,7 @@ void UserInterface::Login() {
                         }
                         pwd[1] = input;
                         chse = 0;
-                        HNASM("logUI/register.chns", "DETAILS");
+                        HNASM("logUI/register.chns", "DETAILS_" + misc.toLangName(cfg.settings.language));
                         while(true) {
                             mi.btnAdd("CONFIRM", 1, 8, 20, 3);
                             mi.btnAdd("CANCEL", 1, 11, 20, 3);
@@ -171,7 +166,7 @@ void UserInterface::Login() {
                                     HNASM("logUI/register.chns", "INVCONFIRM");
                                     break;
                                 }
-                                cfg.data.save("config/" + name + "/info.hnd", toLangName(cfg.settings.language));
+                                cfg.data.save("config/" + name + "/info.hnd", misc.toLangName(cfg.settings.language));
                                 return;
                             }
                         }

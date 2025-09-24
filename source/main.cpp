@@ -1,6 +1,7 @@
 #define _HAS_STD_BYTE 0
 #include "config/config.h"
 #include "function/function.h"
+#include "misc/misc.h"
 #include "input/input.h"
 #include "UI/UI.h"
 #include "hnfcOS/os.h"
@@ -20,6 +21,7 @@ using namespace std;
 ManageInput mi;
 Config cfg;
 Function func;
+Misc misc;
 UserInterface UI;
 hnfcOS os;
 

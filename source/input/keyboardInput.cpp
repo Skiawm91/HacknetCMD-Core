@@ -8,6 +8,7 @@
 #include <conio.h>
 #include <windows.h>
 #include <string>
+#include <codecvt>
 using namespace std;
 
 string kbPrompt;
@@ -124,7 +125,7 @@ void ManageInput::spReset() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hOut, &csbi);
     startPos = csbi.dwCursorPosition;
-    startCol = kbPrompt.size();
+    startCol = ([](const string& s){wstring_convert<codecvt_utf8<char32_t>, char32_t> conv; auto u32 = conv.from_bytes(s); size_t w=0; for(char32_t ch:u32) w+= (ch<=0x7F?1:2); return w; })(kbPrompt);
     prevBufferLength = 0;
 }
 
