@@ -76,9 +76,26 @@ public:
                 }
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
+        } else if (type == 11) { // Mouse + Keyboard (Disabled Esc)
+            mouseSync = true;
+            while (true) {
+                if (!mouseSync) break;
+                if (enterDetected) {
+                    mouseSync = false;
+                    break;
+                }
+                if (escDetected) escDetected = false;
+                this_thread::sleep_for(chrono::milliseconds(10));
+            }
         } else if (type == 2) { // Only Keyboard
             while (true) {
                 if (enterDetected || escDetected) break;
+                this_thread::sleep_for(chrono::milliseconds(10));
+            }
+        } else if (type == 21) { // Only keyboard (Disabled Esc)
+            while (true) {
+                if (enterDetected) break;
+                if (escDetected) escDetected = false;
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
         } else if (type == 3) { // Only Mouse

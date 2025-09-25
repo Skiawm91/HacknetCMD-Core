@@ -56,14 +56,14 @@ void hnfcOS::Initial() {
     if (cfg.data.loaded) {
         if (cfg.data.loadNumber == 0) {
             playerIP = cfg.data.load("config/" + lowerName + "/imfo.hnd", 2);
-            os.CommandPrompt();
+            os.Interface();
             return;
         }
     } else {
         playerIP = generatePublicIP();
         cfg.data.save("config/" + lowerName + "/info.hnd", playerIP);
         cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
-        os.CommandPrompt();
+        os.Interface();
         return;
     }
 }
