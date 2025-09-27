@@ -1,6 +1,9 @@
 #include "os.h"
 #include "../config/config.h"
+#include "../console/console.h"
+#include "../hnasm/hnasm.h"
 #include <string>
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
@@ -9,6 +12,7 @@
 using namespace std;
 
 extern Config cfg;
+extern Console con;
 extern hnfcOS os;
 
 bool isPublicIP(int a, int b, int c, int d) {
@@ -47,23 +51,33 @@ string generatePublicIP() {
 
 string playerIP;
 
-void hnfcOS::Initial() {
+void hnfcOS::Initial(bool full) {
     extern string playerName;
     string lowerName;
     lowerName.resize(playerName.size());
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
     cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E474F5449503A54525545"});
-    if (cfg.data.loaded) {
-        if (cfg.data.loadNumber == 0) {
-            playerIP = cfg.data.load("config/" + lowerName + "/imfo.hnd", 2);
-            os.Interface();
-            return;
-        }
-    } else {
+    if (cfg.data.loaded) if (cfg.data.loadNumber == 0) playerIP = cfg.data.load("config/" + lowerName + "/imfo.hnd", 2);
+    else {
         playerIP = generatePublicIP();
         cfg.data.save("config/" + lowerName + "/info.hnd", playerIP);
-        cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
-        os.Interface();
-        return;
     }
+    if (full) {
+        cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E5455544F5249414C3A46414C5345"});
+        if (cfg.data.loaded) {
+            if (cfg.data.loadNumber == 0) {
+                HNASM("terminal/initial.chns", "INITIAL");
+                HNASM("terminal/initial.chns", "HELPMSG");
+            }
+        } else {
+            // HNASM("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
+            HNASM("terminal/initial.chns", "INITIAL");
+            // HNASM("terminal/initial.chns", "TUTORIAL");
+            // s.Tutorial();
+        }
+    } else {
+        con.clear();
+        cout << "\n\n";
+    }
+    os.Interface();
 }

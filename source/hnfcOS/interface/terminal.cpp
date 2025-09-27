@@ -1,15 +1,17 @@
 #include "interface.h"
 #include "../../input/input.h"
+#include "../../console/console.h"
 #include <sstream>
 #include <vector>
 using namespace std;
 
 extern ManageInput mi;
+extern Console con;
 
 void Terminal() {
     extern string playerIP;
     string targetIP;
-    string fullCommand;
+    string fullCommand, cmd;
     vector<string> command;
     inputMasked = inputAte = false;
     kbPrompt = targetIP + "> ";
@@ -18,18 +20,16 @@ void Terminal() {
     if (enterDetected) {
         enterDetected = false;
         fullCommand = mi.getInput();
-    }
-    if (!fullCommand.empty()) {
-        istringstream iss(fullCommand);
-        string cmd;
-        cmd.clear();
-        command.clear();
-        while (iss >> cmd) {
-            command.push_back(cmd);
+        if (!fullCommand.empty()) {
+            istringstream iss(fullCommand);
+            cmd.clear();
+            command.clear();
+            while (iss >> cmd) command.push_back(cmd);
+            if (command[0] == "connect") {
+                if (command[1] == playerIP) targetIP = playerIP + "@";
+            }
+            if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
         }
-        if (command[0] == "connect") {
-            if (command[1] == playerIP) targetIP = playerIP + "@";
-        }
-        if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
+        con.bufferSave(1); // 儲存終端機內容
     }
 }

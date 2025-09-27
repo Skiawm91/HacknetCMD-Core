@@ -55,6 +55,11 @@ PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 GETINPUTNUL
 END_DETAILS_CHT
 
+BEGIN_TOOLONG
+PRINT This name is too long!
+WAIT 3
+END_TOOLONG
+
 BEGIN_USEDNAME
 PRINT This name already used!
 WAIT 3

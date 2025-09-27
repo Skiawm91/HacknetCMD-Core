@@ -1,12 +1,12 @@
 #define _HAS_STD_BYTE 0
-#include "../function.h"
+#include "console.h"
 #ifdef _WIN32
 #include <windows.h>
 #else
 #include <iostream>
 #endif
 
-void Function::CMD::clear() {
+void Console::clear() {
     #ifdef _WIN32
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO csbi;

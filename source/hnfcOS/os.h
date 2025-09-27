@@ -2,6 +2,6 @@
 class hnfcOS {
 public:
     void Boot();
-    void Initial();
+    void Initial(bool full);
     void Interface();
 };

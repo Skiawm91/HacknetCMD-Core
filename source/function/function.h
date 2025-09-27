@@ -8,9 +8,4 @@ public:
         void stop();
     };
     Audio audio;
-    struct CMD {
-        void clear();
-        void resize(const int x, const int y);
-    };
-    CMD cmd;
 };

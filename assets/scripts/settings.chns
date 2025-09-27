@@ -1,6 +1,14 @@
-BEGIN_TITLE
+BEGIN_TITLE_EN
 PRINT  Settings
-END_TITLE
+END_TITLE_EN
+
+BEGIN_TITLE_CHS
+PRINT  设置
+END_TITLE_CHS
+
+BEGIN_TITLE_CHT
+PRINT  設定
+END_TITLE_CHT
 
 BEGIN_VERBOSE_1
 PRINT  ____________________
@@ -22,13 +30,13 @@ END_LANGUAGE_0
 
 BEGIN_LANGUAGE_1
 PRINT  ____________________
-PRINT  | 繁體中文         |
+PRINT  | 简体中文         |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_LANGUAGE_1
 
 BEGIN_LANGUAGE_2
 PRINT  ____________________
-PRINT  | Custom           |
+PRINT  | 繁體中文         |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_LANGUAGE_2
 
@@ -56,8 +64,20 @@ PRINT  | CMD Size: 4x     |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_CMDSIZE_3
 
-BEGIN_BACK
+BEGIN_BACK_EN
 PRINT  ____________________
 PRINT  | Back             |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_BACK
+END_BACK_EN
+
+BEGIN_BACK_CHS
+PRINT  ____________________
+PRINT  | 返回             |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_BACK_CHS
+
+BEGIN_BACK_CHT
+PRINT  ____________________
+PRINT  | 返回             |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_BACK_CHT

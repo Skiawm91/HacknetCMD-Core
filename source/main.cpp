@@ -1,6 +1,7 @@
 #define _HAS_STD_BYTE 0
 #include "config/config.h"
 #include "function/function.h"
+#include "console/console.h"
 #include "misc/misc.h"
 #include "input/input.h"
 #include "UI/UI.h"
@@ -20,6 +21,7 @@ using namespace std;
 // 初始化 class 部分
 ManageInput mi;
 Config cfg;
+Console con;
 Function func;
 Misc misc;
 UserInterface UI;
@@ -31,7 +33,7 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
     // 初始化: 基本視窗大小/字體
-    func.cmd.resize(120, 30);
+    con.resize(120, 30);
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_FONT_INFOEX cfi;
     cfi.cbSize = sizeof(cfi);

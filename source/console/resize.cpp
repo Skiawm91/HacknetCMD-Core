@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "../function.h"
+#include "console.h"
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__
@@ -7,16 +7,16 @@
 #endif
 using namespace std;
 
-void Function::CMD::resize(const int x, const int y) {
+void Console::resize(const int width, const int height) {
     #ifdef _WIN32
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hOut, &csbi);
     int curX = csbi.dwSize.X;
     int curY = csbi.dwSize.Y;
-    bool enlarge = (x > curX) || (y > curY);
-    COORD bufferSize = {(SHORT)x, (SHORT)y};
-    SMALL_RECT windowSize = {0, 0, (SHORT)(x - 1), (SHORT)(y - 1)};
+    bool enlarge = (width > curX) || (height > curY);
+    COORD bufferSize = {(SHORT)width, (SHORT)height};
+    SMALL_RECT windowSize = {0, 0, (SHORT)(width - 1), (SHORT)(height - 1)};
     if (enlarge) {
         SetConsoleScreenBufferSize(hOut, bufferSize);
         SetConsoleWindowInfo(hOut, TRUE, &windowSize);

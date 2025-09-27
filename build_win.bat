@@ -13,14 +13,26 @@ call "%VSPath%\Common7\Tools\VsDevCmd.bat"
 rmdir /S /Q build > nul
 mkdir build build\assets > nul
 xcopy /E assets build\assets > nul
-set files=
-for /r "source" %%f in (*.cpp) do (
-    set files=!files! "%%f"
+for /r "source" %%F in (*.cpp) do (
+    set "name=%%~nF"
+    set "folder=%%~dpF"
+    set "folder=!folder:~7!"  :: 假設 source\ 是 7 個字元，視你的路徑調整
+    if "!folder:~-1!"=="\" set "folder=!folder:~0,-1!"
+    set "last="
+    for %%A in ("!folder!") do set "last=%%~nxA"
+    if "!last!"=="source" (
+        set "obj=Build\!name!.obj"
+    ) else (
+        set "obj=Build\!last!.!name!.obj"
+    )
+    echo !last!\!name!.cpp
+    cl /c /EHsc /nologo /std:c++20 /utf-8 "%%F" /Fo!obj! | findstr /V "!name!.cpp"
 )
-cl /EHsc /nologo /std:c++20 /utf-8 /FeBuild\\HacknetCMD.exe /FoBuild\ !files! /link icon.res advapi32.lib winmm.lib user32.lib windowsapp.lib
-if exist build\*.obj (
-    del /F /Q build\*.obj
-)
+echo.
+echo Compiling...
+link /nologo /OUT:Build\HacknetCMD.exe Build\*.obj icon.res advapi32.lib winmm.lib user32.lib windowsapp.lib
+echo Cleaning...
+del /F /Q Build\*.obj
 echo.
 echo Done.
 echo Press Enter to Run Application.

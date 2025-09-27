@@ -1,13 +1,15 @@
 #include "UI.h"
 #include "../input/input.h"
 #include "../config/config.h"
-#include "../function/function.h"
+#include "../console/console.h"
+#include "../misc/misc.h"
 #include "../hnasm/hnasm.h"
 using namespace std;
 
 extern ManageInput mi;
 extern Config cfg;
-extern Function func;
+extern Misc misc;
+extern Console con;
 
 void UserInterface::Settings() {
     bool back = false;
@@ -15,8 +17,8 @@ void UserInterface::Settings() {
         mi.kbEnable();
         // 重新載入Config
         cfg.reload();
-        func.cmd.clear();
-        HNASM("settings.chns", "TITLE");
+        con.clear();
+        HNASM("settings.chns", "TITLE_" + misc.toLangName(cfg.settings.language));
         HNASM("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
         HNASM("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
         HNASM("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));

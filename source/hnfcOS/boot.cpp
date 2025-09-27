@@ -21,6 +21,7 @@ inline void Sleep(const int& ms) {usleep(ms * 1000);}
 extern Config cfg;
 extern Function func;
 extern hnfcOS os;
+extern string playerName;
 
 void hnfcOS::Boot() {
     func.audio.stop();
@@ -48,6 +49,7 @@ void hnfcOS::Boot() {
             Sleep(150 + rand() % 11);
         }
     }
-    os.Initial();
+    cfg.data.save("config/booted.hnd", playerName);
+    os.Initial(true);
     return;
 }

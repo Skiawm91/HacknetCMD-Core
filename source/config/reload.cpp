@@ -1,9 +1,9 @@
 #include "config.h"
-#include "../function/function.h"
+#include "../console/console.h"
 #include <vector>
 using namespace std;
 
-extern Function func;
+extern Console con;
 
 void Config::reload() {
     // VERBOSE
@@ -15,5 +15,5 @@ void Config::reload() {
     // CMDSIZE
     data.load("config/config.hnd", vector<string>{"CMDSIZE=0", "CMDSIZE=1", "CMDSIZE=2", "CMDSIZE=3"});
     if (data.loaded) settings.cmdsize = data.loadNumber;
-    func.cmd.resize(120 * (settings.cmdsize + 1), 30 * (settings.cmdsize + 1));
+    con.resize(120 * (settings.cmdsize + 1), 30 * (settings.cmdsize + 1));
 }

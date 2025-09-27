@@ -1,7 +1,7 @@
 #define _HAS_STD_BYTE 0
 #include "os.h"
 #include "../function/function.h"
-#include "../misc/misc.h"
+#include "../console/console.h"
 #include "../config/config.h"
 #include "../input/input.h"
 #include "../hnasm/hnasm.h"
@@ -15,7 +15,7 @@ using namespace std;
 
 extern Function func;
 extern Config cfg;
-extern Misc misc;
+extern Console con;
 extern ManageInput mi;
 // HacknetStory hnStory;
 
@@ -24,26 +24,6 @@ void hnfcOS::Interface() {
     extern string playerName;
     extern string playerLang;
     extern string playerIP;
-    string lowerName;
-    lowerName.resize(playerName.size());
-    transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
-    string line;
-    ifstream saveFile("config/" + lowerName + "/save.hnd");
-    if (saveFile.is_open()) {
-        while (getline(saveFile, line)) {
-            if (line == "434F4E4649472E5455544F5249414C3A46414C5345") {
-                HNASM("terminal/initial.chns", "INITIAL");
-                HNASM("terminal/initial.chns", "HELPMSG");
-                break;
-            } else {
-                // HNASM("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
-                HNASM("terminal/initial.chns", "INITIAL");
-                // HNASM("terminal/initial.chns", "TUTORIAL");
-                // s.Tutorial();
-                break;
-            }
-        }
-    }
     int mode = 0;
     mi.btnAdd("EXIT", 0, 0, 3, 1);
     mi.btnAdd("TERMINAL", 5, 0, 10, 1);
@@ -54,8 +34,11 @@ void hnfcOS::Interface() {
         if (btnName == "DISPLAY") mode = 1;
     });
     while(true) {
-        // misc.staticPrint(0, 0, "|X|//|TERMINAL|/|DISPLAY|" + string(120 * cfg.settings.cmdsize - 25, '/'));
-        if (mode == 0) Terminal();
-        else if (mode == 1) Display();
+        con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
+        con.printAt(0, 1, string(120 * (cfg.settings.cmdsize + 1), '‾'));
+        if (mode == 0) con.bufferRestore();
+        while(mode == 0) Terminal();
+        while(mode == 1) Display();
+        con.clear();
     }
 }

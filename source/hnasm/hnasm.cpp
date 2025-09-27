@@ -1,14 +1,13 @@
 #include "hnasm.h"
 #include "scripts/CHNScript.h"
+#include <optional>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <regex>
 using namespace std;
 
-extern string playerName;
-
-void HNASM(const string& fileName, const string& partName) {
+void HNASM(const string& fileName, const string& partName, const optional<string>& targetVar, const optional<string>& returnText) {
     string scriptPath = "assets/scripts/" + fileName;
     ifstream file(scriptPath);
     string line;
@@ -25,7 +24,7 @@ void HNASM(const string& fileName, const string& partName) {
             got >> command;
             getline(got, content);
             if (!content.empty() && content[0] == ' ') {content = content.substr(1);}
-            content = regex_replace(content, regex(R"(\$\{PLAYER\})"), playerName); // replace
+            if (targetVar && returnText) content = regex_replace(content, regex("\\$\\{" + *targetVar + "\\}"), *returnText); // replace
             if (command=="WAIT") {chns.WAIT(content);}
             else if (command=="CLEAR") {chns.CLEAR();}
             else if (command=="PRINT") {chns.PRINT(content);}

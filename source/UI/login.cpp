@@ -26,18 +26,22 @@ extern hnfcOS os;
 void UserInterface::Login() {
     string input, shapwd;
     string name, tgshapwd;
+    playerName = cfg.data.load("config/booted.hnd", 0);
     int chse;
     while(true) {
         mi.kbEnable();
         chse = 0;
         HNASM("ui.chns", "LOGO");
-        HNASM("ui.chns", "USER");
+        if (!playerName.empty()) HNASM("ui.chns", "USER", "PLAYER", string(playerName + "]") + string(16 - playerName.size(), ' '));
+        else HNASM("ui.chns", "USER", "PLAYER", string("N/A]") + string(13, ' '));
         mi.btnAdd("LOGIN", 2, 8, 30, 3);
-        mi.btnAdd("REGISTER", 2, 11, 30, 3);  
+        if (!playerName.empty()) mi.btnAdd("CONTINUE", 2, 11, 30, 3);  
+        mi.btnAdd("REGISTER", 2, 14, 30, 3);  
         mi.btnAdd("BACK", 2, 17, 30, 3);
         mi.cbCreate([&](const string& btnName) {
             if (btnName == "LOGIN") chse = 1;
-            if (btnName == "REGISTER") chse = 2;
+            if (btnName == "CONTINUE") chse = 2;
+            if (btnName == "REGISTER") chse = 3;
             if (btnName == "BACK") chse = 4;
         });
         mi.async(1);
@@ -47,7 +51,7 @@ void UserInterface::Login() {
         } else if (enterDetected) {
             enterDetected = false;
         }
-        mi.btnDel(vector<string>{"LOGIN", "REGISTER", "BACK"});
+        mi.btnDel(vector<string>{"LOGIN", "CONTINUE", "REGISTER", "BACK"});
         mi.cbClean();
         switch(chse) {
             case 1:
@@ -82,6 +86,7 @@ void UserInterface::Login() {
                             if (shapwd == tgshapwd) {
                                 playerName = cfg.data.load("config/" + name + "/info.hnd", 0);
                                 playerLang = cfg.data.load("config/" + name + "/info.hnd", 1);
+                                cfg.data.del("config/booted.hnd", playerName);
                                 os.Boot();
                                 return;
                             } else {
@@ -92,6 +97,16 @@ void UserInterface::Login() {
                 }
                 break;
             case 2:
+                {
+                    string lowerName;
+                    lowerName.resize(playerName.size());
+                    transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
+                    playerLang = cfg.data.load("config/" + lowerName + "/info.hnd", 1);
+                    os.Initial(false);
+                    return;
+                }
+                break;
+            case 3:
                 {
                     string pwd[2];
                     while (true) {
@@ -150,6 +165,9 @@ void UserInterface::Login() {
                             mi.cbClean();
                             if (chse == 2) break;
                             else {
+                                if (name.length() > 13) {
+                                    HNASM("logUI/register.chns", "TOOLONG");
+                                }
                                 string nameOrigin = name;
                                 transform(name.begin(), name.end(), name.begin(), ::tolower);
                                 try {
