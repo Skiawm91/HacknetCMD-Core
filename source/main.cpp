@@ -61,7 +61,7 @@ int main() {
         chdir(dir);
     }
     // 初始化: 基本視窗大小
-    func.cmd.resize(120, 30);
+    con.resize(120, 30);
     // 初始化: 標題
     cout << "\033]0;Hacknet for CMD\007";
     // 初始化: 終端機輸入

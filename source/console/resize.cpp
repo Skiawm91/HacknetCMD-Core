@@ -25,7 +25,7 @@ void Console::resize(const int width, const int height) {
         SetConsoleScreenBufferSize(hOut, bufferSize);
     }
     #elif __APPLE__
-    cout << "\033[8;" << y << ";" << x << "t";
+    cout << "\033[8;" << height << ";" << width << "t";
     cout.flush();
     #endif
 }

@@ -45,6 +45,10 @@ void hnfcOS::Interface() {
         if (btnName == "DISPLAY") mode = 2;
     });
     while(true) {
+        #ifdef __APPLE__
+        if (mode == 1) con.bufferChange(0);
+        else if (mode == 2) con.bufferChange(1);
+        #endif
         con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
         con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
         if (mode == 0) {
@@ -52,7 +56,9 @@ void hnfcOS::Interface() {
             mi.cbClean();
             return;
         } else if (mode == 1) {
+            #ifdef _WIN32
             con.bufferRestore();
+            #endif
             Terminal();
         } else if (mode == 2) Display();
         con.clear();
