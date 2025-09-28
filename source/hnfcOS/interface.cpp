@@ -6,6 +6,7 @@
 #include "../input/input.h"
 #include "../hnasm/hnasm.h"
 #include "interface/interface.h"
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -19,26 +20,41 @@ extern Console con;
 extern ManageInput mi;
 // HacknetStory hnStory;
 
+string overlines(int count) {
+    const char* ul = reinterpret_cast<const char*>(u8"‾");
+    std::string result;
+    result.reserve(count * 3);
+    for (int i = 0; i < count; ++i) {
+        result += ul;
+    }
+    return result;
+}
+
 void hnfcOS::Interface() {
     func.audio.play("Revolve.wav");
     extern string playerName;
     extern string playerLang;
     extern string playerIP;
-    int mode = 0;
+    int mode = 1; // Terminal
     mi.btnAdd("EXIT", 0, 0, 3, 1);
     mi.btnAdd("TERMINAL", 5, 0, 10, 1);
     mi.btnAdd("DISPLAY", 16, 0, 9, 1);
     mi.cbCreate([&](const string& btnName){
-        if (btnName == "EXIT");
-        if (btnName == "TERMINAL") mode = 0;
-        if (btnName == "DISPLAY") mode = 1;
+        if (btnName == "EXIT") mode = 0;
+        if (btnName == "TERMINAL") mode = 1;
+        if (btnName == "DISPLAY") mode = 2;
     });
     while(true) {
         con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
-        con.printAt(0, 1, string(120 * (cfg.settings.cmdsize + 1), '‾'));
-        if (mode == 0) con.bufferRestore();
-        while(mode == 0) Terminal();
-        while(mode == 1) Display();
+        con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
+        if (mode == 0) {
+            mi.btnDel(vector<string>{"EXIT", "TERMINAL", "DISPLAY"});
+            mi.cbClean();
+            return;
+        } else if (mode == 1) {
+            con.bufferRestore();
+            Terminal();
+        } else if (mode == 2) Display();
         con.clear();
     }
 }

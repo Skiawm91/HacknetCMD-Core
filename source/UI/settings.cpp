@@ -22,7 +22,7 @@ void UserInterface::Settings() {
         HNASM("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
         HNASM("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
         HNASM("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
-        HNASM("settings.chns", "BACK");
+        HNASM("settings.chns", "BACK_" + misc.toLangName(cfg.settings.language));
         mi.btnAdd("VERBOSE", 1, 1, 20, 3);
         mi.btnAdd("LANGUAGE", 1, 4, 20, 3);
         mi.btnAdd("CMDSIZE", 1, 7, 20, 3);

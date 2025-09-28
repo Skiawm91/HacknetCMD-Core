@@ -9,6 +9,7 @@ extern ManageInput mi;
 extern Console con;
 
 void Terminal() {
+    mi.kbEnable();
     extern string playerIP;
     string targetIP;
     string fullCommand, cmd;
@@ -30,6 +31,6 @@ void Terminal() {
             }
             if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
         }
-        con.bufferSave(1); // 儲存終端機內容
+        con.bufferSave(2); // 儲存終端機內容
     }
 }

@@ -8,6 +8,7 @@
 using namespace std;
 
 void Console::bufferSave(int startRow) {
+    #ifdef _WIN32
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     if (hOut == INVALID_HANDLE_VALUE) return;
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -44,9 +45,26 @@ void Console::bufferSave(int startRow) {
             savedBuffer[row * savedWidth + col] = screenBuffer[row * width + col];
         }
     }
+    #elif __APPLE__
+    savedLines.clear();
+    auto screen = getScreenContent(); // 取得目前「螢幕文字內容」
+
+    int lastContentRow = -1;
+    for (size_t i = startRow; i < screen.size(); ++i) {
+        savedLines.push_back(screen[i]);
+        if (!screen[i].empty()) lastContentRow = (int)savedLines.size() - 1;
+    }
+
+    // 捨棄最後空白行
+    if (lastContentRow >= 0)
+        savedLines.resize(lastContentRow + 1);
+    else
+        savedLines.clear();
+    #endif
 }
 
 void Console::bufferRestore() {
+    #ifdef _WIN32
     if (savedBuffer.empty()) return;
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     if (hOut == INVALID_HANDLE_VALUE) return;
@@ -69,4 +87,11 @@ void Console::bufferRestore() {
     }
     COORD newCursor = { 0, newCursorY };
     SetConsoleCursorPosition(hOut, newCursor);
+    #elif __APPLE__
+    if (savedLines.empty()) return;
+    for (size_t i = 0; i < savedLines.size(); i++) {
+        std::cout << "\033[" << (i+1) << ";1H" << savedLines[i] << "\033[K";
+    }
+    std::cout.flush();
+    #endif
 }

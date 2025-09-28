@@ -8,6 +8,7 @@ extern ManageInput mi;
 extern Console con;
 
 void Display() {
-    cout << "DISPLAY ONCOMING...";
+    mi.kbDisable();
+    cout << "\n\nDISPLAY ONCOMING...";
     mi.async(3);
 }

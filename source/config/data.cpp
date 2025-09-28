@@ -81,6 +81,36 @@ void Config::Data::replace(const string& filePath, const string& targetData, con
     }
 }
 
+void Config::Data::replace(const string& filePath, const int targetLine, const string& data) {
+    line.clear();
+    newLine.clear();
+    ifstream inFile(filePath);
+    if (inFile.is_open()) {
+        bool found = false;
+        int i = 0;
+        while(getline(inFile, line)) {
+            if (i == targetLine) {
+                found = true;
+                newLine.push_back(data);
+            } else { 
+                newLine.push_back(line);
+            }
+            ++i;
+        }
+        if (!found) newLine.push_back(data);
+        inFile.close();
+    } else {
+        newLine.push_back(data);
+    }
+    ofstream outFile(filePath);
+    if (outFile.is_open()) {
+        for (const auto &l : newLine) {
+            outFile << l << endl;
+        }
+        outFile.close();
+    }
+}
+
 void Config::Data::load(const string& filePath, const vector<string>& targetData) {
     line.clear();
     this->loaded = false;

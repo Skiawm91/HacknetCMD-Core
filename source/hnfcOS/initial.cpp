@@ -57,27 +57,38 @@ void hnfcOS::Initial(bool full) {
     lowerName.resize(playerName.size());
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
     cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E474F5449503A54525545"});
-    if (cfg.data.loaded) if (cfg.data.loadNumber == 0) playerIP = cfg.data.load("config/" + lowerName + "/imfo.hnd", 2);
-    else {
+    if (cfg.data.loaded) {
+        if (cfg.data.loadNumber == 0) playerIP = cfg.data.load("config/" + lowerName + "/info.hnd", 2);
+        else {
+            playerIP = generatePublicIP();
+            cfg.data.replace("config/" + lowerName + "/info.hnd", 2, playerIP);
+            cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
+        }
+    } else {
         playerIP = generatePublicIP();
-        cfg.data.save("config/" + lowerName + "/info.hnd", playerIP);
+        cfg.data.replace("config/" + lowerName + "/info.hnd", 2, playerIP);
+        cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
     }
     if (full) {
-        cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E5455544F5249414C3A46414C5345"});
+        cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E5455544F5249414C3A46414C5345"});\
         if (cfg.data.loaded) {
             if (cfg.data.loadNumber == 0) {
                 HNASM("terminal/initial.chns", "INITIAL");
                 HNASM("terminal/initial.chns", "HELPMSG");
+                con.bufferSave(2);
             }
         } else {
             // HNASM("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
             HNASM("terminal/initial.chns", "INITIAL");
             // HNASM("terminal/initial.chns", "TUTORIAL");
             // s.Tutorial();
+            con.bufferSave(2);
         }
+        os.Interface();
     } else {
         con.clear();
         cout << "\n\n";
+        con.bufferSave(1);
+        os.Interface();
     }
-    os.Interface();
 }

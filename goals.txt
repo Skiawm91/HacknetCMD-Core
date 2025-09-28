@@ -11,13 +11,14 @@ HNScript (完成, Beta 2)
 改進GUI (完成, Release)
 
 [0.3.0]
-整理代碼 / 檔案 (WIP)
+整理代碼 / 檔案 (完成, Beta 2)
 設定介面 (完成, Beta 1)
-中英文介面之切換 (WIP)
+中英文介面之切換 (完成, Beta 2)
 新的CMD介面 (WIP)
 
 [0.4.0]
 重寫Tutorial (WIP)
+整理代碼 / 簡單化 (WIP)
 
 開發人員：
 1. Skiawm91

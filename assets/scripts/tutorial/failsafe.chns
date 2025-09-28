@@ -17,6 +17,23 @@ PRINTWFW M y ␣ n a m e ␣ i s ␣ G i g a B y t e , ␣ a n d ␣ i f ␣ y o
 WAIT 6
 END_FAILSAFE_EN
 
+BEGIN_FAILSAFE_CHS
+CLEAR
+WAIT 2
+PRINTWFW - 已 过 期 1 4 天 ␣ : ␣ 正 在 初 始 化 ␣ F a i l S a f e ␣ -
+WAIT 1
+PRINTWFW _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+WAIT 1
+PRINT 你 好 。
+WAIT 1
+PRINTWFW 这 件 事 不 对 劲 . . . . . . 比 我 想 象 中 的 还 要 奇 怪 。
+WAIT 1
+PRINTWFW 我 原 以 为 我 应 该 用 过 去 时 来 写 这 段 话 ， 不 过 恐 怕 我 得 承 认 . . . . . . 这 件 事 还 没 有 画 上 句 号 。
+WAIT 1
+PRINTWFW 我 的 名 字 是 ␣ G i g a B y t e ， 如 果 你 正 在 阅 读 这 封 邮 件 ， 那 意 味 着 我 已 经 死 了 。
+WAIT 6
+END_FAILSAFE_CHS
+
 BEGIN_FAILSAFE_CHT
 CLEAR
 WAIT 2
@@ -28,8 +45,8 @@ PRINTWFW 嗨 。
 WAIT 1
 PRINTWFW 這 件 事 不 對 勁 . . . . . . ， 比 我 想 像 中 的 還 要 複 雜 。
 WAIT 1
-PRINTWFW 我 本 來 想 說 我 應 該 用 過 去 式 來 寫 這 段 話 ， 不 過 恐 怕 . . . . . . 這 件 事 還 沒 有 結 束 。
+PRINTWFW 我 原 以 為 我 應 該 用 過 去 式 來 寫 這 段 話 ， 不 過 恐 怕 我 得 承 認 . . . . . . 這 件 事 還 沒 有 結 束 。
 WAIT 1
-PRINTWFW 我 的 名 字 叫 ␣ G i g a B y t e ␣ 當 你 看 到 這 則 訊 息 時 ， 我 已 經 死 了 . . . . . . 。
+PRINTWFW 我 的 名 字 是 ␣ G i g a B y t e ， 當 你 正 在 讀 這 封 郵 件 ， 代 表 著 我 已 經 死 了 。
 WAIT 6
 END_FAILSAFE_CHT
