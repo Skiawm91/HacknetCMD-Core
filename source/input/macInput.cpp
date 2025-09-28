@@ -14,6 +14,30 @@ using namespace std;
 string kbPrompt;
 atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, inputAte, kbEnabled, mouseSync;
 
+size_t utf8_width(const string &s) {
+    size_t w = 0;
+    for (size_t i = 0; i < s.size(); ) {
+        unsigned char c = s[i];
+        if ((c & 0x80) == 0) {          // ASCII
+            w += 1;
+            i += 1;
+        } else if ((c & 0xE0) == 0xC0) { // 2-byte
+            w += 2;
+            i += 2;
+        } else if ((c & 0xF0) == 0xE0) { // 3-byte
+            w += 2;
+            i += 3;
+        } else if ((c & 0xF8) == 0xF0) { // 4-byte
+            w += 2;
+            i += 4;
+        } else {
+            // 避免死循環，跳過未知 byte
+            i += 1;
+        }
+    }
+    return w;
+}
+
 static int read_with_timeout(int fd, char *buf, int maxlen, int timeout_ms) {
     fd_set rfds;
     struct timeval tv;
@@ -34,9 +58,8 @@ void ManageInput::spReset() {
     // macOS: caller 控制 startCol（通常呼叫者知道 prompt 寬度）
     // 這裡我們把起始 column 設為 0（若需要可改為取得實際游標）
     promptPrinted = false;
-    startCol = ([](const string& s){wstring_convert<codecvt_utf8<char32_t>, char32_t> conv; auto u32 = conv.from_bytes(s); size_t w=0; for(char32_t ch:u32) w+= (ch<=0x7F?1:2); return w; })(kbPrompt);
+    startCol = static_cast<int>(utf8_width(kbPrompt));
 }
-
 // single combined input loop for macOS
 void ManageInput::input() {
     if (running) return;

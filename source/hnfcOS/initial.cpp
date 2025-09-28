@@ -50,6 +50,9 @@ string generatePublicIP() {
 }
 
 string playerIP;
+#ifdef __APPLE__
+int promptPos;
+#endif
 
 void hnfcOS::Initial(bool full) {
     extern string playerName;
@@ -75,20 +78,32 @@ void hnfcOS::Initial(bool full) {
             if (cfg.data.loadNumber == 0) {
                 HNASM("terminal/initial.chns", "INITIAL");
                 HNASM("terminal/initial.chns", "HELPMSG");
+                #ifdef _WIN32
                 con.bufferSave(2);
+                #elif __APPLE__
+                promptPos = 8;
+                #endif
             }
         } else {
             // HNASM("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
             HNASM("terminal/initial.chns", "INITIAL");
             // HNASM("terminal/initial.chns", "TUTORIAL");
             // s.Tutorial();
+            #ifdef _WIN32
             con.bufferSave(2);
+            #elif __APPLE__
+            promptPos = 7; // if terminal added, to 9
+            #endif
         }
         os.Interface();
     } else {
         con.clear();
         cout << "\n\n";
+        #ifdef _WIN32
         con.bufferSave(1);
+        #elif __APPLE__
+        promptPos = 2;
+        #endif
         os.Interface();
     }
 }

@@ -31,10 +31,14 @@ string overlines(int count) {
 }
 
 void hnfcOS::Interface() {
+    func.audio.stop();
     func.audio.play("Revolve.wav");
     extern string playerName;
     extern string playerLang;
     extern string playerIP;
+    #ifdef __APPLE__
+    extern int promptPos;
+    #endif
     int mode = 1; // Terminal
     mi.btnAdd("EXIT", 0, 0, 3, 1);
     mi.btnAdd("TERMINAL", 5, 0, 10, 1);
@@ -45,12 +49,15 @@ void hnfcOS::Interface() {
         if (btnName == "DISPLAY") mode = 2;
     });
     while(true) {
-        #ifdef __APPLE__
-        if (mode == 1) con.bufferChange(0);
-        else if (mode == 2) con.bufferChange(1);
-        #endif
+        #ifdef _WIN32
         con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
         con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
+        #elif __APPLE__
+        if (mode == 1) con.bufferChange(0);
+        else if (mode == 2) con.bufferChange(1);
+        con.printAt(0, 0, 0, promptPos, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
+        con.printAt(0, 1, 0, promptPos, overlines(120 * (cfg.settings.cmdsize + 1)));
+        #endif
         if (mode == 0) {
             mi.btnDel(vector<string>{"EXIT", "TERMINAL", "DISPLAY"});
             mi.cbClean();
@@ -61,6 +68,8 @@ void hnfcOS::Interface() {
             #endif
             Terminal();
         } else if (mode == 2) Display();
+        #ifdef _WIN32
         con.clear();
+        #endif
     }
 }

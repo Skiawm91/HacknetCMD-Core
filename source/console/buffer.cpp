@@ -73,7 +73,8 @@ void Console::bufferRestore() {
 #endif
 
 #ifdef __APPLE__
-void bufferChange(int mode) {
-    if (mode == 0) cout << "\033[?1049l"; << flush;
+void Console::bufferChange(int mode) {
+    if (mode == 0) cout << "\033[?1049l" << flush;
     else if (mode == 1) cout << "\033[?1049h" << flush;
 }
+#endif

@@ -14,6 +14,30 @@ using namespace std;
 string kbPrompt;
 atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, inputAte, runningKb, kbEnabled;
 
+size_t utf8_width(const string &s) {
+    size_t w = 0;
+    for (size_t i = 0; i < s.size(); ) {
+        unsigned char c = s[i];
+        if ((c & 0x80) == 0) {          // ASCII
+            w += 1;
+            i += 1;
+        } else if ((c & 0xE0) == 0xC0) { // 2-byte
+            w += 2;
+            i += 2;
+        } else if ((c & 0xF0) == 0xE0) { // 3-byte
+            w += 2;
+            i += 3;
+        } else if ((c & 0xF8) == 0xF0) { // 4-byte
+            w += 2;
+            i += 4;
+        } else {
+            // 避免死循環，跳過未知 byte
+            i += 1;
+        }
+    }
+    return w;
+}
+
 void ManageInput::kbInput() {
     if (running) return;
     running = true;
@@ -125,7 +149,7 @@ void ManageInput::spReset() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hOut, &csbi);
     startPos = csbi.dwCursorPosition;
-    startCol = ([](const string& s){wstring_convert<codecvt_utf8<char32_t>, char32_t> conv; auto u32 = conv.from_bytes(s); size_t w=0; for(char32_t ch:u32) w+= (ch<=0x7F?1:2); return w; })(kbPrompt);
+    size_t startCol = utf8_width(kbPrompt);
     prevBufferLength = 0;
 }
 
