@@ -1,7 +1,7 @@
 # Hacknet for CMD: Cpp Edition
 "Hacknet for CMD" is a legacy project, last updated about 1 year ago yet.
 <br/>
-This game likely Hacknet from Steam (I guess you already know).
+This game idea is from Hacknet from Steam (I guess you already know).
 <br/>
 <br/>
 Before make C++ ver, I just joined "Hacknet for CMD | Official Server" from Discord.
