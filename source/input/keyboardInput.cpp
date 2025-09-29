@@ -149,7 +149,7 @@ void ManageInput::spReset() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hOut, &csbi);
     startPos = csbi.dwCursorPosition;
-    size_t startCol = utf8_width(kbPrompt);
+    startCol = static_cast<int>(utf8_width(kbPrompt));
     prevBufferLength = 0;
 }
 
