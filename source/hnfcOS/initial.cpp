@@ -80,8 +80,6 @@ void hnfcOS::Initial(bool full) {
                 HNASM("terminal/initial.chns", "HELPMSG");
                 #ifdef _WIN32
                 con.bufferSave(2);
-                #elif __APPLE__
-                promptPos = 8;
                 #endif
             }
         } else {
@@ -91,8 +89,6 @@ void hnfcOS::Initial(bool full) {
             // s.Tutorial();
             #ifdef _WIN32
             con.bufferSave(2);
-            #elif __APPLE__
-            promptPos = 7; // if terminal added, to 9
             #endif
         }
         os.Interface();
@@ -101,8 +97,6 @@ void hnfcOS::Initial(bool full) {
         cout << "\n\n";
         #ifdef _WIN32
         con.bufferSave(1);
-        #elif __APPLE__
-        promptPos = 2;
         #endif
         os.Interface();
     }

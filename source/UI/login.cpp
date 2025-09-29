@@ -17,11 +17,12 @@
 #include <algorithm>
 using namespace std;
 
-string playerName, playerLang;
 extern ManageInput mi;
 extern Misc misc;
 extern Config cfg;
 extern hnfcOS os;
+extern string ver, verStage;
+string playerName, playerLang;
 
 void UserInterface::Login() {
     string input, shapwd;
@@ -31,7 +32,8 @@ void UserInterface::Login() {
     while(true) {
         mi.kbEnable();
         chse = 0;
-        HNASM("ui.chns", "LOGO");
+        if (verStage != "Release") HNASM("ui.chns", "LOGO", "VER", ver + " [" + verStage + "]");
+        else HNASM("ui.chns", "LOGO", "VER", ver);
         if (!playerName.empty()) HNASM("ui.chns", "USER", "PLAYER", string(playerName + "]") + string(16 - playerName.size(), ' '));
         else HNASM("ui.chns", "USER", "PLAYER", string("N/A]") + string(13, ' '));
         mi.btnAdd("LOGIN", 2, 8, 30, 3);

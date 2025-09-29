@@ -15,6 +15,7 @@
 #include <termios.h>
 #include <iostream>
 #endif
+#include <string>
 #include <filesystem>
 using namespace std;
 
@@ -26,6 +27,10 @@ Function func;
 Misc misc;
 UserInterface UI;
 hnfcOS os;
+
+// 版本號
+string ver = "0.3.0";
+string verStage = "Beta 2";
 
 int main() {
 #ifdef _WIN32

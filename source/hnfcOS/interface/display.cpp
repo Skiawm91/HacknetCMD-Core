@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "../os.h"
 #include "../../input/input.h"
 #include "../../console/console.h"
 #include <iostream>
@@ -6,9 +6,12 @@ using namespace std;
 
 extern ManageInput mi;
 extern Console con;
+extern string playerIP;
 
-void Display() {
+void hnfcOS::Display() {
     mi.kbDisable();
     cout << "\n\nDISPLAY ONCOMING...";
+    cout << "\nIP: " + playerIP;
+    cout.flush();
     mi.async(3);
 }

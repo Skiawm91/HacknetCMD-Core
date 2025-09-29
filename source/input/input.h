@@ -21,6 +21,11 @@ extern atomic<bool> running;
 extern atomic<bool> runningKb;
 extern atomic<bool> runningMouse;
 extern atomic<bool> mouseSync;
+#ifdef __APPLE__
+extern atomic<bool> isQuary;
+extern atomic<int> cursorRow;
+extern atomic<int> cursorCol;
+#endif
 
 struct Button {
     string name;

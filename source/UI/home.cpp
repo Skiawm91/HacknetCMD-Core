@@ -9,6 +9,7 @@ using namespace std;
 extern ManageInput mi;
 extern Function func;
 extern UserInterface UI;
+extern string ver, verStage;
 
 void UserInterface::Home(){
     int chse;
@@ -17,7 +18,8 @@ void UserInterface::Home(){
     while(true) {
         mi.kbDisable();
         chse = 0;
-        HNASM("ui.chns", "LOGO");
+        if (verStage != "Release") HNASM("ui.chns", "LOGO", "VER", ver + " [" + verStage + "]");
+        else HNASM("ui.chns", "LOGO", "VER", ver);
         HNASM("ui.chns", "HOME");
         mi.btnAdd("PLAY", 2, 8, 30, 3);
         mi.btnAdd("SETTINGS", 2, 14, 30, 3);

@@ -2,6 +2,8 @@
 #include "console.h"
 #ifdef _WIN32
 #include <windows.h>
+#elif __APPLE__
+#include "../input/input.h"
 #endif
 #include <iostream>
 #include <vector>
@@ -73,8 +75,25 @@ void Console::bufferRestore() {
 #endif
 
 #ifdef __APPLE__
+bool modeNow = 0;
+int backupX, backupY;
 void Console::bufferChange(int mode) {
-    if (mode == 0) cout << "\033[?1049l" << flush;
-    else if (mode == 1) cout << "\033[?1049h" << flush;
+    if (modeNow == 0) {
+        std::cout << "\033[6n" << flush; // 透過 Input 函式來幫助取得
+        while(!isQuary); // 等待開始
+        while(isQuary); // 換成等待完成
+        backupX = cursorCol;
+        backupY = cursorRow;
+    }
+    if (mode == 0) {
+        cout << "\033[?1049l" << flush;
+        cout << "\033[" << backupY << ";" << backupX << "H";
+        cout.flush();
+        modeNow = 0;
+    }
+    else if (mode == 1) {
+        cout << "\033[?1049h" << flush;
+        modeNow = 1;
+    }
 }
 #endif

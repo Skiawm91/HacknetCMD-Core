@@ -5,7 +5,6 @@
 #include "../config/config.h"
 #include "../input/input.h"
 #include "../hnasm/hnasm.h"
-#include "interface/interface.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -36,6 +35,7 @@ void hnfcOS::Interface() {
     extern string playerName;
     extern string playerLang;
     extern string playerIP;
+    targetIP.clear();
     #ifdef __APPLE__
     extern int promptPos;
     #endif
@@ -49,15 +49,12 @@ void hnfcOS::Interface() {
         if (btnName == "DISPLAY") mode = 2;
     });
     while(true) {
-        #ifdef _WIN32
-        con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
-        con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
-        #elif __APPLE__
+        #ifdef __APPLE__
         if (mode == 1) con.bufferChange(0);
         else if (mode == 2) con.bufferChange(1);
-        con.printAt(0, 0, 0, promptPos, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
-        con.printAt(0, 1, 0, promptPos, overlines(120 * (cfg.settings.cmdsize + 1)));
         #endif
+        con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
+        con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
         if (mode == 0) {
             mi.btnDel(vector<string>{"EXIT", "TERMINAL", "DISPLAY"});
             mi.cbClean();
@@ -65,6 +62,8 @@ void hnfcOS::Interface() {
         } else if (mode == 1) {
             #ifdef _WIN32
             con.bufferRestore();
+            #elif __APPLE__
+            cout << "\033[2K\r" << flush; // 先清掉
             #endif
             Terminal();
         } else if (mode == 2) Display();

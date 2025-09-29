@@ -4,29 +4,11 @@
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__
+#include "../input/input.h"
 #include <iostream>
-#include <termios.h>
-#include <unistd.h>
+#include <regex>
 #endif
 using namespace std;
-
-#ifdef __APPLE__
-std::pair<int,int> getCursorPosition() {
-    std::cout << "\033[6n" << std::flush; // DSR
-    char buf[32];
-    int i = 0;
-    char ch;
-    while (read(STDIN_FILENO, &ch, 1) == 1) {
-        buf[i++] = ch;
-        if (ch == 'R') break;
-    }
-    buf[i] = '\0';
-    int row = 0, col = 0;
-    if (sscanf(buf, "\033[%d;%dR", &row, &col) == 2)
-        return {row, col};
-    return {0, 0};
-}
-#endif
 
 #ifdef _WIN32
 void Console::printAt(const int x, const int y, const string& text) {
@@ -41,9 +23,13 @@ void Console::printAt(const int x, const int y, const string& text) {
     SetConsoleCursorPosition(hOut, origPos);
 }
 #elif __APPLE__
-void Console::printAt(const int x, const int y, const int backX, const int backY, const string& text) {
-    std::cout << "\033[" << (y+1) << ";" << (x+1) << "H" << text;
-    std::cout << "\033[" << (backY+1) << ";" << (backX+1) << "H";
+void Console::printAt(int x, int y, const std::string& text) {
+    std::cout << "\033[6n" << flush; // 透過 Input 函式來幫助取得
+    while(!isQuary); // 等待開始
+    while(isQuary); // 換成等待完成
+    std::cout << "\033[" << (y+1) << ";" << (x+1) << "H";
+    std::cout << text;
+    std::cout << "\033[" << cursorRow << ";" << cursorCol << "H";
     std::cout.flush();
 }
 #endif

@@ -10,12 +10,11 @@ class Console {
 public:
     void clear();
     void resize(const int width, const int height);
-    #ifdef _WIN32
     void printAt(int x, int y, const std::string& text);
+    #ifdef _WIN32
     void bufferSave(int startRow = 0);
     void bufferRestore();
     #elif __APPLE__
-    void printAt(const int x, const int y, const int backX, const int backY, const std::string& text);
     void bufferChange(int mode = 0);
     #endif
 private:

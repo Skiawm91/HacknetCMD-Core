@@ -12,7 +12,8 @@
 using namespace std;
 
 string kbPrompt;
-atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, inputAte, kbEnabled, mouseSync;
+atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, inputAte, kbEnabled, mouseSync, isQuary;
+atomic<int> cursorRow, cursorCol;
 
 size_t utf8_width(const string &s) {
     size_t w = 0;
@@ -223,8 +224,47 @@ void ManageInput::input() {
                             consumed = true;
                         }
                     }
-                    // --- Arrow / CSI like ESC [ A/B/C/D or function keys
-                    else if (seq.size() >= 3 && seq[1] == '[' && ( (seq[2]>='A' && seq[2]<='D') || (seq[2]>='0' && seq[2]<='9') )) {
+                    // ESC[6n or function keys 
+                    else if (seq.size() >= 3 && seq[1] == '[' && (seq[2]>='0' && seq[2]<='9')) {
+                        size_t posR = string::npos;
+
+                        // 嘗試先找 R
+                        for (size_t k = 2; k < seq.size(); ++k) {
+                            if (seq[k] == 'R') { posR = k; break; }
+                        }
+
+                        // 如果還沒找到 R，短時間多讀幾次
+                        int totalWait = 0;
+                        while (posR == string::npos && totalWait < 100) { // 最多等待 100ms
+                            char more[16];
+                            int mr = read_with_timeout(STDIN_FILENO, more, sizeof(more), 10); // 每次 10ms
+                            if (mr > 0) {
+                                seq.append(more, mr);
+                                for (size_t k = 2; k < seq.size(); ++k) {
+                                    if (seq[k] == 'R') { posR = k; break; }
+                                }
+                            }
+                            totalWait += 10;
+                        }
+
+                        // 如果找到完整 R，就解析 row/col
+                        if (posR != string::npos) {
+                            isQuary = true;
+                            string inner = seq.substr(2, posR - 2);
+                            int row = 0, col = 0;
+                            if (sscanf(inner.c_str(), "%d;%d", &row, &col) == 2) {
+                                cursorRow = row;
+                                cursorCol = col;
+                                isQuary = false;
+                            }
+                            // consume 已解析部分
+                            int consumeCount = (int)min(seq.size(), posR + 1);
+                            i += consumeCount;
+                            consumed = true;
+                        }
+                    }
+                    // --- Arrow / CSI like ESC [ A/B/C/D
+                    else if (seq.size() >= 3 && seq[1] == '[' && ( (seq[2]>='A' && seq[2]<='D') )) {
                         // 常見 arrow: ESC [ A/B/C/D
                         if (seq[2] >= 'A' && seq[2] <= 'D') {
                             // handle arrow for history/cursor only if kbEnabled
