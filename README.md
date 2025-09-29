@@ -4,15 +4,15 @@
 This game likely Hacknet from Steam (I guess you already know).
 <br/>
 <br/>
-Before make C++ ver, I just joined "Hacknet For CMD | Official Server" from Discord.
+Before make C++ ver, I just joined "Hacknet for CMD | Official Server" from Discord.
 <br/>
 <br>
-Then, a person "65536Java (NULL)" joined and sent a program about Hacknet4CMD.
+Then, a person "65536Java (NULL)" joined and sent a program about HacknetCMD.
 <br/>
-And, this program remade Hacknet4CMD with Java.
+And, this program remade "Hacknet for CMD" with Java.
 <br/>
 <br>
-So, I made a program remade Hacknet4CMD in a day.
+So, I made a program remade "Hacknet for CMD" in a day.
 <br/>
 With C++, just like "Minecraft: Bedrock Edition" lol.
 ## How to use?
