@@ -1,10 +1,10 @@
 #define _HAS_STD_BYTE 0
+import UI;
 #include "config/config.h"
 #include "function/function.h"
 #include "console/console.h"
 #include "misc/misc.h"
 #include "input/input.h"
-#include "UI/UI.h"
 #include "hnfcOS/os.h"
 #ifdef _WIN32
 #include <windows.h>
@@ -30,7 +30,7 @@ hnfcOS os;
 
 // 版本號
 string ver = "0.3.0";
-string verStage = "Beta 2";
+string verStage = "Beta 3";
 
 int main() {
 #ifdef _WIN32
