@@ -10,10 +10,9 @@ if not defined VSPath (
     exit
 )
 call "%VSPath%\Common7\Tools\VsDevCmd.bat"
-rmdir /S /Q build > nul
-mkdir build build\assets > nul
-xcopy /E assets build\assets > nul
-for /f "delims=" %%F in ('dir /b /s source\*.cpp ^| findstr /i /v "\.cppm$"') do (
+rmdir /S /Q interface > nul
+mkdir interface > nul
+for /r "source" %%F in (*.cppm) do (
     set "name=%%~nF"
     set "folder=%%~dpF"
     set "folder=!folder:~7!"  :: 假設 source\ 是 7 個字元，視你的路徑調整
@@ -21,21 +20,15 @@ for /f "delims=" %%F in ('dir /b /s source\*.cpp ^| findstr /i /v "\.cppm$"') do
     set "last="
     for %%A in ("!folder!") do set "last=%%~nxA"
     if "!last!"=="source" (
-        set "obj=Build\!name!.obj"
+        set "ifc=interface\!name!.ifc"
     ) else (
-        set "obj=Build\!last!.!name!.obj"
+        set "ifc=interface\!last!.!name!.ifc"
     )
-    echo !last!\!name!.cpp
-    cl /c /EHsc /nologo /std:c++20 /utf-8 /reference interface\*.ifc "%%F" /Fo!obj! | findstr /V "!name!.cpp"
+    echo !last!\!name!.cppm
+    cl /c /EHsc /nologo /std:c++20 /utf-8 /interface /TP "%%F" /Fo!ifc! | findstr /V "!name!.cppm"
 )
 echo.
-echo Compiling...
-link /nologo /OUT:Build\HacknetCMD.exe Build\*.obj icon.res advapi32.lib winmm.lib user32.lib windowsapp.lib
-echo Cleaning...
-del /F /Q Build\*.obj
-echo.
 echo Done.
-echo Press Enter to Run Application.
+echo Press Enter to Exit.
 pause > nul
-cd build
-start HacknetCMD.exe
+exit

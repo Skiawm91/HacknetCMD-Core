@@ -1,9 +1,9 @@
-#include "UI.h"
 #include "../input/input.h"
 #include "../config/config.h"
 #include "../console/console.h"
 #include "../misc/misc.h"
 #include "../hnasm/hnasm.h"
+module UI;
 using namespace std;
 
 extern ManageInput mi;
