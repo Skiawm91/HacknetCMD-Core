@@ -1,4 +1,5 @@
 #define _HAS_STD_BYTE 0
+#include "UI.h"
 #include "../input/input.h"
 #include "../config/config.h"
 #include "../misc/misc.h"
@@ -14,7 +15,6 @@
 #include <filesystem>
 #include <sstream>
 #include <algorithm>
-module UI;
 using namespace std;
 
 extern ManageInput mi;

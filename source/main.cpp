@@ -1,8 +1,8 @@
 #define _HAS_STD_BYTE 0
-import UI;
 #include "config/config.h"
 #include "function/function.h"
 #include "console/console.h"
+#include "UI/UI.h"
 #include "misc/misc.h"
 #include "input/input.h"
 #include "hnfcOS/os.h"

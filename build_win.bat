@@ -26,7 +26,7 @@ for /f "delims=" %%F in ('dir /b /s source\*.cpp ^| findstr /i /v "\.cppm$"') do
         set "obj=Build\!last!.!name!.obj"
     )
     echo !last!\!name!.cpp
-    cl /c /EHsc /nologo /std:c++20 /utf-8 /reference interface\*.ifc "%%F" /Fo!obj! | findstr /V "!name!.cpp"
+    cl /c /EHsc /nologo /std:c++20 /utf-8 "%%F" /Fo!obj! | findstr /V "!name!.cpp"
 )
 echo.
 echo Compiling...

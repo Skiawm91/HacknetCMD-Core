@@ -1,5 +1,5 @@
-export module UI;
-export class UserInterface {
+#pragma once
+class UserInterface {
 public:
     void Home();
     void Login();

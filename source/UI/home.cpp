@@ -1,9 +1,9 @@
 ﻿#define _HAS_STD_BYTE 0
+#include "UI.h"
 #include "../function/function.h"
 #include "../input/input.h"
 #include "../hnasm/hnasm.h"
 #include <vector>
-module UI;
 using namespace std;
 
 extern ManageInput mi;
