@@ -1,6 +1,6 @@
 #define _HAS_STD_BYTE 0
 #include "CHNScript.h"
-#include "../../function/function.h"
+#include "function.h"
 #include <string>
 #ifdef _WIN32
 #include <windows.h>

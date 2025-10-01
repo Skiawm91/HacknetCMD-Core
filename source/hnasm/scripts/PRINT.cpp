@@ -1,6 +1,6 @@
 #define _HAS_STD_BYTE 0
 #include "CHNScript.h"
-#include "../../input/input.h"
+#include "input.h"
 #ifdef _WIN32
 #include <windows.h>
 #else

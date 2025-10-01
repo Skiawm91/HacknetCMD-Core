@@ -1,7 +1,7 @@
 #include "os.h"
-#include "../config/config.h"
-#include "../console/console.h"
-#include "../hnasm/hnasm.h"
+#include "config.h"
+#include "console.h"
+#include "hnasm.h"
 #include <string>
 #include <iostream>
 #include <fstream>

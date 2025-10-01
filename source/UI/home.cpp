@@ -1,8 +1,8 @@
 ﻿#define _HAS_STD_BYTE 0
 #include "UI.h"
-#include "../function/function.h"
-#include "../input/input.h"
-#include "../hnasm/hnasm.h"
+#include "function.h"
+#include "input.h"
+#include "hnasm.h"
 #include <vector>
 using namespace std;
 

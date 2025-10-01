@@ -1,6 +1,6 @@
-#include "../os.h"
-#include "../../input/input.h"
-#include "../../console/console.h"
+#include "os.h"
+#include "input.h"
+#include "console.h"
 #include <iostream>
 using namespace std;
 

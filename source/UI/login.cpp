@@ -1,11 +1,12 @@
 #define _HAS_STD_BYTE 0
 #include "UI.h"
-#include "../input/input.h"
-#include "../config/config.h"
-#include "../misc/misc.h"
-#include "../hnasm/hnasm.h"
-#include "../crypto/crypto.h"
-#include "../hnfcOS/os.h"
+#include "crypto.h"
+#include "config.h"
+#include "console.h"
+#include "misc.h"
+#include "input.h"
+#include "hnasm.h"
+#include "os.h"
 #include <string>
 #ifdef _WIN32
 #include <windows.h>

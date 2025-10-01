@@ -21,12 +21,12 @@ for /f "delims=" %%F in ('dir /b /s source\*.cpp ^| findstr /i /v "\.cppm$"') do
     set "last="
     for %%A in ("!folder!") do set "last=%%~nxA"
     if "!last!"=="source" (
-        set "obj=Build\!name!.obj"
+        set "obj=build\!name!.obj"
     ) else (
-        set "obj=Build\!last!.!name!.obj"
+        set "obj=build\!last!.!name!.obj"
     )
     echo !last!\!name!.cpp
-    cl /c /EHsc /nologo /std:c++20 /utf-8 "%%F" /Fo!obj! | findstr /V "!name!.cpp"
+    cl /c /EHsc /nologo /I"source\include" /std:c++20 /utf-8 "%%F" /Fo!obj! | findstr /V "!name!.cpp"
 )
 echo.
 echo Compiling...

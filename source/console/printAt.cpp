@@ -4,7 +4,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__
-#include "../input/input.h"
+#include "input.h"
 #include <iostream>
 #include <regex>
 #endif

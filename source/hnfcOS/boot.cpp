@@ -1,8 +1,8 @@
 #define _HAS_STD_BYTE 0
 #include "os.h"
-#include "../config/config.h"
-#include "../function/function.h"
-#include "../hnasm/hnasm.h"
+#include "config.h"
+#include "function.h"
+#include "hnasm.h"
 #include <iostream>
 #include <string>
 #ifdef _WIN32

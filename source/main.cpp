@@ -1,11 +1,11 @@
 #define _HAS_STD_BYTE 0
-#include "config/config.h"
-#include "function/function.h"
-#include "console/console.h"
-#include "UI/UI.h"
-#include "misc/misc.h"
-#include "input/input.h"
-#include "hnfcOS/os.h"
+#include "config.h"
+#include "function.h"
+#include "console.h"
+#include "UI.h"
+#include "misc.h"
+#include "input.h"
+#include "os.h"
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__

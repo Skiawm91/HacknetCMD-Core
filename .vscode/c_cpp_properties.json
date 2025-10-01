@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "HacknetCMD-Cpp",
+            "cppStandard": "c++20",
+            "includePath": [
+                "${workspaceFolder}/source/include"
+            ]
+        }
+    ],
+    "version": 4
+}

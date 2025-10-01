@@ -1,5 +1,5 @@
 #include "config.h"
-#include "../console/console.h"
+#include "console.h"
 #include <vector>
 using namespace std;
 

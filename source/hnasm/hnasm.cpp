@@ -1,5 +1,5 @@
 #include "hnasm.h"
-#include "scripts/CHNScript.h"
+#include "CHNScript.h"
 #include <optional>
 #include <fstream>
 #include <string>

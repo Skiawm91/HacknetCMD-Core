@@ -1,7 +1,7 @@
-#include "../os.h"
-#include "../../input/input.h"
-#include "../../config/config.h"
-#include "../../console/console.h"
+#include "os.h"
+#include "input.h"
+#include "config.h"
+#include "console.h"
 #include <sstream>
 #include <vector>
 using namespace std;

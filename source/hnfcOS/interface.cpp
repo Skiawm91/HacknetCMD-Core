@@ -1,10 +1,10 @@
 #define _HAS_STD_BYTE 0
 #include "os.h"
-#include "../function/function.h"
-#include "../console/console.h"
-#include "../config/config.h"
-#include "../input/input.h"
-#include "../hnasm/hnasm.h"
+#include "function.h"
+#include "console.h"
+#include "config.h"
+#include "input.h"
+#include "hnasm.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
