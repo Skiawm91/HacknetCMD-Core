@@ -31,17 +31,17 @@ void UserInterface::Login() {
     playerName = cfg.data.load("config/booted.hnd", 0);
     int chse;
     while(true) {
-        mi.kbEnable();
+        mi.kb.enable();
         chse = 0;
         if (verStage != "Release") HNASM("ui.chns", "LOGO", "VER", ver + " [" + verStage + "]");
         else HNASM("ui.chns", "LOGO", "VER", ver);
         if (!playerName.empty()) HNASM("ui.chns", "USER", "PLAYER", string(playerName + "]") + string(16 - playerName.size(), ' '));
         else HNASM("ui.chns", "USER", "PLAYER", string("N/A]") + string(13, ' '));
-        mi.btnAdd("LOGIN", 2, 8, 30, 3);
-        if (!playerName.empty()) mi.btnAdd("CONTINUE", 2, 11, 30, 3);  
-        mi.btnAdd("REGISTER", 2, 14, 30, 3);  
-        mi.btnAdd("BACK", 2, 17, 30, 3);
-        mi.cbCreate([&](const string& btnName) {
+        mi.mouse.btnAdd("LOGIN", 2, 8, 30, 3);
+        if (!playerName.empty()) mi.mouse.btnAdd("CONTINUE", 2, 11, 30, 3);  
+        mi.mouse.btnAdd("REGISTER", 2, 14, 30, 3);  
+        mi.mouse.btnAdd("BACK", 2, 17, 30, 3);
+        mi.mouse.cbCreate([&](const string& btnName) {
             if (btnName == "LOGIN") chse = 1;
             if (btnName == "CONTINUE") chse = 2;
             if (btnName == "REGISTER") chse = 3;
@@ -54,20 +54,20 @@ void UserInterface::Login() {
         } else if (enterDetected) {
             enterDetected = false;
         }
-        mi.btnDel(vector<string>{"LOGIN", "CONTINUE", "REGISTER", "BACK"});
-        mi.cbClean();
+        mi.mouse.btnDel(vector<string>{"LOGIN", "CONTINUE", "REGISTER", "BACK"});
+        mi.mouse.cbClean();
         switch(chse) {
             case 1:
                 while(true) {
                     HNASM("logUI/login.chns", "NAME_" + misc.toLangName(cfg.settings.language));
-                    mi.spReset();
+                    mi.kb.spReset();
                     mi.async(2);
                     if (escDetected) {
                         escDetected = false;
                         break;
                     } else if (enterDetected) {
                         enterDetected = false;
-                        input = mi.getInput();
+                        input = mi.kb.getInput();
                     }
                     transform(input.begin(), input.end(), input.begin(), ::tolower);
                     name = input;
@@ -76,14 +76,14 @@ void UserInterface::Login() {
                         if (!cfg.data.loaded) HNASM("logUI/login.chns", "ERROR");
                         else {
                             HNASM("logUI/login.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
-                            mi.spReset();
+                            mi.kb.spReset();
                             mi.async(2);
                             if (escDetected) {
                                 escDetected = false;
                                 break;
                             } else if (enterDetected) {
                                 enterDetected = false;
-                                input = mi.getInput();
+                                input = mi.kb.getInput();
                             }
                             shapwd = SHA256Encrypt(input);
                             if (shapwd == tgshapwd) {
@@ -115,48 +115,48 @@ void UserInterface::Login() {
                     while (true) {
                         HNASM("logUI/register.chns", "REGISTER");
                         HNASM("logUI/register.chns", "NAME_" + misc.toLangName(cfg.settings.language));
-                        mi.spReset();
+                        mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
                             escDetected = false;
                             break;
                         } else if (enterDetected) {
                             enterDetected = false;
-                            input = mi.getInput();
+                            input = mi.kb.getInput();
                         }
                         name = input;
                         HNASM("logUI/register.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
-                        mi.spReset();
+                        mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
                             escDetected = false;
                             break;
                         } else if (enterDetected) {
                             enterDetected = false;
-                            input = mi.getInput();
+                            input = mi.kb.getInput();
                         }
                         pwd[0] = input;
                         HNASM("logUI/register.chns", "CONFIRM_" + misc.toLangName(cfg.settings.language));
-                        mi.spReset();
+                        mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
                             escDetected = false;
                             break;
                         } else if (enterDetected) {
                             enterDetected = false;
-                            input = mi.getInput();
+                            input = mi.kb.getInput();
                         }
                         pwd[1] = input;
                         chse = 0;
                         HNASM("logUI/register.chns", "DETAILS_" + misc.toLangName(cfg.settings.language));
                         while(true) {
-                            mi.btnAdd("CONFIRM", 1, 8, 20, 3);
-                            mi.btnAdd("CANCEL", 1, 11, 20, 3);
-                            mi.cbCreate([&](const string& btnName){
+                            mi.mouse.btnAdd("CONFIRM", 1, 8, 20, 3);
+                            mi.mouse.btnAdd("CANCEL", 1, 11, 20, 3);
+                            mi.mouse.cbCreate([&](const string& btnName){
                                 if (btnName == "CANCEL") chse = 2;
                             });
                             mouseSync = true;
-                            mi.spReset();
+                            mi.kb.spReset();
                             mi.async(1);
                             if (escDetected) {
                                 escDetected = false;
@@ -164,8 +164,8 @@ void UserInterface::Login() {
                             } else if (enterDetected) {
                                 enterDetected = false;
                             }
-                            mi.btnDel(vector<string>{"CONFIRM", "CANCEL"});
-                            mi.cbClean();
+                            mi.mouse.btnDel(vector<string>{"CONFIRM", "CANCEL"});
+                            mi.mouse.cbClean();
                             if (chse == 2) break;
                             else {
                                 if (name.length() > 13) {

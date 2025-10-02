@@ -84,12 +84,7 @@ int main() {
     if (!filesystem::exists("config")) filesystem::create_directory("config");
     cfg.reload();
     // 初始化: 輸入
-    #ifdef _WIN32
-    mi.kbInput();
-    mi.mouseInput();
-    #elif __APPLE__
-    mi.input();
-    #endif
+    mi.initial();
     UI.Home();
     return 0;
 }

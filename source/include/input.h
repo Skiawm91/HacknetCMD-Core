@@ -34,40 +34,87 @@ struct Button {
 
 class ManageInput {
 public:
+    ManageInput() : kb(this), mouse(this) {} // kb, mouse 綁定 this
     #ifdef _WIN32
     HANDLE hIn;
     #endif
-
-    // 鍵盤功能
-    void kbDisable() { kbEnabled = false; }    // 停用鍵盤輸入
-    void kbEnable()  { kbEnabled = true; }     // 啟用鍵盤輸入
-    bool isKbEnabled() const { return kbEnabled; }
-
     using Callback = function<void(const string&)>;
+    struct Keyboard {
+    public:
+        Keyboard(ManageInput* p) : parent(p) {}
+        #ifdef _WIN32
+        void initial();                   // 啟動滑鼠 thread (Windows)
+        void stop();                    // 停止滑鼠 thread
+        #elif __APPLE__
+        friend struct Mac;
+        #endif
+        void disable() { kbEnabled = false; }    // 停用鍵盤輸入
+        void enable()  { kbEnabled = true; }     // 啟用鍵盤輸入
+        bool isEnabled() const { return kbEnabled; }
+        string getInput();      // 取得輸入後的字串
+        void spReset();
+    private:
+        ManageInput* parent;
+        // 鍵盤/密碼
+        vector<int> blockedKeys;
+        atomic<bool> blocking{false};
+        thread kbThread;
+        atomic<bool> running{false};
+        string lastInput;
+        mutex inputMutex;
+    };
+    Keyboard kb;
+    
+    struct Mouse {
+    public:
+        Mouse(ManageInput* p) : parent(p) {}
+        // 滑鼠功能
+        #ifdef _WIN32
+        void initial();                   // 啟動滑鼠 thread (Windows)
+        void stop();                    // 停止滑鼠 thread
+        #elif __APPLE__
+        friend struct Mac;
+        #endif
+        void btnAdd(const string& name, int x, int y, int w, int h);
+        void btnDel(const vector<string>& names);
+        void cbCreate(Callback cb);          // 設定滑鼠 callback
+        void cbClean();                      // 清理 callback
+    private:
+        ManageInput* parent;
+        vector<Button> buttons;
+        atomic<bool> runningMouse{false};
+        thread mouseThread;
+        Callback currentCallback{nullptr};
+        mutex cbMutex;
+        bool pointInButton(int px, int py, const Button& b) const {
+            return px >= b.x && px < b.x + b.width &&
+            py >= b.y && py < b.y + b.height;
+        }
+    };
+    Mouse mouse;
 
-    #ifdef _WIN32
-    void kbInput();         // 啟動鍵盤監聽 (Windows)
-    void stopKb();          // 停止鍵盤監聽 (Windows)
-    #endif
-    string getInput();      // 取得輸入後的字串
-
-    void spReset();
-
-    // 滑鼠功能
-    #ifdef _WIN32
-    void mouseInput();                   // 啟動滑鼠 thread (Windows)
-    void stopMouse();                    // 停止滑鼠 thread
-    #endif
-    void btnAdd(const string& name, int x, int y, int w, int h);
-    void btnDel(const vector<string>& names);
-    void cbCreate(Callback cb);          // 設定滑鼠 callback
-    void cbClean();                      // 清理 callback
-
-    // macOS / 整合版輸入
     #ifdef __APPLE__
-    void input(); // 結合鍵盤 + VT100 滑鼠，支持 kbEnable/kbDisable & mouseSync
-    void stopInput();
+    struct Mac {
+        void initial();
+        void stop();
+    };
+    Mac mac;
     #endif
+
+    #ifdef _WIN32
+    void initial() {
+        kb.initial();
+        mouse.initial();
+    }
+    void stop() {
+        kb.stop();
+        mouse.stop();
+    };
+    #elif __APPLE__
+        void mac.initial();
+        void mac.stop();
+    #endif
+
     // 同步等待
     void async(const int type) {
         if (type == 1) { // Mouse + Keyboard
@@ -115,23 +162,7 @@ public:
             }
         }
     }
-
-    #ifdef _WIN32
-    void stopAll() {
-        stopKb();
-        stopMouse();
-    };
-    #endif
-
 private:
-    // 鍵盤/密碼
-    vector<int> blockedKeys;
-    atomic<bool> blocking{false};
-    thread kbThread;
-    atomic<bool> running{false};
-    string lastInput;
-    mutex inputMutex;
-
     // 在 ManageInput 類中新增成員變數：
     #ifdef _WIN32
     COORD startPos;
@@ -142,16 +173,4 @@ private:
     #else
     int startCol = 0;
     #endif
-
-    // 滑鼠
-    vector<Button> buttons;
-    atomic<bool> runningMouse{false};
-    thread mouseThread;
-    Callback currentCallback{nullptr};
-    mutex cbMutex;
-
-    bool pointInButton(int px, int py, const Button& b) const {
-        return px >= b.x && px < b.x + b.width &&
-               py >= b.y && py < b.y + b.height;
-    }
 };

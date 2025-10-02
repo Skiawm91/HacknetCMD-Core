@@ -38,7 +38,7 @@ size_t utf8_width(const string &s) {
     return w;
 }
 
-void ManageInput::kbInput() {
+void ManageInput::Keyboard::initial() {
     if (running) return;
     running = true;
     runningKb = true;
@@ -52,29 +52,29 @@ void ManageInput::kbInput() {
         // 初始化起始座標
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(hOut, &csbi);
-        startPos = csbi.dwCursorPosition;
+        parent->startPos = csbi.dwCursorPosition;
 
         auto redrawLine = [&](size_t cursor) {
             if (inputAte) return;
             HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-            COORD pos = startPos;
-            pos.X += static_cast<SHORT>(startCol);
+            COORD pos = parent->startPos;
+            pos.X += static_cast<SHORT>(parent->startCol);
             SetConsoleCursorPosition(hOut, pos);
-            string display = inputMasked ? string(buffer.size(), '*') : buffer;
+            string display = inputMasked ? string(parent->buffer.size(), '*') : parent->buffer;
             cout << display;
-            if (prevBufferLength > buffer.size()) {
-                cout << string(prevBufferLength - buffer.size(), ' ');
+            if (parent->prevBufferLength > parent->buffer.size()) {
+                cout << string(parent->prevBufferLength - parent->buffer.size(), ' ');
             }
-            pos.X = static_cast<SHORT>(startCol + cursor + startPos.X);
+            pos.X = static_cast<SHORT>(parent->startCol + cursor + parent->startPos.X);
             SetConsoleCursorPosition(hOut, pos);
             cout.flush();
-            prevBufferLength = buffer.size();
+            parent->prevBufferLength = parent->buffer.size();
         };
 
         while (running) {
             if (!kbEnabled) {
-                buffer.clear();
-                cursorPos = 0;
+                parent->buffer.clear();
+                parent->cursorPos = 0;
                 FlushConsoleInputBuffer(hIn);
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
                 continue;
@@ -91,51 +91,51 @@ void ManageInput::kbInput() {
                 } else if (c == '\r') { // Enter
                     {
                         lock_guard<mutex> lock(inputMutex);
-                        lastInput = buffer;
+                        lastInput = parent->buffer;
                     }
-                    if (!buffer.empty()) history.push_back(buffer);
+                    if (!parent->buffer.empty()) history.push_back(parent->buffer);
                     historyIndex = history.size();
-                    buffer.clear();
-                    cursorPos = 0;
+                    parent->buffer.clear();
+                    parent->cursorPos = 0;
                     enterDetected = true;
                     cout << "\n";
                     GetConsoleScreenBufferInfo(hOut, &csbi);
-                    startPos = csbi.dwCursorPosition; // 新行起始
+                    parent->startPos = csbi.dwCursorPosition; // 新行起始
                 } else if (c == '\b') { // Backspace
-                    if (cursorPos > 0) {
-                        buffer.erase(cursorPos - 1, 1);
-                        cursorPos--;
-                        redrawLine(cursorPos);
+                    if (parent->cursorPos > 0) {
+                        parent->buffer.erase(parent->cursorPos - 1, 1);
+                        parent->cursorPos--;
+                        redrawLine(parent->cursorPos);
                     }
                 } else if (c == 0 || c == -32) { // 特殊鍵
                     char c2 = _getch();
                     if (c2 == 75) { // ←
-                        if (cursorPos > 0) cursorPos--;
-                        redrawLine(cursorPos);
+                        if (parent->cursorPos > 0) parent->cursorPos--;
+                        redrawLine(parent->cursorPos);
                     } else if (c2 == 77) { // →
-                        if (cursorPos < buffer.size()) cursorPos++;
-                        redrawLine(cursorPos);
+                        if (parent->cursorPos < parent->buffer.size()) parent->cursorPos++;
+                        redrawLine(parent->cursorPos);
                     } else if (c2 == 72) { // ↑
                         if (!history.empty() && historyIndex > 0) {
                             historyIndex--;
-                            buffer = history[historyIndex];
-                            cursorPos = buffer.size();
-                            redrawLine(cursorPos);
+                            parent->buffer = history[historyIndex];
+                            parent->cursorPos = parent->buffer.size();
+                            redrawLine(parent->cursorPos);
                         }
                     } else if (c2 == 80) { // ↓
                         if (!history.empty() && historyIndex < history.size() - 1) {
                             historyIndex++;
-                            buffer = history[historyIndex];
+                            parent->buffer = history[historyIndex];
                         } else {
-                            buffer.clear();
+                            parent->buffer.clear();
                         }
-                        cursorPos = buffer.size();
-                        redrawLine(cursorPos);
+                        parent->cursorPos = parent->buffer.size();
+                        redrawLine(parent->cursorPos);
                     }
                 } else { // 一般字符
-                    buffer.insert(cursorPos, 1, c);
-                    cursorPos++;
-                    redrawLine(cursorPos);
+                    parent->buffer.insert(parent->cursorPos, 1, c);
+                    parent->cursorPos++;
+                    redrawLine(parent->cursorPos);
                 }
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
@@ -143,23 +143,23 @@ void ManageInput::kbInput() {
     });
 }
 
-void ManageInput::spReset() {
+void ManageInput::Keyboard::spReset() {
     promptPrinted = false;
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hOut, &csbi);
-    startPos = csbi.dwCursorPosition;
-    startCol = static_cast<int>(utf8_width(kbPrompt));
-    prevBufferLength = 0;
+    parent->startPos = csbi.dwCursorPosition;
+    parent->startCol = static_cast<int>(utf8_width(kbPrompt));
+    parent->prevBufferLength = 0;
 }
 
-void ManageInput::stopKb() {
+void ManageInput::Keyboard::stop() {
     running = false;
     runningKb = false;
     if (kbThread.joinable()) kbThread.join();
 }
 
-string ManageInput::getInput() {
+string ManageInput::Keyboard::getInput() {
     lock_guard<mutex> lock(inputMutex);
     return lastInput;
 }

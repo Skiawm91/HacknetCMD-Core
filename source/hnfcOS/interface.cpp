@@ -40,10 +40,10 @@ void hnfcOS::Interface() {
     extern int promptPos;
     #endif
     int mode = 1; // Terminal
-    mi.btnAdd("EXIT", 0, 0, 3, 1);
-    mi.btnAdd("TERMINAL", 5, 0, 10, 1);
-    mi.btnAdd("DISPLAY", 16, 0, 9, 1);
-    mi.cbCreate([&](const string& btnName){
+    mi.mouse.btnAdd("EXIT", 0, 0, 3, 1);
+    mi.mouse.btnAdd("TERMINAL", 5, 0, 10, 1);
+    mi.mouse.btnAdd("DISPLAY", 16, 0, 9, 1);
+    mi.mouse.cbCreate([&](const string& btnName){
         if (btnName == "EXIT") mode = 0;
         if (btnName == "TERMINAL") mode = 1;
         if (btnName == "DISPLAY") mode = 2;
@@ -56,8 +56,8 @@ void hnfcOS::Interface() {
         con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
         con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
         if (mode == 0) {
-            mi.btnDel(vector<string>{"EXIT", "TERMINAL", "DISPLAY"});
-            mi.cbClean();
+            mi.mouse.btnDel(vector<string>{"EXIT", "TERMINAL", "DISPLAY"});
+            mi.mouse.cbClean();
             return;
         } else if (mode == 1) {
             #ifdef _WIN32

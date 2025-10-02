@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "CHNScript.h"
+#include "hnasm/CHNScript.h"
 #include "function.h"
 #include <string>
 #ifdef _WIN32

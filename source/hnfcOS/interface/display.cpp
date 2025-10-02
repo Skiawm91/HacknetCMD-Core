@@ -9,7 +9,7 @@ extern Console con;
 extern string playerIP;
 
 void hnfcOS::Display() {
-    mi.kbDisable();
+    mi.kb.disable();
     cout << "\n\nDISPLAY ONCOMING...";
     cout << "\nIP: " + playerIP;
     cout.flush();

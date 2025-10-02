@@ -1,4 +1,4 @@
-#include "CHNScript.h"
+#include "hnasm/CHNScript.h"
 #include "hnasm.h"
 #include <sstream>
 #include <string>

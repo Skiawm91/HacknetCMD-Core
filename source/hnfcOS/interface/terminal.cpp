@@ -12,7 +12,7 @@ extern Console con;
 extern string playerIP;
 
 void hnfcOS::Terminal() {
-    mi.kbEnable();
+    mi.kb.enable();
     #ifdef __APPLE__
     extern int promptPos;
     #endif
@@ -22,11 +22,11 @@ void hnfcOS::Terminal() {
     inputMasked = inputAte = false;
     if (!targetIP.empty()) kbPrompt = targetIP + "@> ";
     else kbPrompt = "> ";
-    mi.spReset();
+    mi.kb.spReset();
     mi.async(11);
     if (enterDetected) {
         enterDetected = false;
-        fullCommand = mi.getInput();
+        fullCommand = mi.kb.getInput();
         if (!fullCommand.empty()) {
             istringstream iss(fullCommand);
             while (iss >> cmd) command.push_back(cmd);
