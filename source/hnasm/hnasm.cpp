@@ -5,9 +5,10 @@
 #include <string>
 #include <sstream>
 #include <regex>
+#include <vector>
 using namespace std;
 
-void HNASM(const string& fileName, const string& partName, const optional<string>& targetVar, const optional<string>& returnText) {
+void HNASM(const string& fileName, const string& partName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText) {
     string scriptPath = "assets/scripts/" + fileName;
     ifstream file(scriptPath);
     string line;
@@ -24,7 +25,17 @@ void HNASM(const string& fileName, const string& partName, const optional<string
             got >> command;
             getline(got, content);
             if (!content.empty() && content[0] == ' ') {content = content.substr(1);}
-            if (targetVar && returnText) content = regex_replace(content, regex("\\$\\{" + *targetVar + "\\}"), *returnText); // replace
+            if (targetVar && returnText) {
+                int i = 0;
+                for (const auto &tv : *targetVar) {
+                    int i2 = 0;
+                    for (const auto &rt : *returnText) {
+                        if (i == i2) content = regex_replace(content, regex("\\$\\{" + tv + "\\}"), rt); // replace
+                        ++i2;
+                    }
+                    ++i;
+                }
+            }
             if (command=="WAIT") {chns.WAIT(content);}
             else if (command=="CLEAR") {chns.CLEAR();}
             else if (command=="PRINT") {chns.PRINT(content);}

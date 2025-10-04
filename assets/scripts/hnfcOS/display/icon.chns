@@ -1,0 +1,54 @@
+BEGIN_ICON_DESKTOP
+PRINT
+PRINT        _____ 
+PRINT       /    /|
+PRINT      /____/ |  ${TARGETNAME}
+PRINT      |----| |  IP: ${TARGETIP}
+PRINT      | 〇 | /
+PRINT      |____|/
+PRINT
+END_ICON_DESKTOP
+
+BEGIN_ICON_LAPTOP
+PRINT
+PRINT        ___________
+PRINT        |         |
+PRINT        |         |  ${TARGETNAME}
+PRINT        |_________|  IP: ${TARGETIP}
+PRINT       /          /
+PRINT      /__________/
+PRINT
+END_ICON_LAPTOP
+
+BEGIN_ICON_NAS
+PRINT
+PRINT        ______
+PRINT       /     /|
+PRINT      /_____/ |  ${TARGETNAME}
+PRINT      |-----| |  IP: ${TARGETIP}
+PRINT      |-----| |
+PRINT      |_____|/
+PRINT
+END_ICON_NAS
+
+BEGIN_ICON_SERVER
+PRINT        ____________
+PRINT       /     /     /|
+PRINT      /_____/_____/ |
+PRINT      |-----|-----| |  ${TARGETNAME}
+PRINT      |-----|-----| |  IP: ${TARGETIP}
+PRINT      |-----|-----| /
+PRINT      |_____|_____|/
+PRINT
+END_ICON_SERVER
+
+BEGIN_ICON_PHONE
+PRINT
+PRINT       _____
+PRINT      |  ▭  |
+PRINT      |     |  ${TARGETNAME}
+PRINT      |     |  IP: ${TARGETIP}
+PRINT      |     |
+PRINT       ‾‾‾‾‾
+PRINT
+END_ICON_PHONE

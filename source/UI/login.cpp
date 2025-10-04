@@ -35,10 +35,10 @@ void UserInterface::Login() {
     while(true) {
         mi.kb.enable();
         chse = 0;
-        if (verStage != "Release") HNASM("ui.chns", "LOGO", "VER", ver + " [" + verStage + "]");
-        else HNASM("ui.chns", "LOGO", "VER", ver);
-        if (!playerName.empty()) HNASM("ui.chns", "USER", "PLAYER", string(playerName + "]") + string(16 - playerName.size(), ' '));
-        else HNASM("ui.chns", "USER", "PLAYER", string("N/A]") + string(13, ' '));
+        if (verStage != "Release") HNASM("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+        else HNASM("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
+        if (!playerName.empty()) HNASM("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
+        else HNASM("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
         mi.mouse.btnAdd("LOGIN", 2, 8, 30, 3);
         if (!playerName.empty()) mi.mouse.btnAdd("CONTINUE", 2, 11, 30, 3);  
         mi.mouse.btnAdd("REGISTER", 2, 14, 30, 3);  

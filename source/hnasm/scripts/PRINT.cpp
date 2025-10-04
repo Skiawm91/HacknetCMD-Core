@@ -28,8 +28,10 @@ void CHNScript::PRINT(const string& content) {
 void CHNScript::PRINTR(const string& content) {
     if (content.empty()) {
         cout << "\r";
+        cout.flush();
     } else {
         cout << "\r" << content;
+        cout.flush();
     }
 }
 

@@ -18,8 +18,8 @@ void UserInterface::Home(){
     while(true) {
         mi.kb.disable();
         chse = 0;
-        if (verStage != "Release") HNASM("ui.chns", "LOGO", "VER", ver + " [" + verStage + "]");
-        else HNASM("ui.chns", "LOGO", "VER", ver);
+        if (verStage != "Release") HNASM("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+        else HNASM("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
         HNASM("ui.chns", "HOME");
         mi.mouse.btnAdd("PLAY", 2, 8, 30, 3);
         mi.mouse.btnAdd("SETTINGS", 2, 14, 30, 3);
