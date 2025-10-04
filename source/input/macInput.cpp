@@ -8,7 +8,8 @@
 #include <cstring>
 #include <iostream>
 #include <chrono>
-#include <codecvt>
+#include <optional>
+#include <termios.h>
 using namespace std;
 
 string kbPrompt;
@@ -55,23 +56,24 @@ static int read_with_timeout(int fd, char *buf, int maxlen, int timeout_ms) {
     return 0;
 }
 
-void ManageInput::spReset() {
+void ManageInput::Keyboard::spReset() {
     // macOS: caller 控制 startCol（通常呼叫者知道 prompt 寬度）
     // 這裡我們把起始 column 設為 0（若需要可改為取得實際游標）
     promptPrinted = false;
-    startCol = static_cast<int>(utf8_width(kbPrompt));
+    parent->startCol = static_cast<int>(utf8_width(kbPrompt));
 }
 // single combined input loop for macOS
-void ManageInput::input() {
+void ManageInput::initial() {
     if (running) return;
     running = true;
 
-    kbThread = thread([this]() {
+    inputThread = thread([this]() {
         string buffer;
         size_t cursorPos = 0;
         vector<string> history;
         int historyIndex = -1;
         bool cbDone = false;
+        bool reading = false;
 
         // 確保 startCol 有合理值
         if (startCol < 0) startCol = 0;
@@ -153,12 +155,12 @@ void ManageInput::input() {
                         // 只有左鍵觸發 callback（btn & 0x03 == 0 表示左鍵按下）
                         if ((btn & 0x03) == 0) {
                             lock_guard<mutex> lock(cbMutex);
-                            if (currentCallback) currentCallback(buttons.size() ? string() : string()); // placeholder
+                            for (auto& [name, cb] : callbacks) if (cb) cb(buttons.size() ? string() : string()); // placeholder
                             // We MUST call callback with the actual button name:
                             // iterate to find which button contains (col,row)
                             for (auto &b : buttons) {
                                 if (pointInButton(col, row, b)) {
-                                    if (currentCallback) currentCallback(b.name);
+                                    for (auto& [name, cb] : callbacks) if (cb) cb(b.name);
                                     buffer.clear();
                                     cursorPos = 0;
                                     mouseSync = false;
@@ -204,7 +206,7 @@ void ManageInput::input() {
                                     lock_guard<mutex> lock(cbMutex);
                                     for (auto &b : buttons) {
                                         if (pointInButton(col, row, b)) {
-                                            if (currentCallback) currentCallback(b.name);
+                                            for (auto& [name, cb] : callbacks) if (cb) cb(b.name);
                                             buffer.clear();
                                             cursorPos = 0;
                                             mouseSync = false;
@@ -396,42 +398,42 @@ void ManageInput::input() {
                 i++;
             } // end while i<n
         } // end while running
-
     }); // end thread
 }
 
-void ManageInput::stopInput() {
+void ManageInput::stop() {
     running = false;
-    if (kbThread.joinable()) kbThread.join();
+    if (inputThread.joinable()) inputThread.join();
 }
 
-string ManageInput::getInput() {
-    lock_guard<mutex> lock(inputMutex);
-    return lastInput;
+string ManageInput::Keyboard::getInput() {
+    lock_guard<mutex> lock(parent->inputMutex);
+    return parent->lastInput;
 }
 
-void ManageInput::btnAdd(const string& name, int x, int y, int w, int h) {
-    buttons.push_back({name, x, y, w, h});
+void ManageInput::Mouse::btnAdd(const string& name, int x, int y, int w, int h) {
+    parent->buttons.push_back({name, x, y, w, h});
 }
 
-void ManageInput::btnDel(const vector<string>& names) {
-    buttons.erase(
-        remove_if(buttons.begin(), buttons.end(),
+void ManageInput::Mouse::btnDel(const vector<string>& names) {
+    parent->buttons.erase(
+        remove_if(parent->buttons.begin(), parent->buttons.end(),
                   [&](const Button& b) {
                       return find(names.begin(), names.end(), b.name) != names.end();
                   }),
-        buttons.end()
+        parent->buttons.end()
     );
 }
 
-void ManageInput::cbCreate(Callback cb) {
-    lock_guard<mutex> lock(cbMutex);
-    currentCallback = cb;
+void ManageInput::Mouse::cbCreate(const string& name, Callback cb) {
+    lock_guard<mutex> lock(parent->cbMutex);
+    parent->callbacks[name] = cb;
 }
 
-void ManageInput::cbClean() {
-    lock_guard<mutex> lock(cbMutex);
-    currentCallback = nullptr;
+void ManageInput::Mouse::cbClean(const optional<string>& name) {
+    lock_guard<mutex> lock(parent->cbMutex);
+    if (name) parent->callbacks.erase(*name);
+    else parent->callbacks.clear();
 }
 
 #endif

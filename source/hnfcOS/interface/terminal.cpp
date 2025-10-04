@@ -16,7 +16,6 @@ void hnfcOS::Terminal() {
     #ifdef __APPLE__
     extern int promptPos;
     #endif
-    static string targetIP;
     string fullCommand, cmd;
     vector<string> command;
     inputMasked = inputAte = false;
@@ -31,8 +30,8 @@ void hnfcOS::Terminal() {
             istringstream iss(fullCommand);
             while (iss >> cmd) command.push_back(cmd);
             if (command[0] == "connect") {
-                if (command[1] == playerIP) targetIP = playerIP;
-                else targetIP = playerIP;
+                if (command[1] == playerIP || command[1].empty()) targetIP = playerIP;
+                else if (command[1] == "4.31.168.192") targetIP = "4.31.168.192";
             }
             if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
         }

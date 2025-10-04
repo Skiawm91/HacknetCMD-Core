@@ -43,7 +43,7 @@ void hnfcOS::Interface() {
     mi.mouse.btnAdd("EXIT", 0, 0, 3, 1);
     mi.mouse.btnAdd("TERMINAL", 5, 0, 10, 1);
     mi.mouse.btnAdd("DISPLAY", 16, 0, 9, 1);
-    mi.mouse.cbCreate([&](const string& btnName){
+    mi.mouse.cbCreate("MENUBAR", [&](const string& btnName){
         if (btnName == "EXIT") mode = 0;
         if (btnName == "TERMINAL") mode = 1;
         if (btnName == "DISPLAY") mode = 2;

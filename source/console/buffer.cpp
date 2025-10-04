@@ -3,7 +3,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__
-#include "../input/input.h"
+#include "input.h"
 #endif
 #include <iostream>
 #include <vector>

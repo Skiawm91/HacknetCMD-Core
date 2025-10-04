@@ -4,6 +4,7 @@
 #include "config.h"
 #include "console.h"
 #include "misc.h"
+#include "function.h"
 #include "input.h"
 #include "hnasm.h"
 #include "os.h"
@@ -21,6 +22,7 @@ using namespace std;
 extern ManageInput mi;
 extern Misc misc;
 extern Config cfg;
+extern Function func;
 extern hnfcOS os;
 extern string ver, verStage;
 string playerName, playerLang;
@@ -41,7 +43,7 @@ void UserInterface::Login() {
         if (!playerName.empty()) mi.mouse.btnAdd("CONTINUE", 2, 11, 30, 3);  
         mi.mouse.btnAdd("REGISTER", 2, 14, 30, 3);  
         mi.mouse.btnAdd("BACK", 2, 17, 30, 3);
-        mi.mouse.cbCreate([&](const string& btnName) {
+        mi.mouse.cbCreate("USER", [&](const string& btnName) {
             if (btnName == "LOGIN") chse = 1;
             if (btnName == "CONTINUE") chse = 2;
             if (btnName == "REGISTER") chse = 3;
@@ -91,6 +93,8 @@ void UserInterface::Login() {
                                 playerLang = cfg.data.load("config/" + name + "/info.hnd", 1);
                                 cfg.data.del("config/booted.hnd", playerName);
                                 os.Boot();
+                                func.audio.stop();
+                                func.audio.play("AmbientDroneClipped.wav");
                                 return;
                             } else {
                                 HNASM("logUI/login.chns", "ERROR");
@@ -106,6 +110,8 @@ void UserInterface::Login() {
                     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
                     playerLang = cfg.data.load("config/" + lowerName + "/info.hnd", 1);
                     os.Initial(false);
+                    func.audio.stop();
+                    func.audio.play("AmbientDroneClipped.wav");
                     return;
                 }
                 break;
@@ -152,7 +158,7 @@ void UserInterface::Login() {
                         while(true) {
                             mi.mouse.btnAdd("CONFIRM", 1, 8, 20, 3);
                             mi.mouse.btnAdd("CANCEL", 1, 11, 20, 3);
-                            mi.mouse.cbCreate([&](const string& btnName){
+                            mi.mouse.cbCreate("DETAILS", [&](const string& btnName){
                                 if (btnName == "CANCEL") chse = 2;
                             });
                             mouseSync = true;

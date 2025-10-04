@@ -9,6 +9,8 @@
 #include <functional>
 #include <thread>
 #include <mutex>
+#include <unordered_map>
+#include <optional>
 using namespace std;
 
 extern string kbPrompt;
@@ -45,8 +47,6 @@ public:
         #ifdef _WIN32
         void initial();                   // 啟動滑鼠 thread (Windows)
         void stop();                    // 停止滑鼠 thread
-        #elif __APPLE__
-        friend struct Mac;
         #endif
         void disable() { kbEnabled = false; }    // 停用鍵盤輸入
         void enable()  { kbEnabled = true; }     // 啟用鍵盤輸入
@@ -56,12 +56,6 @@ public:
     private:
         ManageInput* parent;
         // 鍵盤/密碼
-        vector<int> blockedKeys;
-        atomic<bool> blocking{false};
-        thread kbThread;
-        atomic<bool> running{false};
-        string lastInput;
-        mutex inputMutex;
     };
     Keyboard kb;
     
@@ -72,34 +66,15 @@ public:
         #ifdef _WIN32
         void initial();                   // 啟動滑鼠 thread (Windows)
         void stop();                    // 停止滑鼠 thread
-        #elif __APPLE__
-        friend struct Mac;
         #endif
         void btnAdd(const string& name, int x, int y, int w, int h);
         void btnDel(const vector<string>& names);
-        void cbCreate(Callback cb);          // 設定滑鼠 callback
-        void cbClean();                      // 清理 callback
+        void cbCreate(const string& name, Callback cb);          // 設定滑鼠 callback
+        void cbClean(const optional<string>& name = nullopt);                      // 清理 callback
     private:
         ManageInput* parent;
-        vector<Button> buttons;
-        atomic<bool> runningMouse{false};
-        thread mouseThread;
-        Callback currentCallback{nullptr};
-        mutex cbMutex;
-        bool pointInButton(int px, int py, const Button& b) const {
-            return px >= b.x && px < b.x + b.width &&
-            py >= b.y && py < b.y + b.height;
-        }
     };
     Mouse mouse;
-
-    #ifdef __APPLE__
-    struct Mac {
-        void initial();
-        void stop();
-    };
-    Mac mac;
-    #endif
 
     #ifdef _WIN32
     void initial() {
@@ -111,8 +86,8 @@ public:
         mouse.stop();
     };
     #elif __APPLE__
-        void mac.initial();
-        void mac.stop();
+    void initial();
+    void stop();
     #endif
 
     // 同步等待
@@ -163,6 +138,31 @@ public:
         }
     }
 private:
+    #ifdef __APPLE__
+    thread inputThread;
+    #endif
+    // Keyboard
+    vector<int> blockedKeys;
+    atomic<bool> blocking{false};
+    #ifdef _WIN32
+    thread kbThread;
+    #endif
+    atomic<bool> running{false};
+    string lastInput;
+    mutex inputMutex;
+    // Mouse
+    vector<Button> buttons;
+    atomic<bool> runningMouse{false};
+    #ifdef _WIN32
+    thread mouseThread;
+    #endif
+    Callback currentCallback{nullptr};
+    unordered_map<string, Callback> callbacks;
+    mutex cbMutex;
+    bool pointInButton(int px, int py, const Button& b) const {
+        return px >= b.x && px < b.x + b.width &&
+        py >= b.y && py < b.y + b.height;
+    }
     // 在 ManageInput 類中新增成員變數：
     #ifdef _WIN32
     COORD startPos;

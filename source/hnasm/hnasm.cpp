@@ -7,7 +7,7 @@
 #include <regex>
 using namespace std;
 
-void HNASM(const string& fileName, const string& partName, const optional<string> targetVar, const optional<string> returnText) {
+void HNASM(const string& fileName, const string& partName, const optional<string>& targetVar, const optional<string>& returnText) {
     string scriptPath = "assets/scripts/" + fileName;
     ifstream file(scriptPath);
     string line;

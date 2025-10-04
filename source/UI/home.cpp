@@ -24,7 +24,7 @@ void UserInterface::Home(){
         mi.mouse.btnAdd("PLAY", 2, 8, 30, 3);
         mi.mouse.btnAdd("SETTINGS", 2, 14, 30, 3);
         mi.mouse.btnAdd("QUIT", 2, 17, 30, 3);
-        mi.mouse.cbCreate([&](const string& btnName){
+        mi.mouse.cbCreate("HOME", [&](const string& btnName){
             if (btnName == "PLAY") chse = 1;
             if (btnName == "SETTINGS") chse = 3;
             if (btnName == "QUIT") chse = 4;
@@ -46,7 +46,7 @@ void UserInterface::Home(){
                         HNASM("ui.chns", "QUIT");
                         mi.mouse.btnAdd("QUIT", 1, 2, 30, 3);
                         mi.mouse.btnAdd("CANCEL", 1, 5, 30, 3);
-                        mi.mouse.cbCreate([&](const string& btnName){
+                        mi.mouse.cbCreate("QUIT", [&](const string& btnName){
                             if (btnName == "QUIT") chse = 1;
                             if (btnName == "CANCEL") chse = 2;
                         });

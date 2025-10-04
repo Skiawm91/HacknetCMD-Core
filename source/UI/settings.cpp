@@ -27,7 +27,7 @@ void UserInterface::Settings() {
         mi.mouse.btnAdd("LANGUAGE", 1, 4, 20, 3);
         mi.mouse.btnAdd("CMDSIZE", 1, 7, 20, 3);
         mi.mouse.btnAdd("BACK", 1, 10, 20, 3);
-        mi.mouse.cbCreate([&](const string& btnName){
+        mi.mouse.cbCreate("SETTINGS", [&](const string& btnName){
             if (btnName == "VERBOSE") cfg.data.replace("config/config.hnd", "VERBOSE=" + to_string(cfg.settings.verbose), "VERBOSE=" + to_string(!cfg.settings.verbose));
             if (btnName == "LANGUAGE") {
                 if (cfg.settings.language == 2) cfg.data.replace("config/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=0");
