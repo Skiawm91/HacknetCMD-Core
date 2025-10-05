@@ -39,10 +39,10 @@ size_t utf8_width(const string &s) {
 }
 
 void ManageInput::Keyboard::initial() {
-    if (running) return;
-    running = true;
+    if (parent->running) return;
+    parent->running = true;
     runningKb = true;
-        kbThread = thread([this]() {
+        parent->kbThread = thread([this]() {
         vector<string> history;
         int historyIndex = -1;
 
@@ -71,7 +71,7 @@ void ManageInput::Keyboard::initial() {
             parent->prevBufferLength = parent->buffer.size();
         };
 
-        while (running) {
+        while (parent->running) {
             if (!kbEnabled) {
                 parent->buffer.clear();
                 parent->cursorPos = 0;
@@ -90,8 +90,8 @@ void ManageInput::Keyboard::initial() {
                     escDetected = true;
                 } else if (c == '\r') { // Enter
                     {
-                        lock_guard<mutex> lock(inputMutex);
-                        lastInput = parent->buffer;
+                        lock_guard<mutex> lock(parent->inputMutex);
+                        parent->lastInput = parent->buffer;
                     }
                     if (!parent->buffer.empty()) history.push_back(parent->buffer);
                     historyIndex = history.size();
@@ -154,13 +154,13 @@ void ManageInput::Keyboard::spReset() {
 }
 
 void ManageInput::Keyboard::stop() {
-    running = false;
+    parent->running = false;
     runningKb = false;
-    if (kbThread.joinable()) kbThread.join();
+    if (parent->kbThread.joinable()) parent->kbThread.join();
 }
 
 string ManageInput::Keyboard::getInput() {
-    lock_guard<mutex> lock(inputMutex);
-    return lastInput;
+    lock_guard<mutex> lock(parent->inputMutex);
+    return parent->lastInput;
 }
 #endif

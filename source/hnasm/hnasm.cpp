@@ -16,7 +16,6 @@ void HNASM::script(const string& fileName, const string& partName, const optiona
     bool readcmd = partName.empty();
     while(getline(file, line)) {
         while(!line.empty() && line.front() == ' ') line.erase(0,1);
-        while (!line.empty() && line.back() == ' ') line.pop_back();
         if (line==("BEGIN_" + partName)) {readcmd=true;}
         if (!partName.empty() && line==("END_" + partName)) {break;}
         if (readcmd) {
@@ -66,7 +65,6 @@ tuple<string, string, string, int, vector<string>, vector<int>, bool> HNASM::nod
     vector<string> command;
     while(getline(file, line)) {
         while(!line.empty() && line.front() == ' ') line.erase(0,1);
-        while (!line.empty() && line.back() == ' ') line.pop_back();
         istringstream iss(line);
         command.clear();
         iss >> got;

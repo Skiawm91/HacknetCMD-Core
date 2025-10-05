@@ -9,19 +9,20 @@
 #include <algorithm>
 #include <windows.h>
 #include <chrono>
+#include <optional>
 
 atomic<bool> mouseSync;
 
 void ManageInput::Mouse::initial() {
-    if (runningMouse) return; // 避免重複啟動
-    runningMouse = true;
-    mouseThread = thread([this]() {
+    if (parent->runningMouse) return; // 避免重複啟動
+    parent->runningMouse = true;
+    parent->mouseThread = thread([this]() {
         bool pressed = false; // 控制一次點擊只觸發一次
 
         INPUT_RECORD ir;
         DWORD readCount;
 
-        while (runningMouse) {
+        while (parent->runningMouse) {
             // 只讀滑鼠事件，不干擾鍵盤
             if (ReadConsoleInput(parent->hIn, &ir, 1, &readCount) && readCount == 1) {
                 if (ir.EventType == MOUSE_EVENT) {
@@ -32,10 +33,10 @@ void ManageInput::Mouse::initial() {
                         int x = me.dwMousePosition.X;
                         int y = me.dwMousePosition.Y;
 
-                        for (auto &b : buttons) {
-                            if (pointInButton(x, y, b)) {
-                                lock_guard<mutex> lock(cbMutex);
-                                if (currentCallback) currentCallback(b.name);
+                        for (auto &b : parent->buttons) {
+                            if (parent->pointInButton(x, y, b)) {
+                                lock_guard<mutex> lock(parent->cbMutex);
+                                for (auto& [name, cb] : parent->callbacks) if (cb) cb(b.name);
                                 parent->buffer.clear();
                                 parent->cursorPos = 0;
                                 mouseSync = false;
@@ -56,31 +57,32 @@ void ManageInput::Mouse::initial() {
 }
 
 void ManageInput::Mouse::stop() {
-    runningMouse = false;
-    if (mouseThread.joinable()) mouseThread.join();
+    parent->runningMouse = false;
+    if (parent->mouseThread.joinable()) parent->mouseThread.join();
 }
 
 void ManageInput::Mouse::btnAdd(const string& name, int x, int y, int w, int h) {
-    buttons.push_back({name, x, y, w, h});
+    parent->buttons.push_back({name, x, y, w, h});
 }
 
 void ManageInput::Mouse::btnDel(const vector<string>& names) {
-    buttons.erase(
-        remove_if(buttons.begin(), buttons.end(),
+    parent->buttons.erase(
+        remove_if(parent->buttons.begin(), parent->buttons.end(),
                   [&](const Button& b) {
                       return find(names.begin(), names.end(), b.name) != names.end();
                   }),
-        buttons.end()
+        parent->buttons.end()
     );
 }
 
-void ManageInput::Mouse::cbCreate(Callback cb) {
-    lock_guard<mutex> lock(cbMutex);
-    currentCallback = cb;
+void ManageInput::Mouse::cbCreate(const string& name, Callback cb) {
+    lock_guard<mutex> lock(parent->cbMutex);
+    parent->callbacks[name] = cb;
 }
 
-void ManageInput::Mouse::cbClean() {
-    lock_guard<mutex> lock(cbMutex);
-    currentCallback = nullptr;
+void ManageInput::Mouse::cbClean(const optional<string>& name) {
+    lock_guard<mutex> lock(parent->cbMutex);
+    if (name) parent->callbacks.erase(*name);
+    else parent->callbacks.clear();
 }
 #endif

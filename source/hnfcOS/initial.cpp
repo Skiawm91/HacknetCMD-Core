@@ -92,9 +92,10 @@ void hnfcOS::Initial(bool full) {
         os.Interface();
     } else {
         con.clear();
-        cout << "\n\n";
+        cout << "\n\n> connect " << playerIP;
+        targetIP = playerIP;
         #ifdef _WIN32
-        con.bufferSave(1);
+        con.bufferSave(2);
         #endif
         os.Interface();
     }

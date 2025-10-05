@@ -35,10 +35,6 @@ void hnfcOS::Interface() {
     extern string playerName;
     extern string playerLang;
     extern string playerIP;
-    targetIP.clear();
-    #ifdef __APPLE__
-    extern int promptPos;
-    #endif
     int mode = 1; // Terminal
     mi.mouse.btnAdd("EXIT", 0, 0, 3, 1);
     mi.mouse.btnAdd("TERMINAL", 5, 0, 10, 1);
@@ -56,6 +52,7 @@ void hnfcOS::Interface() {
         con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
         con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
         if (mode == 0) {
+            targetIP.clear();
             mi.mouse.btnDel(vector<string>{"EXIT", "TERMINAL", "DISPLAY"});
             mi.mouse.cbClean();
             return;
