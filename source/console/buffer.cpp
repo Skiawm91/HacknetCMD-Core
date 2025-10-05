@@ -80,7 +80,7 @@ int backupX, backupY;
 void Console::bufferChange(int mode) {
     if (modeNow == 0) {
         std::cout << "\033[6n" << flush; // 透過 Input 函式來幫助取得
-        while(!isQuary); // 等待開始
+        isQuary = true;
         while(isQuary); // 換成等待完成
         backupX = cursorCol;
         backupY = cursorRow;

@@ -31,6 +31,9 @@ void hnfcOS::Terminal() {
             while (iss >> cmd) command.push_back(cmd);
             if (command[0] == "connect") {
                 if (command[1] == playerIP || command[1].empty()) targetIP = playerIP;
+                else if (command[1] == "192.168.0.11") targetIP = "192.168.0.11";
+                else if (command[1] == "192.168.0.12") targetIP = "192.168.0.12";
+                else if (command[1] == "192.168.0.13") targetIP = "192.168.0.13";
                 else if (command[1] == "4.31.168.192") targetIP = "4.31.168.192";
             }
             if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();

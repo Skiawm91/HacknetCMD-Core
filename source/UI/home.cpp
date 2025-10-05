@@ -1,14 +1,18 @@
 ﻿#define _HAS_STD_BYTE 0
 #include "UI.h"
 #include "function.h"
+#include "config.h"
 #include "input.h"
 #include "hnasm.h"
+#include "misc.h"
 #include <vector>
 using namespace std;
 
 extern ManageInput mi;
 extern Function func;
+extern Config cfg;
 extern UserInterface UI;
+extern Misc misc;
 extern string ver, verStage;
 
 void UserInterface::Home(){
@@ -43,7 +47,7 @@ void UserInterface::Home(){
                 {
                     while(true) {
                         chse = 0;
-                        HNASM("ui.chns", "QUIT");
+                        HNASM("ui.chns", "QUIT_" + misc.toLangName(cfg.settings.language));
                         mi.mouse.btnAdd("QUIT", 1, 2, 30, 3);
                         mi.mouse.btnAdd("CANCEL", 1, 5, 30, 3);
                         mi.mouse.cbCreate("QUIT", [&](const string& btnName){

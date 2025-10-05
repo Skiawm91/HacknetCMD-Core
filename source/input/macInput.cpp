@@ -227,7 +227,7 @@ void ManageInput::initial() {
                         }
                     }
                     // ESC[6n or function keys 
-                    else if (seq.size() >= 3 && seq[1] == '[' && (seq[2]>='0' && seq[2]<='9')) {
+                    else if (isQuary) {
                         size_t posR = string::npos;
 
                         // 嘗試先找 R
@@ -251,7 +251,6 @@ void ManageInput::initial() {
 
                         // 如果找到完整 R，就解析 row/col
                         if (posR != string::npos) {
-                            isQuary = true;
                             string inner = seq.substr(2, posR - 2);
                             int row = 0, col = 0;
                             if (sscanf(inner.c_str(), "%d;%d", &row, &col) == 2) {

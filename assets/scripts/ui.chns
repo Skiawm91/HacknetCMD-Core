@@ -39,7 +39,7 @@ PRINT   | Quit                       |
 PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_HOME
 
-BEGIN_QUIT
+BEGIN_QUIT_EN
 CLEAR
 PRINT
 PRINT  Are you sure?
@@ -49,7 +49,19 @@ PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾�
 PRINT  ______________________________
 PRINT  | Cancel                     |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_QUIT
+END_QUIT_EN
+
+BEGIN_QUIT_CHT
+CLEAR
+PRINT
+PRINT  你確定嗎？
+PRINT  ______________________________
+PRINT  | Confirm                    |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | Cancel                     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_QUIT_CHT
 
 BEGIN_USER
 PRINT

@@ -43,11 +43,11 @@ PRINT
 END_ICON_SERVER
 
 BEGIN_ICON_PHONE
-PRINT
 PRINT       _____
 PRINT      |  ▭  |
 PRINT      |     |  ${TARGETNAME}
 PRINT      |     |  IP: ${TARGETIP}
+PRINT      |     |
 PRINT      |     |
 PRINT       ‾‾‾‾‾
 PRINT
