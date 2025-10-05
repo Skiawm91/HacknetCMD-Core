@@ -8,13 +8,15 @@
 #include <vector>
 using namespace std;
 
-void HNASM(const string& fileName, const string& partName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText) {
+void HNASM::script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText) {
     string scriptPath = "assets/scripts/" + fileName;
     ifstream file(scriptPath);
     string line;
     string command, content;
     bool readcmd = partName.empty();
     while(getline(file, line)) {
+        while(!line.empty() && line.front() == ' ') line.erase(0,1);
+        while (!line.empty() && line.back() == ' ') line.pop_back();
         if (line==("BEGIN_" + partName)) {readcmd=true;}
         if (!partName.empty() && line==("END_" + partName)) {break;}
         if (readcmd) {
@@ -50,4 +52,52 @@ void HNASM(const string& fileName, const string& partName, const optional<vector
             else if (command=="GOTO") {chns.GOTO(fileName, content);}
         }
     }
+}
+
+tuple<string, string, string, int, vector<string>, vector<int>, bool> HNASM::node(const string& fileName) {
+    string scriptPath = "assets/nodes/" + fileName;
+    ifstream file(scriptPath);
+    string IP = "", Name = "", Type = "";
+    int Ports = 0;
+    vector<string> portNames = {};
+    vector<int> portNumbers = {};
+    bool Shell = false;
+    string line, got;
+    vector<string> command;
+    while(getline(file, line)) {
+        while(!line.empty() && line.front() == ' ') line.erase(0,1);
+        while (!line.empty() && line.back() == ' ') line.pop_back();
+        istringstream iss(line);
+        command.clear();
+        iss >> got;
+        command.push_back(got);
+        if (command[0] == "NAME") {
+            getline(iss, Name);
+            Name.erase(0,1);
+        } else {
+            while(iss >> got) command.push_back(got);
+            if (command[0] == "IP") IP = command[1];
+            else if (command[0] == "TYPE") Type = command[1];
+            else if (command[0] == "PORTS") try { Ports = stoi(command[1]); } catch(...) {}
+            else if (command[0] == "PORTNAMES") {
+                bool first = true;
+                for (const auto &pName : command) {
+                    if (!first) portNames.push_back(pName);
+                    first = false;
+                }
+            }
+            else if (command[0] == "PORTNUMBERS") {
+                bool first = true;
+                for (const auto &pNumber : command) {
+                    try { if (!first) portNumbers.push_back(stoi(pNumber)); } catch (...) {}
+                    first = false;
+                }
+            }
+            else if (command[0] == "SHELL") {
+                if (command[1] == "TRUE") Shell = true;
+                else if (command[1] == "FALSE") Shell = false;
+            }
+        }
+    }
+    return { IP, Name, Type, Ports, portNames, portNumbers, Shell };
 }

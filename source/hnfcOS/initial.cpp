@@ -14,6 +14,7 @@ using namespace std;
 extern Config cfg;
 extern Console con;
 extern hnfcOS os;
+extern HNASM hnasm;
 
 bool isPublicIP(int a, int b, int c, int d) {
     if (a == 10) return false;                 // 10.0.0.0/8
@@ -50,9 +51,6 @@ string generatePublicIP() {
 }
 
 string playerIP;
-#ifdef __APPLE__
-int promptPos;
-#endif
 
 void hnfcOS::Initial(bool full) {
     extern string playerName;
@@ -76,16 +74,16 @@ void hnfcOS::Initial(bool full) {
         cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E5455544F5249414C3A46414C5345"});\
         if (cfg.data.loaded) {
             if (cfg.data.loadNumber == 0) {
-                HNASM("terminal/initial.chns", "INITIAL");
-                HNASM("terminal/initial.chns", "HELPMSG");
+                hnasm.script("terminal/initial.chns", "INITIAL");
+                hnasm.script("terminal/initial.chns", "HELPMSG");
                 #ifdef _WIN32
                 con.bufferSave(2);
                 #endif
             }
         } else {
-            // HNASM("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
-            HNASM("terminal/initial.chns", "INITIAL");
-            // HNASM("terminal/initial.chns", "TUTORIAL");
+            // hnasm.script("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
+            hnasm.script("terminal/initial.chns", "INITIAL");
+            // hnasm.script("terminal/initial.chns", "TUTORIAL");
             // s.Tutorial();
             #ifdef _WIN32
             con.bufferSave(2);

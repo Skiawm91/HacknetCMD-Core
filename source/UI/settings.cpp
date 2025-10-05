@@ -10,6 +10,7 @@ extern ManageInput mi;
 extern Config cfg;
 extern Misc misc;
 extern Console con;
+extern HNASM hnasm;
 
 void UserInterface::Settings() {
     bool back = false;
@@ -18,11 +19,11 @@ void UserInterface::Settings() {
         // 重新載入Config
         cfg.reload();
         con.clear();
-        HNASM("settings.chns", "TITLE_" + misc.toLangName(cfg.settings.language));
-        HNASM("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
-        HNASM("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
-        HNASM("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
-        HNASM("settings.chns", "BACK_" + misc.toLangName(cfg.settings.language));
+        hnasm.script("settings.chns", "TITLE_" + misc.toLangName(cfg.settings.language));
+        hnasm.script("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
+        hnasm.script("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
+        hnasm.script("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
+        hnasm.script("settings.chns", "BACK_" + misc.toLangName(cfg.settings.language));
         mi.mouse.btnAdd("VERBOSE", 1, 1, 20, 3);
         mi.mouse.btnAdd("LANGUAGE", 1, 4, 20, 3);
         mi.mouse.btnAdd("CMDSIZE", 1, 7, 20, 3);

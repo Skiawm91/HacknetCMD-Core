@@ -21,21 +21,22 @@ inline void Sleep(const int& ms) {usleep(ms * 1000);}
 extern Config cfg;
 extern Function func;
 extern hnfcOS os;
+extern HNASM hnasm;
 extern string playerName;
 
 void hnfcOS::Boot() {
     func.audio.stop();
     if (cfg.settings.verbose) {
-        HNASM("boot.chns", "BOOT");
-        HNASM("boot.chns", "OSCONFIG");
-        HNASM("boot.chns", "BOOTCFG");
-        HNASM("boot.chns", "NETCFGX");
-        HNASM("boot.chns", "XSERVER");
-        HNASM("boot.chns", "COMPLETE");
+        hnasm.script("boot.chns", "BOOT");
+        hnasm.script("boot.chns", "OSCONFIG");
+        hnasm.script("boot.chns", "BOOTCFG");
+        hnasm.script("boot.chns", "NETCFGX");
+        hnasm.script("boot.chns", "XSERVER");
+        hnasm.script("boot.chns", "COMPLETE");
     } else {
         srand((unsigned int)time(nullptr));
-        HNASM("ui.chns", "LOGO2");
-        HNASM("ui.chns", "NULL");
+        hnasm.script("ui.chns", "LOGO2");
+        hnasm.script("ui.chns", "NULL");
         string loading;
         string block = "=";
         string preLoading = "--------------------";
