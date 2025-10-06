@@ -1,3 +1,4 @@
+#define _HAS_STD_BYTE 0
 #include "os.h"
 #include "config.h"
 #include "console.h"

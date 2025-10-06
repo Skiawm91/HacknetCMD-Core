@@ -3,7 +3,7 @@ PRINT
 PRINT        _____ 
 PRINT       /    /|
 PRINT      /____/ |  ${TARGETNAME}
-PRINT      |----| |  IP: ${TARGETIP}
+PRINT      |----| |  @ ${TARGETIP}
 PRINT      | 〇 | /
 PRINT      |____|/
 PRINT
@@ -14,7 +14,7 @@ PRINT
 PRINT        ___________
 PRINT        |         |
 PRINT        |         |  ${TARGETNAME}
-PRINT        |_________|  IP: ${TARGETIP}
+PRINT        |_________|  @ ${TARGETIP}
 PRINT       /          /
 PRINT      /__________/
 PRINT
@@ -25,7 +25,7 @@ PRINT
 PRINT        ______
 PRINT       /     /|
 PRINT      /_____/ |  ${TARGETNAME}
-PRINT      |-----| |  IP: ${TARGETIP}
+PRINT      |-----| |  @ ${TARGETIP}
 PRINT      |-----| |
 PRINT      |_____|/
 PRINT
@@ -36,7 +36,7 @@ PRINT        ____________
 PRINT       /     /     /|
 PRINT      /_____/_____/ |
 PRINT      |-----|-----| |  ${TARGETNAME}
-PRINT      |-----|-----| |  IP: ${TARGETIP}
+PRINT      |-----|-----| |  @ ${TARGETIP}
 PRINT      |-----|-----| /
 PRINT      |_____|_____|/
 PRINT
@@ -46,7 +46,7 @@ BEGIN_ICON_PHONE
 PRINT       _____
 PRINT      |  ▭  |
 PRINT      |     |  ${TARGETNAME}
-PRINT      |     |  IP: ${TARGETIP}
+PRINT      |     |  @ ${TARGETIP}
 PRINT      |     |
 PRINT      |     |
 PRINT       ‾‾‾‾‾

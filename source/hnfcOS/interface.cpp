@@ -36,9 +36,13 @@ void hnfcOS::Interface() {
     extern string playerLang;
     extern string playerIP;
     int mode = 1; // Terminal
-    mi.mouse.btnAdd("EXIT", 0, 0, 3, 1);
-    mi.mouse.btnAdd("TERMINAL", 5, 0, 10, 1);
-    mi.mouse.btnAdd("DISPLAY", 16, 0, 9, 1);
+    mi.mouse.btnAdd("EXIT", 0, 0, 4, 1);
+    mi.mouse.btnAdd("SETTINGS", 4, 0, 4, 1);
+    mi.mouse.btnAdd("SAVE", 8, 0, 4, 1);
+    mi.mouse.btnAdd("TERMINAL", 14, 0, 10, 1);
+    mi.mouse.btnAdd("DISPLAY", 25, 0, 9, 1);
+    mi.mouse.btnAdd("NETMAP", 35, 0, 8, 1);
+    mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
     mi.mouse.cbCreate("MENUBAR", [&](const string& btnName){
         if (btnName == "EXIT") mode = 0;
         if (btnName == "TERMINAL") mode = 1;
@@ -49,7 +53,7 @@ void hnfcOS::Interface() {
         if (mode == 1) con.bufferChange(0);
         else if (mode == 2) con.bufferChange(1);
         #endif
-        con.printAt(0, 0, string("|X|//|TERMINAL|/|DISPLAY|") + string(120 * (cfg.settings.cmdsize + 1) - 25, '/'));
+        con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - 48, '/'));
         con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
         if (mode == 0) {
             targetIP.clear();
