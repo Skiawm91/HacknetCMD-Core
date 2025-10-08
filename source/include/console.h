@@ -15,6 +15,7 @@ public:
     void bufferSave(int startRow = 0);
     void bufferRestore();
     #elif __APPLE__
+    void clearBuf2();
     void bufferChange(int mode = 0);
     #endif
 private:

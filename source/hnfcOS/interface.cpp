@@ -1,5 +1,6 @@
 #define _HAS_STD_BYTE 0
 #include "os.h"
+#include "UI.h"
 #include "function.h"
 #include "console.h"
 #include "config.h"
@@ -13,6 +14,7 @@
 #include <vector>
 using namespace std;
 
+extern UserInterface UI;
 extern Function func;
 extern Config cfg;
 extern Console con;
@@ -29,13 +31,29 @@ string overlines(int count) {
     return result;
 }
 
+void menuBarCb(int& backupMode, int& mode) {
+    mi.mouse.cbCreate("MENUBAR", [&](const string& btnName){
+        if (btnName == "EXIT") mode = 0;
+        if (btnName == "SETTINGS") {
+            backupMode = mode;
+            mode = 1;
+        }
+        // if (btnName == "SAVE") sessionSave();
+        if (btnName == "TERMINAL") mode = 2;
+        if (btnName == "DISPLAY") mode = 3;
+        // if (btnName == "NETMAP") mode = 4;
+        // if (btnName == "RAM") mode = 5;
+    });
+}
+
 void hnfcOS::Interface() {
     func.audio.stop();
     func.audio.play("Revolve.wav");
     extern string playerName;
     extern string playerLang;
     extern string playerIP;
-    int mode = 1; // Terminal
+    int mode = 2; // Terminal
+    int backupMode;
     mi.mouse.btnAdd("EXIT", 0, 0, 4, 1);
     mi.mouse.btnAdd("SETTINGS", 4, 0, 4, 1);
     mi.mouse.btnAdd("SAVE", 8, 0, 4, 1);
@@ -43,31 +61,32 @@ void hnfcOS::Interface() {
     mi.mouse.btnAdd("DISPLAY", 25, 0, 9, 1);
     mi.mouse.btnAdd("NETMAP", 35, 0, 8, 1);
     mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
-    mi.mouse.cbCreate("MENUBAR", [&](const string& btnName){
-        if (btnName == "EXIT") mode = 0;
-        if (btnName == "TERMINAL") mode = 1;
-        if (btnName == "DISPLAY") mode = 2;
-    });
+    menuBarCb(backupMode, mode);
     while(true) {
         #ifdef __APPLE__
-        if (mode == 1) con.bufferChange(0);
-        else if (mode == 2) con.bufferChange(1);
+        if (mode == 2) con.bufferChange(0);
+        else if (mode == 1 || mode == 3) con.bufferChange(1);
         #endif
         con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - 48, '/'));
         con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
         if (mode == 0) {
             targetIP.clear();
-            mi.mouse.btnDel(vector<string>{"EXIT", "TERMINAL", "DISPLAY"});
+            mi.mouse.btnDel(vector<string>{"EXIT", "SETTINGS", "SAVE", "TERMINAL", "DISPLAY", "NETMAP", "RAM"});
             mi.mouse.cbClean();
             return;
         } else if (mode == 1) {
+            mi.mouse.cbClean("MENUBAR");
+            UI.Settings(true);
+            menuBarCb(backupMode, mode);
+            mode = backupMode;
+        } else if (mode == 2) {
             #ifdef _WIN32
             con.bufferRestore();
             #elif __APPLE__
             cout << "\033[2K\r" << flush; // 先清掉
             #endif
             Terminal();
-        } else if (mode == 2) Display();
+        } else if (mode == 3) Display();
         #ifdef _WIN32
         con.clear();
         #endif

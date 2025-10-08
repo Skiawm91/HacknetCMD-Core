@@ -97,6 +97,8 @@ void hnfcOS::Initial(bool full) {
         targetIP = playerIP;
         #ifdef _WIN32
         con.bufferSave(2);
+        #elif __APPLE__
+        cout << "\n";
         #endif
         os.Interface();
     }

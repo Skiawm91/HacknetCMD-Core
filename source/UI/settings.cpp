@@ -4,6 +4,7 @@
 #include "console.h"
 #include "misc.h"
 #include "hnasm.h"
+#include <iostream>
 using namespace std;
 
 extern ManageInput mi;
@@ -12,20 +13,22 @@ extern Misc misc;
 extern Console con;
 extern HNASM hnasm;
 
-void UserInterface::Settings() {
+void UserInterface::Settings(const bool isPlaying) {
     bool back = false;
     while(!back) {
         mi.kb.enable();
         // 重新載入Config
         cfg.reload();
-        con.clear();
+        if (isPlaying) con.clearBuf2();
+        else con.clear();
         hnasm.script("settings.chns", "TITLE_" + misc.toLangName(cfg.settings.language));
         hnasm.script("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
-        hnasm.script("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
+        if (isPlaying) cout << "\n\n\n" << flush;
+        else hnasm.script("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
         hnasm.script("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
         hnasm.script("settings.chns", "BACK_" + misc.toLangName(cfg.settings.language));
         mi.mouse.btnAdd("VERBOSE", 1, 1, 20, 3);
-        mi.mouse.btnAdd("LANGUAGE", 1, 4, 20, 3);
+        if (isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 4, 20, 3);
         mi.mouse.btnAdd("CMDSIZE", 1, 7, 20, 3);
         mi.mouse.btnAdd("BACK", 1, 10, 20, 3);
         mi.mouse.cbCreate("SETTINGS", [&](const string& btnName){
@@ -48,6 +51,6 @@ void UserInterface::Settings() {
             back = true;
         }
         mi.mouse.btnDel(vector<string>{"VERBOSE", "LANGUAGE", "CMDSIZE" ,"BACK"});
-        mi.mouse.cbClean();
+        mi.mouse.cbClean("SETTINGS");
     }
 }

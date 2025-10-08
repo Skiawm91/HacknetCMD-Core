@@ -18,5 +18,8 @@ void Console::clear() {
     SetConsoleCursorPosition(hOut, topLeft);
     #else
     std::cout << "\033[3J\033[H\033[2J" << std::flush;
+}
+void Console::clearBuf2() {
+    std::cout << "\033[H\033[2J" << std::flush;
     #endif
 }
