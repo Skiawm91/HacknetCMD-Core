@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "hnasm/CHNScript.h"
+#include "HNCIP/script.h"
 #include "input.h"
 #ifdef _WIN32
 #include <windows.h>
@@ -26,13 +26,13 @@ void OTTF2K() {
 }
 #endif
 
-void CHNScript::GETINPUT(const string& content) {
+void HNCIPScript::GETINPUT(const string& content) {
     kbPrompt = content;
     inputMasked = false;
     inputAte = false;
 }
 
-void CHNScript::GETINPUTR(const string& content) {
+void HNCIPScript::GETINPUTR(const string& content) {
     #ifdef _WIN32
     OTTF2K();
     #else
@@ -43,19 +43,19 @@ void CHNScript::GETINPUTR(const string& content) {
     inputAte = false;
 }
 
-void CHNScript::GETINPUTPWD(const string& content) {
+void HNCIPScript::GETINPUTPWD(const string& content) {
     kbPrompt = content;
     inputMasked = true;
     inputAte = false;
 }
 
-void CHNScript::GETINPUTPWDR(const string& content) {
+void HNCIPScript::GETINPUTPWDR(const string& content) {
     kbPrompt = content;
     inputMasked = true;
     inputAte = false;
 }
 
-void CHNScript::GETINPUTNUL(const string& content) {
+void HNCIPScript::GETINPUTNUL(const string& content) {
     kbPrompt = content;
     inputMasked = false; // In fact, idk:)
     inputAte = true;

@@ -1,8 +1,7 @@
 #pragma once
-#undef goto
 #include <string>
 using namespace std;
-class CHNScript {
+class HNCIPScript {
     public:
         void CLEAR();
         void WAIT(const string& content);

@@ -5,7 +5,7 @@
 #include <tuple>
 using namespace std;
 
-class HNASM {
+class HNCInterPreter {
 public:
     void script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar = nullopt, const optional<vector<string>>& returnText = nullopt);
     struct NodeInfo {

@@ -5,7 +5,7 @@
 #include "UI.h"
 #include "misc.h"
 #include "input.h"
-#include "hnasm.h"
+#include "HNCIP.h"
 #include "os.h"
 #ifdef _WIN32
 #include <windows.h>
@@ -28,7 +28,7 @@ Function func;
 Misc misc;
 UserInterface UI;
 hnfcOS os;
-HNASM hnasm;
+HNCInterPreter hncip;
 
 // 版本號
 string ver = "0.3.0";

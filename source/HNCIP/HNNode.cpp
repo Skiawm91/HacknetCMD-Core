@@ -1,61 +1,14 @@
-#include "hnasm.h"
-#include "hnasm/CHNScript.h"
-#include <optional>
-#include <fstream>
+#include "HNCIP.h"
 #include <string>
+#include <optional>
+#include <vector>
+#include <fstream>
 #include <sstream>
 #include <regex>
-#include <vector>
 using namespace std;
 
-void HNASM::script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText) {
-    string scriptPath = "assets/scripts/" + fileName;
-    ifstream file(scriptPath);
-    string line;
-    string command, content;
-    bool readcmd = partName.empty();
-    while(getline(file, line)) {
-        while(!line.empty() && line.front() == ' ') line.erase(0,1);
-        if (line==("BEGIN_" + partName)) {readcmd=true;}
-        if (!partName.empty() && line==("END_" + partName)) {break;}
-        if (readcmd) {
-            command.clear();
-            content.clear();
-            CHNScript chns;
-            istringstream got(line);
-            got >> command;
-            getline(got, content);
-            if (!content.empty() && content[0] == ' ') {content = content.substr(1);}
-            if (targetVar && returnText) {
-                int i = 0;
-                for (const auto &tv : *targetVar) {
-                    int i2 = 0;
-                    for (const auto &rt : *returnText) {
-                        if (i == i2) content = regex_replace(content, regex("\\$\\{" + tv + "\\}"), rt); // replace
-                        ++i2;
-                    }
-                    ++i;
-                }
-            }
-            if (command=="WAIT") {chns.WAIT(content);}
-            else if (command=="CLEAR") {chns.CLEAR();}
-            else if (command=="PRINT") {chns.PRINT(content);}
-            else if (command=="PRINTR") {chns.PRINTR(content);}
-            else if (command=="PRINTWFW") {chns.PRINTWFW(content);}
-            else if (command=="PRINTAT") {chns.PRINTAT(content);}
-            else if (command=="PLAYAUDIO") {chns.PLAYAUDIO(content);}
-            else if (command=="GETINPUT") {chns.GETINPUT(content);}
-            else if (command=="GETINPUTR") {chns.GETINPUTR(content);}
-            else if (command=="GETINPUTPWD") {chns.GETINPUTPWD(content);}
-            else if (command=="GETINPUTPWDR") {chns.GETINPUTPWDR(content);}
-            else if (command=="GETINPUTNUL") {chns.GETINPUTNUL(content);}
-            else if (command=="GOTO") {chns.GOTO(fileName, content);}
-        }
-    }
-}
-
-HNASM::NodeInfo HNASM::node(const string& fileName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText) {
-    HNASM::NodeInfo node;
+HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText) {
+    HNCInterPreter::NodeInfo node;
     string scriptPath = "assets/nodes/" + fileName;
     ifstream file(scriptPath);
     string line, got;

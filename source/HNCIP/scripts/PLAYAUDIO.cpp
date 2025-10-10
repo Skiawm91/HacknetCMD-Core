@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "hnasm/CHNScript.h"
+#include "HNCIP/script.h"
 #include "function.h"
 #include <string>
 #ifdef _WIN32
@@ -10,7 +10,7 @@ using namespace std;
 
 extern Function func;
 
-void CHNScript::PLAYAUDIO(const string& content) {
+void HNCIPScript::PLAYAUDIO(const string& content) {
     string arg1;
     istringstream args(content);
     args >> arg1;

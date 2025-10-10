@@ -6,7 +6,7 @@
 #include "misc.h"
 #include "function.h"
 #include "input.h"
-#include "hnasm.h"
+#include "HNCIP.h"
 #include "os.h"
 #include <string>
 #ifdef _WIN32
@@ -24,7 +24,7 @@ extern Misc misc;
 extern Config cfg;
 extern Function func;
 extern hnfcOS os;
-extern HNASM hnasm;
+extern HNCInterPreter hncip;
 extern string ver, verStage;
 string playerName, playerLang;
 
@@ -36,10 +36,10 @@ void UserInterface::Login() {
     while(true) {
         mi.kb.enable();
         chse = 0;
-        if (verStage != "Release") hnasm.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
-        else hnasm.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
-        if (!playerName.empty()) hnasm.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
-        else hnasm.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
+        if (verStage != "Release") hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+        else hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
+        if (!playerName.empty()) hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
+        else hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
         mi.mouse.btnAdd("LOGIN", 2, 8, 30, 3);
         if (!playerName.empty()) mi.mouse.btnAdd("CONTINUE", 2, 11, 30, 3);  
         mi.mouse.btnAdd("REGISTER", 2, 14, 30, 3);  
@@ -62,7 +62,7 @@ void UserInterface::Login() {
         switch(chse) {
             case 1:
                 while(true) {
-                    hnasm.script("logUI/login.chns", "NAME_" + misc.toLangName(cfg.settings.language));
+                    hncip.script("logUI/login.chns", "NAME_" + misc.toLangName(cfg.settings.language));
                     mi.kb.spReset();
                     mi.async(2);
                     if (escDetected) {
@@ -76,9 +76,9 @@ void UserInterface::Login() {
                     name = input;
                     {
                         tgshapwd = cfg.data.load("config/" + name + "/pw.hnd", 0);
-                        if (!cfg.data.loaded) hnasm.script("logUI/login.chns", "ERROR");
+                        if (!cfg.data.loaded) hncip.script("logUI/login.chns", "ERROR");
                         else {
-                            hnasm.script("logUI/login.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
+                            hncip.script("logUI/login.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
                             mi.kb.spReset();
                             mi.async(2);
                             if (escDetected) {
@@ -98,7 +98,7 @@ void UserInterface::Login() {
                                 func.audio.play("AmbientDroneClipped.wav");
                                 return;
                             } else {
-                                hnasm.script("logUI/login.chns", "ERROR");
+                                hncip.script("logUI/login.chns", "ERROR");
                             }
                         }
                     }
@@ -120,8 +120,8 @@ void UserInterface::Login() {
                 {
                     string pwd[2];
                     while (true) {
-                        hnasm.script("logUI/register.chns", "REGISTER");
-                        hnasm.script("logUI/register.chns", "NAME_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("logUI/register.chns", "REGISTER");
+                        hncip.script("logUI/register.chns", "NAME_" + misc.toLangName(cfg.settings.language));
                         mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
@@ -132,7 +132,7 @@ void UserInterface::Login() {
                             input = mi.kb.getInput();
                         }
                         name = input;
-                        hnasm.script("logUI/register.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("logUI/register.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
                         mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
@@ -143,7 +143,7 @@ void UserInterface::Login() {
                             input = mi.kb.getInput();
                         }
                         pwd[0] = input;
-                        hnasm.script("logUI/register.chns", "CONFIRM_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("logUI/register.chns", "CONFIRM_" + misc.toLangName(cfg.settings.language));
                         mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
@@ -155,7 +155,7 @@ void UserInterface::Login() {
                         }
                         pwd[1] = input;
                         chse = 0;
-                        hnasm.script("logUI/register.chns", "DETAILS_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("logUI/register.chns", "DETAILS_" + misc.toLangName(cfg.settings.language));
                         while(true) {
                             mi.mouse.btnAdd("CONFIRM", 1, 8, 20, 3);
                             mi.mouse.btnAdd("CANCEL", 1, 11, 20, 3);
@@ -176,14 +176,14 @@ void UserInterface::Login() {
                             if (chse == 2) break;
                             else {
                                 if (name.length() > 13) {
-                                    hnasm.script("logUI/register.chns", "TOOLONG");
+                                    hncip.script("logUI/register.chns", "TOOLONG");
                                 }
                                 string nameOrigin = name;
                                 transform(name.begin(), name.end(), name.begin(), ::tolower);
                                 try {
                                     filesystem::create_directory("config/" + name);
                                 } catch(...) {
-                                    hnasm.script("logUI/register.chns", "RESERVED");
+                                    hncip.script("logUI/register.chns", "RESERVED");
                                     break;
                                 }
                                 cfg.data.save("config/" + name + "/info.hnd", nameOrigin);
@@ -191,7 +191,7 @@ void UserInterface::Login() {
                                     shapwd = SHA256Encrypt(pwd[1]);
                                     cfg.data.save("config/" + name + "/pw.hnd", shapwd);
                                 } else {
-                                    hnasm.script("logUI/register.chns", "INVCONFIRM");
+                                    hncip.script("logUI/register.chns", "INVCONFIRM");
                                     break;
                                 }
                                 cfg.data.save("config/" + name + "/info.hnd", misc.toLangName(cfg.settings.language));

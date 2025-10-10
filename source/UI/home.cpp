@@ -3,7 +3,7 @@
 #include "function.h"
 #include "config.h"
 #include "input.h"
-#include "hnasm.h"
+#include "HNCIP.h"
 #include "misc.h"
 #include <vector>
 using namespace std;
@@ -14,7 +14,7 @@ extern Config cfg;
 extern UserInterface UI;
 extern Misc misc;
 extern string ver, verStage;
-extern HNASM hnasm;
+extern HNCInterPreter hncip;
 
 void UserInterface::Home(){
     int chse;
@@ -23,9 +23,9 @@ void UserInterface::Home(){
     while(true) {
         mi.kb.disable();
         chse = 0;
-        if (verStage != "Release") hnasm.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
-        else hnasm.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
-        hnasm.script("ui.chns", "HOME");
+        if (verStage != "Release") hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+        else hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
+        hncip.script("ui.chns", "HOME");
         mi.mouse.btnAdd("PLAY", 2, 8, 30, 3);
         mi.mouse.btnAdd("SETTINGS", 2, 14, 30, 3);
         mi.mouse.btnAdd("QUIT", 2, 17, 30, 3);
@@ -48,7 +48,7 @@ void UserInterface::Home(){
                 {
                     while(true) {
                         chse = 0;
-                        hnasm.script("ui.chns", "QUIT_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("ui.chns", "QUIT_" + misc.toLangName(cfg.settings.language));
                         mi.mouse.btnAdd("QUIT", 1, 2, 30, 3);
                         mi.mouse.btnAdd("CANCEL", 1, 5, 30, 3);
                         mi.mouse.cbCreate("QUIT", [&](const string& btnName){

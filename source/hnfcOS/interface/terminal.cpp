@@ -3,7 +3,7 @@
 #include "input.h"
 #include "config.h"
 #include "console.h"
-#include "hnasm.h"
+#include "HNCIP.h"
 #include <sstream>
 #include <vector>
 #include <filesystem>
@@ -12,7 +12,7 @@ using namespace std;
 extern ManageInput mi;
 extern Config cfg;
 extern Console con;
-extern HNASM hnasm;
+extern HNCInterPreter hncip;
 extern string playerIP;
 
 void hnfcOS::Terminal() {
@@ -42,7 +42,7 @@ void hnfcOS::Terminal() {
                 else {
                     string backupTIP = targetIP;
                     targetIP = command[1];
-                    HNASM::NodeInfo node = getNode();
+                    HNCInterPreter::NodeInfo node = getNode();
                     if (node.IP.empty()) targetIP = backupTIP;
                 }
             }

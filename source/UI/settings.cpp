@@ -3,7 +3,7 @@
 #include "config.h"
 #include "console.h"
 #include "misc.h"
-#include "hnasm.h"
+#include "HNCIP.h"
 #include <iostream>
 using namespace std;
 
@@ -11,7 +11,7 @@ extern ManageInput mi;
 extern Config cfg;
 extern Misc misc;
 extern Console con;
-extern HNASM hnasm;
+extern HNCInterPreter hncip;
 
 void UserInterface::Settings(const bool isPlaying) {
     bool back = false;
@@ -25,12 +25,12 @@ void UserInterface::Settings(const bool isPlaying) {
         #elif _WIN32
         con.clear();
         #endif
-        hnasm.script("settings.chns", "TITLE_" + misc.toLangName(cfg.settings.language));
-        hnasm.script("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
+        hncip.script("settings.chns", "TITLE_" + misc.toLangName(cfg.settings.language));
+        hncip.script("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
         if (isPlaying) cout << "\n\n\n" << flush;
-        else hnasm.script("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
-        hnasm.script("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
-        hnasm.script("settings.chns", "BACK_" + misc.toLangName(cfg.settings.language));
+        else hncip.script("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
+        hncip.script("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
+        hncip.script("settings.chns", "BACK_" + misc.toLangName(cfg.settings.language));
         mi.mouse.btnAdd("VERBOSE", 1, 1, 20, 3);
         if (isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 4, 20, 3);
         mi.mouse.btnAdd("CMDSIZE", 1, 7, 20, 3);

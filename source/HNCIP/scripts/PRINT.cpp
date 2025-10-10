@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "hnasm/CHNScript.h"
+#include "HNCIP/script.h"
 #include "input.h"
 #include "console.h"
 #ifdef _WIN32
@@ -19,7 +19,7 @@ extern Console con;
 inline void Sleep(const int& ms) {usleep(ms * 1000);}
 #endif
 
-void CHNScript::PRINT(const string& content) {
+void HNCIPScript::PRINT(const string& content) {
     if (content.empty()) {
         cout << endl;
     } else {
@@ -27,7 +27,7 @@ void CHNScript::PRINT(const string& content) {
     }
 }
 
-void CHNScript::PRINTR(const string& content) {
+void HNCIPScript::PRINTR(const string& content) {
     if (content.empty()) {
         cout << "\r";
         cout.flush();
@@ -37,7 +37,7 @@ void CHNScript::PRINTR(const string& content) {
     }
 }
 
-void CHNScript::PRINTWFW(const string& content) {
+void HNCIPScript::PRINTWFW(const string& content) {
     vector<string> text;
     istringstream iss(content);
     string word;
@@ -56,7 +56,7 @@ void CHNScript::PRINTWFW(const string& content) {
     cout << endl;
 }
 
-void CHNScript::PRINTAT(const string& content) {
+void HNCIPScript::PRINTAT(const string& content) {
     int x = 0, y = 0;
     string xS, yS, str;
     istringstream iss(content);

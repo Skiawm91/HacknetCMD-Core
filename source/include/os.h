@@ -1,5 +1,5 @@
 #pragma once
-#include "hnasm.h"
+#include "HNCIP.h"
 #include <tuple>
 #include <vector>
 #include <string>
@@ -13,5 +13,5 @@ private:
     std::string targetIP;
     void Display();
     void Terminal();
-    HNASM::NodeInfo getNode();
+    HNCInterPreter::NodeInfo getNode();
 };

@@ -2,7 +2,7 @@
 #include "os.h"
 #include "config.h"
 #include "function.h"
-#include "hnasm.h"
+#include "HNCIP.h"
 #include <iostream>
 #include <string>
 #ifdef _WIN32
@@ -21,22 +21,22 @@ inline void Sleep(const int& ms) {usleep(ms * 1000);}
 extern Config cfg;
 extern Function func;
 extern hnfcOS os;
-extern HNASM hnasm;
+extern HNCInterPreter hncip;
 extern string playerName;
 
 void hnfcOS::Boot() {
     func.audio.stop();
     if (cfg.settings.verbose) {
-        hnasm.script("boot.chns", "BOOT");
-        hnasm.script("boot.chns", "OSCONFIG");
-        hnasm.script("boot.chns", "BOOTCFG");
-        hnasm.script("boot.chns", "NETCFGX");
-        hnasm.script("boot.chns", "XSERVER");
-        hnasm.script("boot.chns", "COMPLETE");
+        hncip.script("boot.chns", "BOOT");
+        hncip.script("boot.chns", "OSCONFIG");
+        hncip.script("boot.chns", "BOOTCFG");
+        hncip.script("boot.chns", "NETCFGX");
+        hncip.script("boot.chns", "XSERVER");
+        hncip.script("boot.chns", "COMPLETE");
     } else {
         srand((unsigned int)time(nullptr));
-        hnasm.script("ui.chns", "LOGO2");
-        hnasm.script("ui.chns", "NULL");
+        hncip.script("ui.chns", "LOGO2");
+        hncip.script("ui.chns", "NULL");
         string loading;
         string block = "=";
         string preLoading = "--------------------";

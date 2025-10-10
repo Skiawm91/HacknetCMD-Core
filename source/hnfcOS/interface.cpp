@@ -5,7 +5,7 @@
 #include "console.h"
 #include "config.h"
 #include "input.h"
-#include "hnasm.h"
+#include "HNCIP.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>

@@ -1,9 +1,9 @@
 #define _HAS_STD_BYTE 0
-#include "hnasm/CHNScript.h"
+#include "HNCIP/script.h"
 #include "console.h"
 
 extern Console con;
 
-void CHNScript::CLEAR(){
+void HNCIPScript::CLEAR(){
     con.clear();
 }
