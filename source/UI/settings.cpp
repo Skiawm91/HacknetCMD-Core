@@ -19,8 +19,12 @@ void UserInterface::Settings(const bool isPlaying) {
         mi.kb.enable();
         // 重新載入Config
         cfg.reload();
+        #ifdef __APPLE__
         if (isPlaying) con.clearBuf2();
         else con.clear();
+        #elif _WIN32
+        con.clear();
+        #endif
         hnasm.script("settings.chns", "TITLE_" + misc.toLangName(cfg.settings.language));
         hnasm.script("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
         if (isPlaying) cout << "\n\n\n" << flush;
