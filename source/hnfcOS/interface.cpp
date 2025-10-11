@@ -46,6 +46,11 @@ void menuBarCb(int& backupMode, int& mode) {
     });
 }
 
+void hnfcOS::MenuBar() {
+    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - 48, '/'));
+    con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
+}
+
 void hnfcOS::Interface() {
     func.audio.stop();
     func.audio.play("Revolve.wav");
@@ -67,8 +72,7 @@ void hnfcOS::Interface() {
         if (mode == 2) con.bufferChange(0);
         else if (mode == 1 || mode == 3) con.bufferChange(1);
         #endif
-        con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - 48, '/'));
-        con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
+        MenuBar();
         if (mode == 0) {
             targetIP.clear();
             mi.mouse.btnDel(vector<string>{"EXIT", "SETTINGS", "SAVE", "TERMINAL", "DISPLAY", "NETMAP", "RAM"});

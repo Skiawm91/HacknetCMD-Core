@@ -1,11 +1,39 @@
-BEGIN_SSH
+BEGIN_TOPLINE
+PRINT
+PRINT
+PRINT  Open Ports
+PRINT
+PRINT   ${NODENAME} @${NODEIP}
+PRINT   Open Ports Required for Crack: ${PORTS}
 PRINT   ________________________________________
-PRINT    Port#: ${port} - SSH Server
+END_TOPLINE
+
+BEGIN_SSH
+PRINT    Port#: ${PORT} - SSH Server
 PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_SSH
 
+BEGIN_FTP
+PRINT    Port#: ${PORT} - FTP Server
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_FTP
+
+BEGIN_HTTP
+PRINT    Port#: ${PORT} - HTTP WebServer
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_HTTP
+
 BEGIN_SMTP
-PRINT   ________________________________________
-PRINT    Port#: ${port} - SMTP Mailserver
+PRINT    Port#: ${PORT} - SMTP Mailserver
 PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_SMTP
+
+BEGIN_SSL
+PRINT    Port#: ${PORT} - SSL
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_SSL
+
+BEGIN_SQL
+PRINT    Port#: ${PORT} - SQL Server
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_SQL

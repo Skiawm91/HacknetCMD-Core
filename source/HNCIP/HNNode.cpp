@@ -88,9 +88,9 @@ HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const opti
                         ++i;
                     }
                 }
-            } else if (command[0] == "ADMINKEEP") {
-                if (command[1] == "TRUE") node.adminKeep = true;
-                else if (command[1] == "FALSE") node.adminKeep = false;
+            } else if (command[0] == "HACKSTATKEEP") {
+                if (command[1] == "TRUE") node.hackStatKeep = true;
+                else if (command[1] == "FALSE") node.hackStatKeep = false;
             }
             else if (command[0] == "FILESYSTEM") {
                 std::vector<NodeInfo::FolderEntry*> folderStack;

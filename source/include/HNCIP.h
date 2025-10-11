@@ -20,7 +20,7 @@ public:
         };
         string Name, IP, Type, User, Passwd;
         int Ports = 0, Trace = 0;
-        bool adminKeep = true, Proxy = false, Firewall = false;
+        bool hackStatKeep = true, Proxy = false, Firewall = false;
         vector<string> portNames;
         vector<int> portNumbers, scanIPs;
         vector<FolderEntry> folders; // <-- 新的巢狀 filesystem

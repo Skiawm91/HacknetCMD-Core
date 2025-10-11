@@ -33,6 +33,10 @@ echo Compiling...
 link /nologo /OUT:Build\HacknetCMD.exe Build\*.obj icon.res advapi32.lib winmm.lib user32.lib windowsapp.lib
 echo Cleaning...
 del /F /Q Build\*.obj
+if exist config (
+    echo Detected config! putting to build...
+    xcopy /E config build\config > nul
+)
 echo.
 echo Done.
 echo Press Enter to Run Application.

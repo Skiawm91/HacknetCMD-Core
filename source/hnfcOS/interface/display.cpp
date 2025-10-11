@@ -10,13 +10,35 @@
 using namespace std;
 
 extern ManageInput mi;
-extern Console son;
+extern Console con;
 extern Config cfg;
 extern HNCInterPreter hncip;
 extern string playerIP, playerLang;
 
+void hnfcOS::Application::Probe(const HNCInterPreter::NodeInfo& node) {
+    #ifdef _WIN32
+    con.clear();
+    #elif __APPLE__
+    con.clearBuf2();
+    #endif
+    parent->MenuBar();
+    int i = 0;
+    hncip.script("hnfcOS/display/probe.chns", "TOPLINE", vector<string>{"NODENAME", "NODEIP", "PORTS"}, vector<string>{node.Name, node.IP, to_string(node.Ports)});
+    for (const auto &pN : node.portNames) {
+        if (pN == "SSH") hncip.script("hnfcOS/display/probe.chns", "SSH", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+        else if (pN == "FTP") hncip.script("hnfcOS/display/probe.chns", "FTP", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+        else if (pN == "HTTP") hncip.script("hnfcOS/display/probe.chns", "HTTP", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+        else if (pN == "SMTP") hncip.script("hnfcOS/display/probe.chns", "SMTP", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+        else if (pN == "SSL") hncip.script("hnfcOS/display/probe.chns", "SSL", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+        else if (pN == "SQL") hncip.script("hnfcOS/display/probe.chns", "SQL", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+        i++;
+    }
+    mi.async(3);
+}
+
 void hnfcOS::Display() {
     mi.kb.disable();
+    int chse = 0;
     cout << "\n\n";
     HNCInterPreter::NodeInfo node = getNode();
     if (!node.Name.empty() && !node.Type.empty()) {
@@ -29,6 +51,7 @@ void hnfcOS::Display() {
         mi.mouse.btnAdd("SCAN", 2, 22, 30, 3);
         mi.mouse.btnAdd("DISCONNECT", 2, 27, 30, 3);
         mi.mouse.cbCreate("DISPLAY", [&](const string& btnName){
+            if (btnName == "PROBE") chse = 2;
             if (btnName == "DISCONNECT") targetIP.clear();
         });
     } else hncip.script("hnfcOS/display/dced.chns", "DCED_" + playerLang);
@@ -36,4 +59,5 @@ void hnfcOS::Display() {
     mi.async(3);
     mi.mouse.btnDel(vector<string>{"LOGIN", "PROBE", "FILESYSTEM", "LOGS", "SCAN", "DISCONNECT"});
     mi.mouse.cbClean("DISPLAY");
+    if (chse == 2) app.Probe(node);
 }
