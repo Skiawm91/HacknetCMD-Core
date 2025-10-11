@@ -53,7 +53,7 @@ void hnfcOS::MenuBar() {
 
 void hnfcOS::Interface() {
     func.audio.stop();
-    func.audio.play("Revolve.wav");
+    func.audio.playL("InGame", vector<string>{"Revolve.wav", "out_run_the_wolves.wav"});
     extern string playerName;
     extern string playerLang;
     extern string playerIP;

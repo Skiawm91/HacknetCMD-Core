@@ -19,7 +19,7 @@ extern HNCInterPreter hncip;
 void UserInterface::Home(){
     int chse;
     func.audio.stop();
-    func.audio.play("AmbientDroneClipped.wav");
+    func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
     while(true) {
         mi.kb.disable();
         chse = 0;

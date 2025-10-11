@@ -14,6 +14,6 @@ void HNCIPScript::PLAYAUDIO(const string& content) {
     string arg1;
     istringstream args(content);
     args >> arg1;
-    func.audio.stop();
-    func.audio.play(arg1);
+    func.audio.stop("Custom");
+    func.audio.play("Custom", vector<string>{arg1});
 }

@@ -95,7 +95,7 @@ void UserInterface::Login() {
                                 cfg.data.del("config/booted.hnd", playerName);
                                 os.Boot();
                                 func.audio.stop();
-                                func.audio.play("AmbientDroneClipped.wav");
+                                func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
                                 return;
                             } else {
                                 hncip.script("logUI/login.chns", "ERROR");
@@ -112,7 +112,7 @@ void UserInterface::Login() {
                     playerLang = cfg.data.load("config/" + lowerName + "/info.hnd", 1);
                     os.Initial(false);
                     func.audio.stop();
-                    func.audio.play("AmbientDroneClipped.wav");
+                    func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
                     return;
                 }
                 break;

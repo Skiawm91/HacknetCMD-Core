@@ -1,29 +1,105 @@
-// Mac audio play/stop by GPT
+// All GPT Let's GO
 #define _HAS_STD_BYTE 0
 #include "function.h"
 #ifdef _WIN32
 #include <windows.h>
+#include <mmsystem.h>
 #elif __APPLE__
-#include <iostream>
 #include <AudioToolbox/AudioToolbox.h>
 #include <CoreFoundation/CoreFoundation.h>
-#include <atomic>
-#include <thread>
-#include <chrono>
 #endif
 #include <string>
+#include <vector>
+#include <unordered_map>
+#include <thread>
+#include <atomic>
+#include <mutex>
+#include <random>
+#include <chrono>
+#include <iostream>
 using namespace std;
 
 #ifdef _WIN32
-void Function::Audio::play(const string& soundFile) {
-    PlaySoundA(("assets/musics/" + soundFile).c_str(), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+struct AudioImpl {
+    unordered_map<string, pair<thread, shared_ptr<atomic<bool>>>> audioThreads;
+    mutex audioMutex;
+
+    string randomPick(const vector<string>& sounds) {
+        static random_device rd;
+        static mt19937 gen(rd());
+        uniform_int_distribution<> dis(0, sounds.size() - 1);
+        return sounds[dis(gen)];
+    }
+};
+
+static AudioImpl gAudioImpl;
+
+void Function::Audio::play(const string& threadName, const vector<string>& fileNames) {
+    lock_guard<mutex> lock(gAudioImpl.audioMutex);
+
+    auto it = gAudioImpl.audioThreads.find(threadName);
+    if (it != gAudioImpl.audioThreads.end()) {
+        it->second.second->store(false);
+        if (it->second.first.joinable()) it->second.first.join();
+        gAudioImpl.audioThreads.erase(it);
+    }
+
+    auto running = make_shared<atomic<bool>>(true);
+
+    thread t([=]() {
+        string file = "assets/musics/" + gAudioImpl.randomPick(fileNames);
+        PlaySoundA(file.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+        while (running->load()) this_thread::sleep_for(chrono::milliseconds(100));
+        PlaySoundA(NULL, NULL, 0);
+    });
+
+    gAudioImpl.audioThreads[threadName] = { move(t), running };
 }
+
+void Function::Audio::playL(const string& threadName, const vector<string>& fileNames) {
+    lock_guard<mutex> lock(gAudioImpl.audioMutex);
+
+    auto it = gAudioImpl.audioThreads.find(threadName);
+    if (it != gAudioImpl.audioThreads.end()) {
+        it->second.second->store(false);
+        if (it->second.first.joinable()) it->second.first.join();
+        gAudioImpl.audioThreads.erase(it);
+    }
+
+    auto running = make_shared<atomic<bool>>(true);
+
+    thread t([=]() {
+        while (running->load()) {
+            string file = "assets/musics/" + gAudioImpl.randomPick(fileNames);
+            PlaySoundA(file.c_str(), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+            while (running->load()) this_thread::sleep_for(chrono::milliseconds(100));
+        }
+        PlaySoundA(NULL, NULL, 0);
+    });
+
+    gAudioImpl.audioThreads[threadName] = { move(t), running };
+}
+
+void Function::Audio::stop(const string& threadName) {
+    lock_guard<mutex> lock(gAudioImpl.audioMutex);
+    auto it = gAudioImpl.audioThreads.find(threadName);
+    if (it != gAudioImpl.audioThreads.end()) {
+        it->second.second->store(false);
+        if (it->second.first.joinable()) it->second.first.join();
+        gAudioImpl.audioThreads.erase(it);
+    }
+}
+
 void Function::Audio::stop() {
-    PlaySoundA(NULL, NULL, 0);
+    lock_guard<mutex> lock(gAudioImpl.audioMutex);
+    for (auto& kv : gAudioImpl.audioThreads) {
+        kv.second.second->store(false);
+        if (kv.second.first.joinable()) kv.second.first.join();
+    }
+    gAudioImpl.audioThreads.clear();
 }
+
 #elif __APPLE__
-static atomic<bool> keepPlaying(false);
-static thread playerThread;
 
 struct PlayerContext {
     ExtAudioFileRef audioFile = nullptr;
@@ -33,9 +109,25 @@ struct PlayerContext {
     AudioStreamBasicDescription clientFormat = {};
 };
 
+struct MacAudioThread {
+    thread t;
+    shared_ptr<atomic<bool>> running;
+};
+
+static unordered_map<string, MacAudioThread> macAudioThreads;
+static mutex macAudioMutex;
+static random_device rd;
+static mt19937 gen(rd());
+
+static string randomPick(const vector<string>& sounds) {
+    uniform_int_distribution<> dis(0, sounds.size() - 1);
+    return sounds[dis(gen)];
+}
+
 static void AQOutputCallback(void* inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer) {
     PlayerContext* ctx = (PlayerContext*)inUserData;
-    if (!keepPlaying.load()) {
+    auto* running = (atomic<bool>*)ctx->clientFormat.mReserved; // 用 mReserved 存 running pointer
+    if (!running->load()) {
         AudioQueueStop(ctx->queue, false);
         return;
     }
@@ -62,22 +154,18 @@ static void AQOutputCallback(void* inUserData, AudioQueueRef inAQ, AudioQueueBuf
     AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, nullptr);
 }
 
-static void playerFunc(string filepath) {
+static void playerFunc(string filepath, shared_ptr<atomic<bool>> running) {
     PlayerContext ctx = {};
+    ctx.clientFormat.mReserved = running.get();
     CFURLRef url = CFURLCreateFromFileSystemRepresentation(nullptr, (const UInt8*)filepath.c_str(), filepath.length(), false);
-    if (!url) {
-        cerr << "Invalid file URL\n";
-        return;
-    }
-    if (ExtAudioFileOpenURL(url, &ctx.audioFile) != noErr) {
-        CFRelease(url);
-        cerr << "Failed to open audio file\n";
-        return;
-    }
+    if (!url) return;
+    if (ExtAudioFileOpenURL(url, &ctx.audioFile) != noErr) { CFRelease(url); return; }
     CFRelease(url);
+
     AudioStreamBasicDescription fileFormat;
     UInt32 size = sizeof(fileFormat);
     ExtAudioFileGetProperty(ctx.audioFile, kExtAudioFileProperty_FileDataFormat, &size, &fileFormat);
+
     ctx.clientFormat.mSampleRate = fileFormat.mSampleRate;
     ctx.clientFormat.mFormatID = kAudioFormatLinearPCM;
     ctx.clientFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
@@ -86,32 +174,86 @@ static void playerFunc(string filepath) {
     ctx.clientFormat.mBitsPerChannel = 16;
     ctx.clientFormat.mBytesPerPacket = 2 * fileFormat.mChannelsPerFrame;
     ctx.clientFormat.mBytesPerFrame = 2 * fileFormat.mChannelsPerFrame;
+
     ExtAudioFileSetProperty(ctx.audioFile, kExtAudioFileProperty_ClientDataFormat, sizeof(ctx.clientFormat), &ctx.clientFormat);
+
     AudioQueueNewOutput(&ctx.clientFormat, AQOutputCallback, &ctx, nullptr, nullptr, 0, &ctx.queue);
     ctx.maxPacketSize = ctx.clientFormat.mBytesPerPacket;
     UInt32 bufferByteSize = ctx.maxPacketSize * ctx.numPacketsToRead;
+
     for (int i = 0; i < 3; ++i) {
         AudioQueueBufferRef buffer;
         AudioQueueAllocateBuffer(ctx.queue, bufferByteSize, &buffer);
         AQOutputCallback(&ctx, ctx.queue, buffer);
     }
+
     AudioQueueStart(ctx.queue, nullptr);
-    while (keepPlaying.load())
-        this_thread::sleep_for(chrono::milliseconds(100));
+    while (running->load()) this_thread::sleep_for(chrono::milliseconds(100));
+
     AudioQueueStop(ctx.queue, true);
     AudioQueueDispose(ctx.queue, true);
     ExtAudioFileDispose(ctx.audioFile);
 }
 
-void Function::Audio::play(const string& soundFile) {
-    if (keepPlaying.load()) return;
-    keepPlaying = true;
-    playerThread = thread(playerFunc, "assets/musics/" + soundFile);
+void Function::Audio::play(const string& threadName, const vector<string>& sounds) {
+    lock_guard<mutex> lock(macAudioMutex);
+
+    auto it = macAudioThreads.find(threadName);
+    if (it != macAudioThreads.end()) {
+        it->second.running->store(false);
+        if (it->second.t.joinable()) it->second.t.join();
+        macAudioThreads.erase(it);
+    }
+
+    auto running = make_shared<atomic<bool>>(true);
+    string file = "assets/musics/" + randomPick(sounds);
+
+    thread t(playerFunc, file, running);
+
+    macAudioThreads[threadName] = { move(t), running };
 }
 
-void Function::Audio::stop() {
-    if (!keepPlaying.load()) return;
-    keepPlaying = false;
-    if (playerThread.joinable()) playerThread.join();
+void Function::Audio::playL(const string& threadName, const vector<string>& sounds) {
+    lock_guard<mutex> lock(macAudioMutex);
+
+    auto it = macAudioThreads.find(threadName);
+    if (it != macAudioThreads.end()) {
+        it->second.running->store(false);
+        if (it->second.t.joinable()) it->second.t.join();
+        macAudioThreads.erase(it);
+    }
+
+    auto running = make_shared<atomic<bool>>(true);
+
+    thread t([sounds, running]() {
+        while (running->load()) {
+            string file = "assets/musics/" + randomPick(sounds);
+            playerFunc(file, running);
+        }
+    });
+
+    macAudioThreads[threadName] = { move(t), running };
 }
+
+void Function::Audio::stop(const string& threadName) {
+    lock_guard<mutex> lock(macAudioMutex);
+    auto it = macAudioThreads.find(threadName);
+    if (it != macAudioThreads.end()) {
+        it->second.running->store(false);
+        if (it->second.t.joinable()) it->second.t.join();
+        macAudioThreads.erase(it);
+    }
+}
+
+// 停止所有線程
+void Function::Audio::stop() {
+    lock_guard<mutex> lock(macAudioMutex);
+    for (auto& kv : macAudioThreads) {
+        kv.second.running->store(false);
+        if (kv.second.t.joinable()) kv.second.t.join();
+    }
+    macAudioThreads.clear();
+}
+
+
 #endif
