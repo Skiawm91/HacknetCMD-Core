@@ -34,7 +34,8 @@ link /nologo /OUT:Build\HacknetCMD.exe Build\*.obj icon.res advapi32.lib winmm.l
 echo Cleaning...
 del /F /Q Build\*.obj
 if exist config (
-    echo Detected config! putting to build...
+    echo Config detected, putting to build...
+    mkdir build\config > nul
     xcopy /E config build\config > nul
 )
 echo.
