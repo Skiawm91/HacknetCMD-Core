@@ -107,6 +107,7 @@ struct PlayerContext {
     UInt32 maxPacketSize = 0;
     UInt32 numPacketsToRead = 1024;
     AudioStreamBasicDescription clientFormat = {};
+    shared_ptr<atomic<bool>> running; // ✅ 新增
 };
 
 struct MacAudioThread {
@@ -126,8 +127,7 @@ static string randomPick(const vector<string>& sounds) {
 
 static void AQOutputCallback(void* inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer) {
     PlayerContext* ctx = (PlayerContext*)inUserData;
-    auto* running = (atomic<bool>*)ctx->clientFormat.mReserved; // 用 mReserved 存 running pointer
-    if (!running->load()) {
+    if (!ctx->running || !ctx->running->load()) { // ✅ 直接用
         AudioQueueStop(ctx->queue, false);
         return;
     }
@@ -156,7 +156,8 @@ static void AQOutputCallback(void* inUserData, AudioQueueRef inAQ, AudioQueueBuf
 
 static void playerFunc(string filepath, shared_ptr<atomic<bool>> running) {
     PlayerContext ctx = {};
-    ctx.clientFormat.mReserved = running.get();
+    ctx.running = running; // ✅ 加上這行
+
     CFURLRef url = CFURLCreateFromFileSystemRepresentation(nullptr, (const UInt8*)filepath.c_str(), filepath.length(), false);
     if (!url) return;
     if (ExtAudioFileOpenURL(url, &ctx.audioFile) != noErr) { CFRelease(url); return; }
@@ -176,8 +177,8 @@ static void playerFunc(string filepath, shared_ptr<atomic<bool>> running) {
     ctx.clientFormat.mBytesPerFrame = 2 * fileFormat.mChannelsPerFrame;
 
     ExtAudioFileSetProperty(ctx.audioFile, kExtAudioFileProperty_ClientDataFormat, sizeof(ctx.clientFormat), &ctx.clientFormat);
-
     AudioQueueNewOutput(&ctx.clientFormat, AQOutputCallback, &ctx, nullptr, nullptr, 0, &ctx.queue);
+
     ctx.maxPacketSize = ctx.clientFormat.mBytesPerPacket;
     UInt32 bufferByteSize = ctx.maxPacketSize * ctx.numPacketsToRead;
 
@@ -210,7 +211,7 @@ void Function::Audio::play(const string& threadName, const vector<string>& sound
 
     thread t(playerFunc, file, running);
 
-    macAudioThreads[threadName] = { move(t), running };
+    macAudioThreads[threadName] = { std::move(t), running };
 }
 
 void Function::Audio::playL(const string& threadName, const vector<string>& sounds) {
@@ -232,7 +233,7 @@ void Function::Audio::playL(const string& threadName, const vector<string>& soun
         }
     });
 
-    macAudioThreads[threadName] = { move(t), running };
+    macAudioThreads[threadName] = { std::move(t), running };
 }
 
 void Function::Audio::stop(const string& threadName) {

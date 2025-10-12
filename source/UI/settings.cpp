@@ -32,7 +32,7 @@ void UserInterface::Settings(const bool isPlaying) {
         hncip.script("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
         hncip.script("settings.chns", "BACK_" + misc.toLangName(cfg.settings.language));
         mi.mouse.btnAdd("VERBOSE", 1, 1, 20, 3);
-        if (isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 4, 20, 3);
+        if (!isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 4, 20, 3);
         mi.mouse.btnAdd("CMDSIZE", 1, 7, 20, 3);
         mi.mouse.btnAdd("BACK", 1, 10, 20, 3);
         mi.mouse.cbCreate("SETTINGS", [&](const string& btnName){
