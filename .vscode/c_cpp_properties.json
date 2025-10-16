@@ -4,7 +4,7 @@
             "name": "HacknetCMD-Cpp",
             "cppStandard": "c++20",
             "includePath": [
-                "${workspaceFolder}/source/include"
+                "${workspaceFolder}/include"
             ]
         }
     ],

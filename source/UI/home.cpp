@@ -5,6 +5,7 @@
 #include "input.h"
 #include "HNCIP.h"
 #include "misc.h"
+#include "discord_rpc.h"
 #include <vector>
 using namespace std;
 
@@ -15,12 +16,15 @@ extern UserInterface UI;
 extern Misc misc;
 extern string ver, verStage;
 extern HNCInterPreter hncip;
+extern DiscordRichPresence drp;
 
 void UserInterface::Home(){
     int chse;
     func.audio.stop();
     func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
     while(true) {
+        drp.details = "Home";
+        Discord_UpdatePresence(&drp);
         mi.kb.disable();
         chse = 0;
         if (verStage != "Release") hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});

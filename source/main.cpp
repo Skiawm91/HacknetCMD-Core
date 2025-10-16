@@ -7,6 +7,8 @@
 #include "input.h"
 #include "HNCIP.h"
 #include "os.h"
+#include "discord_rpc.h"
+#include "discord_register.h"
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__
@@ -29,6 +31,7 @@ Misc misc;
 UserInterface UI;
 hnfcOS os;
 HNCInterPreter hncip;
+DiscordRichPresence drp;
 
 // 版本號
 string ver = "0.3.0";
@@ -87,6 +90,14 @@ int main() {
     cfg.reload();
     // 初始化: 輸入
     mi.initial();
+    // 初始化: Discord Presence
+    DiscordEventHandlers handlers = {};
+    handlers.ready = [](const DiscordUser* user){ };
+    Discord_Initialize("1428378052223697007", &handlers, 1, nullptr);
+    drp.largeImageKey = "HNCMD_ICON";
+    drp.largeImageText = "Hacknet for CMD";
+    Discord_UpdatePresence(&drp);
+    // 初始化結束
     UI.Home();
     return 0;
 }

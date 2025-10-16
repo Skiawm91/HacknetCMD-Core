@@ -9,7 +9,7 @@ if not defined VSPath (
     pause
     exit
 )
-call "%VSPath%\Common7\Tools\VsDevCmd.bat"
+call "%VSPath%\Common7\Tools\VsDevCmd.bat" -arch=amd64
 rmdir /S /Q build > nul
 mkdir build build\assets > nul
 xcopy /E assets build\assets > nul
@@ -26,11 +26,11 @@ for /f "delims=" %%F in ('dir /b /s source\*.cpp ^| findstr /i /v "\.cppm$"') do
         set "obj=build\!last!.!name!.obj"
     )
     echo !last!\!name!.cpp
-    cl /c /EHsc /nologo /I"source\include" /std:c++20 /utf-8 "%%F" /Fo!obj! | findstr /V "!name!.cpp"
+    cl /c /EHsc /nologo /MD /I"include" /std:c++20 /utf-8 "%%F" /Fo!obj! | findstr /V "!name!.cpp"
 )
 echo.
 echo Compiling...
-link /nologo /OUT:Build\HacknetCMD.exe Build\*.obj icon.res advapi32.lib winmm.lib user32.lib windowsapp.lib
+link /nologo /OUT:Build\HacknetCMD.exe Build\*.obj icon.res lib\*.lib advapi32.lib winmm.lib user32.lib windowsapp.lib
 echo Cleaning...
 del /F /Q Build\*.obj
 if exist config (
