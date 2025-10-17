@@ -34,8 +34,11 @@ cd HacknetCMD-Cpp
 2. Run `build_mac.command` for macOS
 4. If Done, Press Enter key
 5. If has no any errors, should it run
-## Thanks
+## Developers
 * [Skiawm91](https://github.com/Skiawm91)
-* [AhQiang](https://github.com/Hoyiqiang)
 * [65536Java](https://github.com/65536Java)
+* OpenAI GPT
+## Thanks
+* [AhQiang](https://github.com/Hoyiqiang)
+* [Discord/Discord-RPC](https://github.com/discord/discord-rpc)
 ## [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition) is here!

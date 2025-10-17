@@ -6,6 +6,7 @@
 #include "config.h"
 #include "input.h"
 #include "HNCIP.h"
+#include "discord_rpc.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -19,6 +20,7 @@ extern Function func;
 extern Config cfg;
 extern Console con;
 extern ManageInput mi;
+extern DiscordRichPresence drp;
 // HacknetStory hnStory;
 
 string overlines(int count) {
@@ -47,13 +49,15 @@ void menuBarCb(int& backupMode, int& mode) {
 }
 
 void hnfcOS::MenuBar() {
-    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - 48, '/'));
+    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - 53, '/') + string("|✉️|"));
     con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
 }
 
 void hnfcOS::Interface() {
     func.audio.stop();
     func.audio.playL("InGame", vector<string>{"Revolve.wav", "out_run_the_wolves.wav"});
+    drp.state = "In hnfcOS";
+    Discord_UpdatePresence(&drp);
     extern string playerName;
     extern string playerLang;
     extern string playerIP;

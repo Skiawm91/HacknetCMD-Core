@@ -23,7 +23,7 @@ void UserInterface::Home(){
     func.audio.stop();
     func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
     while(true) {
-        drp.details = "Home";
+        drp.state = "In Home";
         Discord_UpdatePresence(&drp);
         mi.kb.disable();
         chse = 0;

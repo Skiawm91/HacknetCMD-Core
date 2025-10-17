@@ -15,6 +15,7 @@ HNScript (完成, Beta 2)
 設定介面 (完成, Beta 1)
 中英文介面之切換 (完成, Beta 2)
 新的CMD介面 (WIP)
+Discord RPC (x86_64 only, Beta 3)
 
 [0.4.0]
 重寫Tutorial (WIP)
