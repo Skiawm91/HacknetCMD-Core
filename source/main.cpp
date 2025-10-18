@@ -20,7 +20,6 @@
 #endif
 #include <string>
 #include <filesystem>
-#include <format>
 using namespace std;
 
 // 初始化 class 部分
@@ -96,8 +95,8 @@ int main() {
     handlers.ready = [](const DiscordUser* user){ };
     Discord_Initialize("1428378052223697007", &handlers, 1, nullptr);
     string details;
-    if (verStage == "Release") details = format("Cpp Edition | {}", ver);
-    else details = format("Cpp Edition | {} [{}]", ver, verStage);
+    if (verStage == "Release") details = "Core Edition | " + ver;
+    else details = "Cpp Edition | " + ver + " [" + verStage + "]";
     drp.details = details.c_str();
     drp.largeImageKey = "HNCMD_ICON";
     drp.largeImageText = "Hacknet for CMD";

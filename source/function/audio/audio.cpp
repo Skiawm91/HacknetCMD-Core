@@ -7,6 +7,8 @@
 #elif __APPLE__
 #include <AudioToolbox/AudioToolbox.h>
 #include <CoreFoundation/CoreFoundation.h>
+#include <limits.h>
+#include <cstdlib>
 #endif
 #include <string>
 #include <vector>
@@ -157,8 +159,9 @@ static void AQOutputCallback(void* inUserData, AudioQueueRef inAQ, AudioQueueBuf
 static void playerFunc(string filepath, shared_ptr<atomic<bool>> running) {
     PlayerContext ctx = {};
     ctx.running = running; // ✅ 加上這行
-
-    CFURLRef url = CFURLCreateFromFileSystemRepresentation(nullptr, (const UInt8*)filepath.c_str(), filepath.length(), false);
+    char fullpath[PATH_MAX];
+    if (!realpath(filepath.c_str(), fullpath)) return;
+    CFURLRef url = CFURLCreateFromFileSystemRepresentation(nullptr, (const UInt8*)fullpath, strlen(fullpath), false);
     if (!url) return;
     if (ExtAudioFileOpenURL(url, &ctx.audioFile) != noErr) { CFRelease(url); return; }
     CFRelease(url);

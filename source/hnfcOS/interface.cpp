@@ -49,15 +49,19 @@ void menuBarCb(int& backupMode, int& mode) {
 }
 
 void hnfcOS::MenuBar() {
-    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - 53, '/') + string("|✉️|"));
+    #ifdef _WIN32
+    int preRemove = 53;
+    #elif __APPLE__
+    int preRemove = 51;
+    #endif
+    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - preRemove, '/') + string("|✉️|"));
     con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
 }
 
 void hnfcOS::Interface() {
     func.audio.stop();
     func.audio.playL("InGame", vector<string>{"Revolve.wav", "out_run_the_wolves.wav"});
-    drp.state = "In hnfcOS";
-    Discord_UpdatePresence(&drp);
+    string state;
     extern string playerName;
     extern string playerLang;
     extern string playerIP;
@@ -72,6 +76,10 @@ void hnfcOS::Interface() {
     mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
     menuBarCb(backupMode, mode);
     while(true) {
+        if (!targetIP.empty()) state = "[hnfcOS] Connected: " + targetIP;
+        else state = "[hnfcOS] Disconnected";
+        drp.state = state.c_str();
+        Discord_UpdatePresence(&drp);
         #ifdef __APPLE__
         if (mode == 2) con.bufferChange(0);
         else if (mode == 1 || mode == 3) con.bufferChange(1);

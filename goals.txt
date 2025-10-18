@@ -1,10 +1,13 @@
 Hacknet for CMD: C++ Edition // Goals
 
+[版本號]
+目標 (進度, 完成的版本)
+
 [0.1.0]
 完成Batch版本的進度 (完成, Release)
 
 [0.2.0]
-Mac 支援 (完成, Beta 1/2)
+Mac 支援 (完成, Beta 2)
 HNScript (完成, Beta 2)
 帳號登入註冊功能 (完成, Beta 2)
 進階輸入功能 (完成, Release)
@@ -14,8 +17,23 @@ HNScript (完成, Beta 2)
 整理代碼 / 檔案 (完成, Beta 2)
 設定介面 (完成, Beta 1)
 中英文介面之切換 (完成, Beta 2)
-新的CMD介面 (WIP)
-Discord RPC (x86_64 only, Beta 3)
+新的CMD介面：
+    MenuBar:
+        Exit (完成, Beta 2)
+        Settings (完成, Beta 3)
+        Save (WIP)
+        Terminal (完成, Beta 2)
+        Display (完成, Beta 3)
+        NetMap (WIP)
+        RAM (WIP)
+        Mail (WIP)
+    System:
+        Login (WIP)
+        Probe (Display only, Beta 3)
+        File View (WIP)
+        Scan (WIP)
+Discord RPC (完成, Beta 3)
+Audio 多線程播放及多檔案隨機播放支援 (完成, Beta 3)
 
 [0.4.0]
 重寫Tutorial (WIP)

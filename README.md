@@ -1,4 +1,6 @@
-# Hacknet for CMD: Cpp Edition
+# Hacknet for CMD: Core Edition
+I named "Core Edition" because I don't like "Cpp Edition". 
+<br/>
 "Hacknet for CMD" is a legacy project, last updated about 1 year ago yet.
 <br/>
 This game idea is from Hacknet from Steam (I guess you already know).
