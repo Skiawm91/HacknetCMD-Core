@@ -17,6 +17,9 @@
 #include <filesystem>
 #include <sstream>
 #include <algorithm>
+#include <thread>
+#include <chrono>
+#include <atomic>
 using namespace std;
 
 extern ManageInput mi;
@@ -33,11 +36,21 @@ void UserInterface::Login() {
     string name, tgshapwd;
     playerName = cfg.data.load("config/booted.hnd", 0);
     int chse;
+    bool logoAnimation;
     while(true) {
         mi.kb.enable();
         chse = 0;
-        if (verStage != "Release") hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
-        else hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
+        logoAnimation = true;
+        thread([&]{
+            int fps = 30, frame = 1;
+            while(logoAnimation) {
+                if (frame > 60) frame = 1;
+                if (verStage != "Release") hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+                else hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver});
+                this_thread::sleep_for(chrono::milliseconds(1000 / fps));
+                frame++;
+            }
+        }).detach();
         if (!playerName.empty()) hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
         else hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
         mi.mouse.btnAdd("LOGIN", 2, 8, 30, 3);
@@ -57,6 +70,7 @@ void UserInterface::Login() {
         } else if (enterDetected) {
             enterDetected = false;
         }
+        logoAnimation = false;
         mi.mouse.btnDel(vector<string>{"LOGIN", "CONTINUE", "REGISTER", "BACK"});
         mi.mouse.cbClean();
         switch(chse) {

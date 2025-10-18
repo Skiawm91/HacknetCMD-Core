@@ -19,6 +19,7 @@ void Console::printAt(const int x, const int y, const string& text) {
     COORD pos = { (SHORT)x, (SHORT)y };
     SetConsoleCursorPosition(hOut, pos);
     DWORD written;
+    FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X, pos, &written);
     WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     SetConsoleCursorPosition(hOut, origPos);
 }
@@ -28,6 +29,7 @@ void Console::printAt(int x, int y, const std::string& text) {
     isQuary = true;
     while(isQuary); // 換成等待完成
     std::cout << "\033[" << (y+1) << ";" << (x+1) << "H";
+    std::cout << "\033[2K";
     std::cout << text;
     std::cout << "\033[" << cursorRow << ";" << cursorCol << "H";
     std::cout.flush();

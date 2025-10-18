@@ -35,7 +35,7 @@ DiscordRichPresence drp;
 
 // 版本號
 string ver = "0.3.0";
-string verStage = "Beta 3";
+string verStage = "Beta 4";
 
 int main() {
 #ifdef _WIN32

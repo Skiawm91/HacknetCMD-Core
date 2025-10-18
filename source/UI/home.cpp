@@ -7,6 +7,9 @@
 #include "misc.h"
 #include "discord_rpc.h"
 #include <vector>
+#include <thread>
+#include <chrono>
+#include <atomic>
 using namespace std;
 
 extern ManageInput mi;
@@ -20,6 +23,7 @@ extern DiscordRichPresence drp;
 
 void UserInterface::Home(){
     int chse;
+    atomic<bool> running, logoAnimation;
     func.audio.stop();
     func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
     while(true) {
@@ -27,8 +31,19 @@ void UserInterface::Home(){
         Discord_UpdatePresence(&drp);
         mi.kb.disable();
         chse = 0;
-        if (verStage != "Release") hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
-        else hncip.script("ui.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
+        logoAnimation = true;
+        thread([&]{
+            running = true;
+            int fps = 30, frame = 1;
+            while(logoAnimation) {
+                if (frame > 60) frame = 1;
+                if (verStage != "Release") hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+                else hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver});
+                this_thread::sleep_for(chrono::milliseconds(1000 / fps));
+                frame++;
+            }
+            running = false;
+        }).detach();
         hncip.script("ui.chns", "HOME");
         mi.mouse.btnAdd("PLAY", 2, 8, 30, 3);
         mi.mouse.btnAdd("SETTINGS", 2, 14, 30, 3);
@@ -39,6 +54,7 @@ void UserInterface::Home(){
             if (btnName == "QUIT") chse = 4;
         });
         mi.async(3);
+        logoAnimation = false;
         mi.mouse.btnDel(vector<string>{"PLAY", "SETTINGS", "QUIT"});
         mi.mouse.cbClean();
         switch(chse) {

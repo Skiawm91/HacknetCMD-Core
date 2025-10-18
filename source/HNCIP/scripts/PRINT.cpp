@@ -68,4 +68,5 @@ void HNCIPScript::PRINTAT(const string& content) {
         y = stoi(yS);
     } catch (...) { return; }
     if (!str.empty()) con.printAt(x, y, str);
+    else con.printAt(x, y, " ");
 }

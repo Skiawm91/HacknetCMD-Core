@@ -35,7 +35,7 @@ void hnfcOS::Boot() {
         hncip.script("boot.chns", "COMPLETE");
     } else {
         srand((unsigned int)time(nullptr));
-        hncip.script("ui.chns", "LOGO2");
+        hncip.script("logo.chns", "LOGO2");
         hncip.script("ui.chns", "NULL");
         string loading;
         string block = "=";
