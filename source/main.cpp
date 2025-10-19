@@ -96,7 +96,7 @@ int main() {
     Discord_Initialize("1428378052223697007", &handlers, 1, nullptr);
     string details;
     if (verStage == "Release") details = "Core Edition | " + ver;
-    else details = "Cpp Edition | " + ver + " [" + verStage + "]";
+    else details = "Core Edition | " + ver + " [" + verStage + "]";
     drp.details = details.c_str();
     drp.largeImageKey = "HNCMD_ICON";
     drp.largeImageText = "Hacknet for CMD";

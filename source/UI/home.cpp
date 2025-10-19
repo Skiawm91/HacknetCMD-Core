@@ -23,7 +23,9 @@ extern DiscordRichPresence drp;
 
 void UserInterface::Home(){
     int chse;
+    #ifdef _WIN32
     atomic<bool> running, logoAnimation;
+    #endif
     func.audio.stop();
     func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
     while(true) {
@@ -32,6 +34,7 @@ void UserInterface::Home(){
         mi.kb.disable();
         chse = 0;
         hncip.script("ui.chns", "HOME");
+        #ifdef _WIN32
         logoAnimation = true;
         thread([&]{
             running = true;
@@ -45,6 +48,10 @@ void UserInterface::Home(){
             }
             running = false;
         }).detach();
+        #elif __APPLE__
+        if (verStage != "Release") hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+        else hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
+        #endif
         mi.mouse.btnAdd("PLAY", 2, 8, 30, 3);
         mi.mouse.btnAdd("SETTINGS", 2, 14, 30, 3);
         mi.mouse.btnAdd("QUIT", 2, 17, 30, 3);
@@ -54,8 +61,10 @@ void UserInterface::Home(){
             if (btnName == "QUIT") chse = 4;
         });
         mi.async(3);
+        #ifdef _WIN32
         logoAnimation = false;
         while(running);
+        #endif
         mi.mouse.btnDel(vector<string>{"PLAY", "SETTINGS", "QUIT"});
         mi.mouse.cbClean();
         switch(chse) {
