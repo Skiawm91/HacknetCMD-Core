@@ -31,6 +31,7 @@ void UserInterface::Home(){
         Discord_UpdatePresence(&drp);
         mi.kb.disable();
         chse = 0;
+        hncip.script("ui.chns", "HOME");
         logoAnimation = true;
         thread([&]{
             running = true;
@@ -44,7 +45,6 @@ void UserInterface::Home(){
             }
             running = false;
         }).detach();
-        hncip.script("ui.chns", "HOME");
         mi.mouse.btnAdd("PLAY", 2, 8, 30, 3);
         mi.mouse.btnAdd("SETTINGS", 2, 14, 30, 3);
         mi.mouse.btnAdd("QUIT", 2, 17, 30, 3);
@@ -55,6 +55,7 @@ void UserInterface::Home(){
         });
         mi.async(3);
         logoAnimation = false;
+        while(running);
         mi.mouse.btnDel(vector<string>{"PLAY", "SETTINGS", "QUIT"});
         mi.mouse.cbClean();
         switch(chse) {

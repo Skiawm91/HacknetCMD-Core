@@ -36,12 +36,15 @@ void UserInterface::Login() {
     string name, tgshapwd;
     playerName = cfg.data.load("config/booted.hnd", 0);
     int chse;
-    bool logoAnimation;
+    bool running, logoAnimation;
     while(true) {
         mi.kb.enable();
         chse = 0;
+        if (!playerName.empty()) hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
+        else hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
         logoAnimation = true;
         thread([&]{
+            running = true;
             int fps = 30, frame = 1;
             while(logoAnimation) {
                 if (frame > 60) frame = 1;
@@ -50,9 +53,8 @@ void UserInterface::Login() {
                 this_thread::sleep_for(chrono::milliseconds(1000 / fps));
                 frame++;
             }
+            running = false;
         }).detach();
-        if (!playerName.empty()) hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
-        else hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
         mi.mouse.btnAdd("LOGIN", 2, 8, 30, 3);
         if (!playerName.empty()) mi.mouse.btnAdd("CONTINUE", 2, 11, 30, 3);  
         mi.mouse.btnAdd("REGISTER", 2, 14, 30, 3);  
@@ -71,6 +73,7 @@ void UserInterface::Login() {
             enterDetected = false;
         }
         logoAnimation = false;
+        while(running);
         mi.mouse.btnDel(vector<string>{"LOGIN", "CONTINUE", "REGISTER", "BACK"});
         mi.mouse.cbClean();
         switch(chse) {
