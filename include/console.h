@@ -11,6 +11,10 @@ public:
     void clear();
     void resize(const int width, const int height);
     void printAt(int x, int y, const std::string& text);
+    struct PrintAtExtension {
+        void noBack(int x, int y, const std::string& text);
+    };
+    PrintAtExtension pae;
     #ifdef _WIN32
     void bufferSave(int startRow = 0);
     void bufferRestore();

@@ -70,3 +70,18 @@ void HNCIPScript::PRINTAT(const string& content) {
     if (!str.empty()) con.printAt(x, y, str);
     else con.printAt(x, y, " ");
 }
+
+void HNCIPScript::PRINTAT_NB(const string& content) {
+    int x = 0, y = 0;
+    string xS, yS, str;
+    istringstream iss(content);
+    iss >> xS >> yS;
+    getline(iss, str);
+    str.erase(0,1);
+    try {
+        x = stoi(xS);
+        y = stoi(yS);
+    } catch (...) { return; }
+    if (!str.empty()) con.pae.noBack(x, y, str);
+    else con.pae.noBack(x, y, " ");
+}

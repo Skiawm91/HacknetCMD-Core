@@ -1,17 +1,17 @@
 BEGIN_HOME
-PRINTAT 0 7
-PRINTAT 0 8   ______________________________
-PRINTAT 0 9   | Play                       |
-PRINTAT 0 10   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT 0 11   ______________________________
-PRINTAT 0 12   | Mods                       |
-PRINTAT 0 13   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT 0 14   ______________________________
-PRINTAT 0 15   | Settings                   |
-PRINTAT 0 16   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT 0 17   ______________________________
-PRINTAT 0 18   | Quit                       |
-PRINTAT 0 19   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 0 7
+PRINTAT_NB 0 8   ______________________________
+PRINTAT_NB 0 9   | Play                       |
+PRINTAT_NB 0 10   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 0 11   ______________________________
+PRINTAT_NB 0 12   | Mods                       |
+PRINTAT_NB 0 13   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 0 14   ______________________________
+PRINTAT_NB 0 15   | Settings                   |
+PRINTAT_NB 0 16   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 0 17   ______________________________
+PRINTAT_NB 0 18   | Quit                       |
+PRINTAT_NB 0 19   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_HOME
 
 BEGIN_QUIT_EN
@@ -39,19 +39,19 @@ PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾�
 END_QUIT_CHT
 
 BEGIN_USER
-PRINTAT 0 7
-PRINTAT 0 8   ______________________________
-PRINTAT 0 9   | Login                      |
-PRINTAT 0 10   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT 0 11   ______________________________
-PRINTAT 0 12   | Continue [${PLAYER}|
-PRINTAT 0 13   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT 0 14   ______________________________
-PRINTAT 0 15   | Register                   |
-PRINTAT 0 16   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT 0 17   ______________________________
-PRINTAT 0 18   | Back                       |
-PRINTAT 0 19   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 0 7
+PRINTAT_NB 0 8   ______________________________
+PRINTAT_NB 0 9   | Login                      |
+PRINTAT_NB 0 10   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 0 11   ______________________________
+PRINTAT_NB 0 12   | Continue [${PLAYER}|
+PRINTAT_NB 0 13   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 0 14   ______________________________
+PRINTAT_NB 0 15   | Register                   |
+PRINTAT_NB 0 16   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 0 17   ______________________________
+PRINTAT_NB 0 18   | Back                       |
+PRINTAT_NB 0 19   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 GETINPUTNUL
 END_USER
 

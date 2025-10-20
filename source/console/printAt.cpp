@@ -35,3 +35,22 @@ void Console::printAt(int x, int y, const std::string& text) {
     std::cout.flush();
 }
 #endif
+
+void Console::PrintAtExtension::noBack(int x, int y, const std::string& text) {
+    #ifdef _WIN32
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(hOut, &csbi);
+    COORD origPos = csbi.dwCursorPosition;
+    COORD pos = { (SHORT)x, (SHORT)y };
+    SetConsoleCursorPosition(hOut, pos);
+    DWORD written;
+    FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X, pos, &written);
+    WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
+    #elif __APPLE__
+    std::cout << "\033[" << (y+1) << ";" << (x+1) << "H";
+    std::cout << "\033[2K";
+    std::cout << text;
+    std::cout.flush();
+    #endif
+}

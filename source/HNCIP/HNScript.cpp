@@ -43,6 +43,7 @@ void HNCInterPreter::script(const string& fileName, const string& partName, cons
             else if (command=="PRINTR") {hncips.PRINTR(content);}
             else if (command=="PRINTWFW") {hncips.PRINTWFW(content);}
             else if (command=="PRINTAT") {hncips.PRINTAT(content);}
+            else if (command=="PRINTAT_NB") {hncips.PRINTAT_NB(content);}
             else if (command=="PLAYAUDIO") {hncips.PLAYAUDIO(content);}
             else if (command=="GETINPUT") {hncips.GETINPUT(content);}
             else if (command=="GETINPUTR") {hncips.GETINPUTR(content);}
