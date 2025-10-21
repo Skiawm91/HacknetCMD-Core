@@ -5,6 +5,7 @@ class Config {
 public:
     struct Settings {
         bool verbose = true; // On
+        int logo = 1; // Dynamic
         int language = 0; // English
         int cmdsize = 0; // 1x
     };

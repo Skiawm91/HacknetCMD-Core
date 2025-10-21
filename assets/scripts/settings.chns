@@ -22,6 +22,18 @@ PRINT  | Verbose: Off     |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_VERBOSE_0
 
+BEGIN_LOGO_1
+PRINT  ____________________
+PRINT  | Dynamic Logo     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_LOGO_1
+
+BEGIN_LOGO_0
+PRINT  ____________________
+PRINT  | Static Logo      |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_LOGO_0
+
 BEGIN_LANGUAGE_0
 PRINT  ____________________
 PRINT  | English          |

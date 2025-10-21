@@ -27,19 +27,25 @@ void UserInterface::Settings(const bool isPlaying) {
         #endif
         hncip.script("settings.chns", "TITLE_" + misc.toLangName(cfg.settings.language));
         hncip.script("settings.chns", "VERBOSE_" + to_string(cfg.settings.verbose));
+        hncip.script("settings.chns", "LOGO_" + to_string(cfg.settings.logo));
         if (isPlaying) cout << "\n\n\n" << flush;
         else hncip.script("settings.chns", "LANGUAGE_" + to_string(cfg.settings.language));
         hncip.script("settings.chns", "CMDSIZE_" + to_string(cfg.settings.cmdsize));
         hncip.script("settings.chns", "BACK_" + misc.toLangName(cfg.settings.language));
         mi.mouse.btnAdd("VERBOSE", 1, 1, 20, 3);
-        if (!isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 4, 20, 3);
-        mi.mouse.btnAdd("CMDSIZE", 1, 7, 20, 3);
-        mi.mouse.btnAdd("BACK", 1, 10, 20, 3);
+        mi.mouse.btnAdd("LOGO", 1, 4, 20, 3);
+        if (!isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 7, 20, 3);
+        mi.mouse.btnAdd("CMDSIZE", 1, 10, 20, 3);
+        mi.mouse.btnAdd("BACK", 1, 13, 20, 3);
         mi.mouse.cbCreate("SETTINGS", [&](const string& btnName){
             if (btnName == "VERBOSE") cfg.data.replace("config/config.hnd", "VERBOSE=" + to_string(cfg.settings.verbose), "VERBOSE=" + to_string(!cfg.settings.verbose));
             if (btnName == "LANGUAGE") {
                 if (cfg.settings.language == 2) cfg.data.replace("config/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=0");
                 else cfg.data.replace("config/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=" + to_string(cfg.settings.language + 1));
+            }
+            if (btnName == "LOGO") {
+                if (cfg.settings.logo == 1) cfg.data.replace("config/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LOGO=0");
+                else cfg.data.replace("config/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LANGUAGE=" + to_string(cfg.settings.logo + 1));
             }
             if (btnName == "CMDSIZE") {
                 if (cfg.settings.cmdsize == 3) cfg.data.replace("config/config.hnd", "CMDSIZE=" + to_string(cfg.settings.cmdsize), "CMDSIZE=0");

@@ -9,6 +9,9 @@ void Config::reload() {
     // VERBOSE
     data.load("config/config.hnd", vector<string>{"VERBOSE=0", "VERBOSE=1"});
     if (data.loaded) settings.verbose = data.loadNumber;
+    // VERBOSE
+    data.load("config/config.hnd", vector<string>{"LOGO=0", "LOGO=1"});
+    if (data.loaded) settings.logo = data.loadNumber;
     // LANGUAGE
     data.load("config/config.hnd", vector<string>{"LANGUAGE=0", "LANGUAGE=1", "LANGUAGE=2"});
     if (data.loaded) settings.language = data.loadNumber;
