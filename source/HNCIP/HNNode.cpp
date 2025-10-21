@@ -124,7 +124,15 @@ HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const opti
                             istringstream iss(line);
                             command.clear();
                             while (iss >> got) command.push_back(got);
-                            if (command[0] == "WRITE") fileEntry.contents.push_back(command[1]);
+                            if (command[0] == "WRITE") {
+                                string content;
+                                for (const auto &c : command) {
+                                    if (c == command[0]) continue;
+                                    content = content + " " + c;
+                                }
+                                content.erase(0, 1);
+                                fileEntry.contents.push_back(content);
+                            }
                         }
                         if (!folderStack.empty()) folderStack.back()->files.push_back(std::move(fileEntry));
                     }

@@ -45,7 +45,7 @@ void UserInterface::Settings(const bool isPlaying) {
             }
             if (btnName == "LOGO") {
                 if (cfg.settings.logo == 1) cfg.data.replace("config/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LOGO=0");
-                else cfg.data.replace("config/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LANGUAGE=" + to_string(cfg.settings.logo + 1));
+                else cfg.data.replace("config/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LOGO=" + to_string(cfg.settings.logo + 1));
             }
             if (btnName == "CMDSIZE") {
                 if (cfg.settings.cmdsize == 3) cfg.data.replace("config/config.hnd", "CMDSIZE=" + to_string(cfg.settings.cmdsize), "CMDSIZE=0");
@@ -60,7 +60,7 @@ void UserInterface::Settings(const bool isPlaying) {
             escDetected = false;
             back = true;
         }
-        mi.mouse.btnDel(vector<string>{"VERBOSE", "LANGUAGE", "CMDSIZE" ,"BACK"});
+        mi.mouse.btnDel(vector<string>{"VERBOSE", "LOGO", "LANGUAGE", "CMDSIZE" ,"BACK"});
         mi.mouse.cbClean("SETTINGS");
     }
 }

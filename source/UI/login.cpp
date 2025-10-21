@@ -36,32 +36,30 @@ void UserInterface::Login() {
     string name, tgshapwd;
     playerName = cfg.data.load("config/booted.hnd", 0);
     int chse;
-    #ifdef _WIN32
     atomic<bool> running, logoAnimation;
-    #endif
     while(true) {
         mi.kb.enable();
         chse = 0;
         if (!playerName.empty()) hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
         else hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
-        #ifdef _WIN32
-        logoAnimation = true;
-        thread([&]{
-            running = true;
-            int fps = 30, frame = 1;
-            while(logoAnimation) {
-                if (frame > 60) frame = 1;
-                if (verStage != "Release") hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
-                else hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver});
-                this_thread::sleep_for(chrono::milliseconds(1000 / fps));
-                frame++;
-            }
-            running = false;
-        }).detach();
-        #elif __APPLE__
-        if (verStage != "Release") hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
-        else hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
-        #endif
+        if (cfg.settings.logo == 1) {
+            logoAnimation = true;
+            thread([&]{
+                running = true;
+                int fps = 30, frame = 1;
+                while(logoAnimation) {
+                    if (frame > 60) frame = 1;
+                    if (verStage != "Release") hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+                    else hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver});
+                    this_thread::sleep_for(chrono::milliseconds(1000 / fps));
+                    frame++;
+                }
+                running = false;
+            }).detach();
+        } else {
+            if (verStage != "Release") hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
+            else hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
+        }
         mi.mouse.btnAdd("LOGIN", 2, 8, 30, 3);
         if (!playerName.empty()) mi.mouse.btnAdd("CONTINUE", 2, 11, 30, 3);  
         mi.mouse.btnAdd("REGISTER", 2, 14, 30, 3);  
@@ -79,10 +77,10 @@ void UserInterface::Login() {
         } else if (enterDetected) {
             enterDetected = false;
         }
-        #ifdef _WIN32
-        logoAnimation = false;
-        while(running);
-        #endif
+        if (cfg.settings.logo == 1) {
+            logoAnimation = false;
+            while(running);
+        }
         mi.mouse.btnDel(vector<string>{"LOGIN", "CONTINUE", "REGISTER", "BACK"});
         mi.mouse.cbClean();
         switch(chse) {

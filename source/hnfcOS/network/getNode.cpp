@@ -10,12 +10,29 @@ extern string playerName, playerIP;
 
 HNCInterPreter::NodeInfo hnfcOS::getNode() {
     vector<string> files;
+    string lowerName;
+    lowerName.resize(playerName.size());
+    transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
+    // 連線過就使用config的node
+    for (const auto& entry : filesystem::directory_iterator("config/" + lowerName + "/nodes")) {
+        if (entry.is_regular_file() && entry.path().extension() == ".hnn") {
+            files.push_back(entry.path().filename().string());
+        }
+    }
+    for (const auto &f : files) {
+        auto node = (hncip.node(f, vector<string>{"PLAYERIP", "PLAYERNAME"}, vector<string>{playerIP, playerName}));
+        if (targetIP == node.IP) return node;
+    }
+    // 第一次連線將從assets獲取node
+    files.clear();
     for (const auto& entry : filesystem::directory_iterator("assets/nodes")) {
         if (entry.is_regular_file() && entry.path().extension() == ".hnn") {
             files.push_back(entry.path().filename().string());
         }
     }
     for (const auto &f : files) {
+        if (!filesystem::exists("config/" + lowerName + "/nodes")) filesystem::create_directory("config/" + lowerName + "/nodes");
+        filesystem::copy_file(f, "config/" + lowerName + "/nodes", filesystem::copy_options::overwrite_existing);
         auto node = (hncip.node(f, vector<string>{"PLAYERIP", "PLAYERNAME"}, vector<string>{playerIP, playerName}));
         if (targetIP == node.IP) return node;
     }
