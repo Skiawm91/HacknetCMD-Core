@@ -22,6 +22,7 @@
 using namespace std;
 
 #ifdef _WIN32
+
 struct AudioImpl {
     unordered_map<string, pair<thread, shared_ptr<atomic<bool>>>> audioThreads;
     mutex audioMutex;
@@ -36,9 +37,31 @@ struct AudioImpl {
 
 static AudioImpl gAudioImpl;
 
-void Function::Audio::play(const string& threadName, const vector<string>& fileNames) {
+static void mciPlay(const string& alias, const string& file, bool loop) {
+    string openCmd = "open \"" + file + "\" type mpegvideo alias " + alias;
+    mciSendStringA(openCmd.c_str(), NULL, 0, NULL);
+
+    string playCmd = "play " + alias;
+    if (loop) playCmd += " repeat";
+    mciSendStringA(playCmd.c_str(), NULL, 0, NULL);
+}
+
+static void mciStop(const string& alias) {
+    string stopCmd = "stop " + alias;
+    mciSendStringA(stopCmd.c_str(), NULL, 0, NULL);
+    string closeCmd = "close " + alias;
+    mciSendStringA(closeCmd.c_str(), NULL, 0, NULL);
+}
+
+// 單次播放
+void Function::Audio::play(const string& threadName, const vector<string>& fileNames, const int type) {
+    string filePath;
+    if (type == 0) filePath = "assets/musics/";
+    else if (type == 1) filePath = "assets/sounds/";
+
     lock_guard<mutex> lock(gAudioImpl.audioMutex);
 
+    // 若該音軌存在，先關閉
     auto it = gAudioImpl.audioThreads.find(threadName);
     if (it != gAudioImpl.audioThreads.end()) {
         it->second.second->store(false);
@@ -49,18 +72,25 @@ void Function::Audio::play(const string& threadName, const vector<string>& fileN
     auto running = make_shared<atomic<bool>>(true);
 
     thread t([=]() {
-        string file = "assets/musics/" + gAudioImpl.randomPick(fileNames);
-        PlaySoundA(file.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+        string alias = "ch_" + threadName;
+        string file = filePath + gAudioImpl.randomPick(fileNames);
+        mciPlay(alias, file, false);
         while (running->load()) this_thread::sleep_for(chrono::milliseconds(100));
-        PlaySoundA(NULL, NULL, 0);
+        mciStop(alias);
     });
 
     gAudioImpl.audioThreads[threadName] = { move(t), running };
 }
 
-void Function::Audio::playL(const string& threadName, const vector<string>& fileNames) {
+// 迴圈播放
+void Function::Audio::playL(const string& threadName, const vector<string>& fileNames, const int type) {
+    string filePath;
+    if (type == 0) filePath = "assets/musics/";
+    else if (type == 1) filePath = "assets/sounds/";
+
     lock_guard<mutex> lock(gAudioImpl.audioMutex);
 
+    // 若該音軌存在，先關閉
     auto it = gAudioImpl.audioThreads.find(threadName);
     if (it != gAudioImpl.audioThreads.end()) {
         it->second.second->store(false);
@@ -71,32 +101,37 @@ void Function::Audio::playL(const string& threadName, const vector<string>& file
     auto running = make_shared<atomic<bool>>(true);
 
     thread t([=]() {
-        while (running->load()) {
-            string file = "assets/musics/" + gAudioImpl.randomPick(fileNames);
-            PlaySoundA(file.c_str(), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-            while (running->load()) this_thread::sleep_for(chrono::milliseconds(100));
-        }
-        PlaySoundA(NULL, NULL, 0);
+        string alias = "ch_" + threadName;
+        string file = filePath + gAudioImpl.randomPick(fileNames);
+        mciPlay(alias, file, true);
+        while (running->load()) this_thread::sleep_for(chrono::milliseconds(100));
+        mciStop(alias);
     });
 
     gAudioImpl.audioThreads[threadName] = { move(t), running };
 }
 
+// 停止特定音軌
 void Function::Audio::stop(const string& threadName) {
     lock_guard<mutex> lock(gAudioImpl.audioMutex);
     auto it = gAudioImpl.audioThreads.find(threadName);
     if (it != gAudioImpl.audioThreads.end()) {
         it->second.second->store(false);
         if (it->second.first.joinable()) it->second.first.join();
+        string alias = "ch_" + threadName;
+        mciStop(alias);
         gAudioImpl.audioThreads.erase(it);
     }
 }
 
+// 停止全部音軌
 void Function::Audio::stop() {
     lock_guard<mutex> lock(gAudioImpl.audioMutex);
     for (auto& kv : gAudioImpl.audioThreads) {
         kv.second.second->store(false);
         if (kv.second.first.joinable()) kv.second.first.join();
+        string alias = "ch_" + kv.first;
+        mciStop(alias);
     }
     gAudioImpl.audioThreads.clear();
 }
