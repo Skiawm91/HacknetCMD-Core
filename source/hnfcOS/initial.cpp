@@ -3,6 +3,7 @@
 #include "config.h"
 #include "console.h"
 #include "HNCIP.h"
+#include "input.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -16,6 +17,7 @@ extern Config cfg;
 extern Console con;
 extern hnfcOS os;
 extern HNCInterPreter hncip;
+extern ManageInput mi;
 
 bool isPublicIP(int a, int b, int c, int d) {
     if (a == 10) return false;                 // 10.0.0.0/8
@@ -100,6 +102,7 @@ void hnfcOS::Initial(bool full) {
         #elif __APPLE__
         cout << "\n";
         #endif
+        mi.kb.historyClear();
         os.Interface();
     }
 }

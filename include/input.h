@@ -51,6 +51,7 @@ public:
         void disable() { kbEnabled = false; }    // 停用鍵盤輸入
         void enable()  { kbEnabled = true; }     // 啟用鍵盤輸入
         bool isEnabled() const { return kbEnabled; }
+        void historyClear();
         string getInput();      // 取得輸入後的字串
         void spReset();
     private:
@@ -150,6 +151,8 @@ private:
     atomic<bool> running{false};
     string lastInput;
     mutex inputMutex;
+    vector<string> history;
+    int historyIndex = -1;
     // Mouse
     vector<Button> buttons;
     atomic<bool> runningMouse{false};

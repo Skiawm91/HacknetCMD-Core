@@ -43,8 +43,6 @@ void ManageInput::Keyboard::initial() {
     parent->running = true;
     runningKb = true;
         parent->kbThread = thread([this]() {
-        vector<string> history;
-        int historyIndex = -1;
 
         HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
         HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -93,8 +91,8 @@ void ManageInput::Keyboard::initial() {
                         lock_guard<mutex> lock(parent->inputMutex);
                         parent->lastInput = parent->buffer;
                     }
-                    if (!parent->buffer.empty()) history.push_back(parent->buffer);
-                    historyIndex = history.size();
+                    if (!parent->buffer.empty()) parent->history.push_back(parent->buffer);
+                    parent->historyIndex = parent->history.size();
                     parent->buffer.clear();
                     parent->cursorPos = 0;
                     enterDetected = true;
@@ -116,16 +114,16 @@ void ManageInput::Keyboard::initial() {
                         if (parent->cursorPos < parent->buffer.size()) parent->cursorPos++;
                         redrawLine(parent->cursorPos);
                     } else if (c2 == 72) { // ↑
-                        if (!history.empty() && historyIndex > 0) {
-                            historyIndex--;
-                            parent->buffer = history[historyIndex];
+                        if (!parent->history.empty() && parent->historyIndex > 0) {
+                            parent->historyIndex--;
+                            parent->buffer = parent->history[parent->historyIndex];
                             parent->cursorPos = parent->buffer.size();
                             redrawLine(parent->cursorPos);
                         }
                     } else if (c2 == 80) { // ↓
-                        if (!history.empty() && historyIndex < history.size() - 1) {
-                            historyIndex++;
-                            parent->buffer = history[historyIndex];
+                        if (!parent->history.empty() && parent->historyIndex < parent->history.size() - 1) {
+                            parent->historyIndex++;
+                            parent->buffer = parent->history[parent->historyIndex];
                         } else {
                             parent->buffer.clear();
                         }
@@ -157,6 +155,11 @@ void ManageInput::Keyboard::stop() {
     parent->running = false;
     runningKb = false;
     if (parent->kbThread.joinable()) parent->kbThread.join();
+}
+
+void ManageInput::Keyboard::historyClear() {
+    parent->history.clear();
+    parent->historyIndex = parent->history.size();
 }
 
 string ManageInput::Keyboard::getInput() {

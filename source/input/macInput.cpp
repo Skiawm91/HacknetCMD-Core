@@ -70,8 +70,6 @@ void ManageInput::initial() {
     inputThread = thread([this]() {
         string buffer;
         size_t cursorPos = 0;
-        vector<string> history;
-        int historyIndex = -1;
         bool cbDone = false;
         bool reading = false;
 
@@ -271,19 +269,19 @@ void ManageInput::initial() {
                             // handle arrow for history/cursor only if kbEnabled
                             if (kbEnabled) {
                                 if (seq[2] == 'A') { // up
-                                    if (!history.empty() && historyIndex > 0) {
-                                        historyIndex--;
-                                        buffer = history[historyIndex];
+                                    if (!parent->history.empty() && parent->historyIndex > 0) {
+                                        parent->historyIndex--;
+                                        buffer = parent->history[parent->historyIndex];
                                         cursorPos = buffer.size();
                                         redrawAfterPrompt(cursorPos);
                                     }
                                 } else if (seq[2] == 'B') { // down
-                                    if (!history.empty() && historyIndex < (int)history.size() - 1) {
-                                        historyIndex++;
-                                        buffer = history[historyIndex];
+                                    if (!parent->history.empty() && parent->historyIndex < (int)parent->history.size() - 1) {
+                                        parent->historyIndex++;
+                                        buffer = parent->history[parent->historyIndex];
                                     } else {
                                         buffer.clear();
-                                        historyIndex = history.size();
+                                        parent->historyIndex = parent->history.size();
                                     }
                                     cursorPos = buffer.size();
                                     redrawAfterPrompt(cursorPos);
@@ -368,8 +366,8 @@ void ManageInput::initial() {
                         lock_guard<mutex> lock(inputMutex);
                         lastInput = buffer;
                     }
-                    if (!buffer.empty()) history.push_back(buffer);
-                    historyIndex = history.size();
+                    if (!buffer.empty()) parent->history.push_back(buffer);
+                    parent->historyIndex = parent->history.size();
                     buffer.clear();
                     cursorPos = 0;
                     enterDetected = true;
@@ -403,6 +401,11 @@ void ManageInput::initial() {
 void ManageInput::stop() {
     running = false;
     if (inputThread.joinable()) inputThread.join();
+}
+
+void ManageInput::Keyboard::historyClear() {
+    parent->history.clear();
+    parent->historyIndex = parent->history.size();
 }
 
 string ManageInput::Keyboard::getInput() {

@@ -87,6 +87,7 @@ void UserInterface::Login() {
             case 1:
                 while(true) {
                     hncip.script("logUI/login.chns", "NAME_" + misc.toLangName(cfg.settings.language));
+                    mi.kb.historyClear();
                     mi.kb.spReset();
                     mi.async(2);
                     if (escDetected) {
@@ -103,6 +104,7 @@ void UserInterface::Login() {
                         if (!cfg.data.loaded) hncip.script("logUI/login.chns", "ERROR");
                         else {
                             hncip.script("logUI/login.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
+                            mi.kb.historyClear();
                             mi.kb.spReset();
                             mi.async(2);
                             if (escDetected) {
@@ -146,6 +148,7 @@ void UserInterface::Login() {
                     while (true) {
                         hncip.script("logUI/register.chns", "REGISTER");
                         hncip.script("logUI/register.chns", "NAME_" + misc.toLangName(cfg.settings.language));
+                        mi.kb.historyClear();
                         mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
@@ -157,6 +160,7 @@ void UserInterface::Login() {
                         }
                         name = input;
                         hncip.script("logUI/register.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
+                        mi.kb.historyClear();
                         mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
@@ -168,6 +172,7 @@ void UserInterface::Login() {
                         }
                         pwd[0] = input;
                         hncip.script("logUI/register.chns", "CONFIRM_" + misc.toLangName(cfg.settings.language));
+                        mi.kb.historyClear();
                         mi.kb.spReset();
                         mi.async(2);
                         if (escDetected) {
