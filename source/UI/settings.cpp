@@ -16,7 +16,8 @@ extern HNCInterPreter hncip;
 void UserInterface::Settings(const bool isPlaying) {
     bool back = false;
     while(!back) {
-        mi.kb.enable();
+        con.cursor.hide();
+        mi.kb.disable();
         // 重新載入Config
         cfg.reload();
         #ifdef __APPLE__

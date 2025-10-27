@@ -28,6 +28,7 @@ extern Config cfg;
 extern Function func;
 extern hnfcOS os;
 extern HNCInterPreter hncip;
+extern Console con;
 extern string ver, verStage;
 string playerName, playerLang;
 
@@ -38,6 +39,7 @@ void UserInterface::Login() {
     int chse;
     atomic<bool> running, logoAnimation;
     while(true) {
+        con.cursor.hide();
         mi.kb.enable();
         chse = 0;
         if (!playerName.empty()) hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
@@ -86,6 +88,7 @@ void UserInterface::Login() {
         switch(chse) {
             case 1:
                 while(true) {
+                    con.cursor.show();
                     hncip.script("logUI/login.chns", "NAME_" + misc.toLangName(cfg.settings.language));
                     mi.kb.historyClear();
                     mi.kb.spReset();
@@ -146,6 +149,7 @@ void UserInterface::Login() {
                 {
                     string pwd[2];
                     while (true) {
+                        con.cursor.show();
                         hncip.script("logUI/register.chns", "REGISTER");
                         hncip.script("logUI/register.chns", "NAME_" + misc.toLangName(cfg.settings.language));
                         mi.kb.historyClear();
@@ -184,6 +188,7 @@ void UserInterface::Login() {
                         }
                         pwd[1] = input;
                         chse = 0;
+                        con.cursor.hide();
                         hncip.script("logUI/register.chns", "DETAILS_" + misc.toLangName(cfg.settings.language));
                         while(true) {
                             mi.mouse.btnAdd("CONFIRM", 1, 8, 20, 3);

@@ -5,6 +5,7 @@
 #include "input.h"
 #include "HNCIP.h"
 #include "misc.h"
+#include "console.h"
 #include "discord_rpc.h"
 #include <vector>
 #include <thread>
@@ -20,6 +21,7 @@ extern Misc misc;
 extern string ver, verStage;
 extern HNCInterPreter hncip;
 extern DiscordRichPresence drp;
+extern Console con;
 
 void UserInterface::Home(){
     int chse;
@@ -27,6 +29,7 @@ void UserInterface::Home(){
     func.audio.stop();
     func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
     while(true) {
+        con.cursor.hide();
         drp.state = "Home";
         Discord_UpdatePresence(&drp);
         mi.kb.disable();

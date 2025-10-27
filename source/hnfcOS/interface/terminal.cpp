@@ -16,6 +16,7 @@ extern HNCInterPreter hncip;
 extern string playerIP;
 
 void hnfcOS::Terminal() {
+    con.cursor.show();
     mi.kb.enable();
     string fullCommand, cmd;
     vector<string> command;

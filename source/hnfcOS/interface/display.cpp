@@ -37,6 +37,7 @@ void hnfcOS::Application::Probe(const HNCInterPreter::NodeInfo& node) {
 }
 
 void hnfcOS::Display() {
+    con.cursor.hide();
     mi.kb.disable();
     int chse = 0;
     cout << "\n\n";

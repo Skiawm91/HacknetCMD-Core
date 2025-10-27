@@ -22,6 +22,11 @@ public:
     void clearBuf2();
     void bufferChange(int mode = 0);
     #endif
+    struct Cursor {
+        void show();
+        void hide();
+    };
+    Cursor cursor;
 private:
     #ifdef _WIN32
     std::vector<CHAR_INFO> savedBuffer;
