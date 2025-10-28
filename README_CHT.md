@@ -3,7 +3,7 @@
 <br/>
 [繁體中文](README_ZH-TW.md)
 <hr/>
-這個專案本來是叫【Cpp Edition】因為我不喜歡，所以現在是【Core Edition】。
+這個專案本來是叫【Cpp Edition】，因為我不喜歡，所以現在是【Core Edition】。
 <br/>
 【Hacknet for CMD】是一個遺留項目，上次更新是在一年前了。
 <br/>
@@ -21,6 +21,7 @@
 所以，我也在同一天重做了【Hacknet for CMD】。
 <br/>
 使用C++，就像【Minecraft：基岩板】lol。
+
 ## 怎麼使用？
 1. 從[Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases)下載。
 2. 解壓縮檔案。

@@ -3,17 +3,18 @@
 <br/>
 [繁體中文](README_CHT.md)
 <hr/>
-I named "Core Edition" because I don't like "Cpp Edition". 
+I named it "Core Edition" because I don't like "Cpp Edition". 
+<br/>
 <br/>
 "Hacknet for CMD" is a legacy project, last updated about 1 year ago yet.
 <br/>
 This game idea is from Hacknet from Steam (I guess you already know).
 <br/>
 <br/>
-Before made C++ ver, I just joined "Hacknet for CMD | Official Server" from Discord.
+Before I made C++ ver, I just joined "Hacknet for CMD | Official Server" on Discord.
 <br/>
 <br>
-One day, person "65536Java (NULL)" joined and sent a program about HacknetCMD.
+One day, a person "65536Java (NULL)" joined and sent a program about HacknetCMD.
 <br/>
 Then, this program remade "Hacknet for CMD" with Java.
 <br/>
@@ -21,6 +22,7 @@ Then, this program remade "Hacknet for CMD" with Java.
 So, I made a program remade "Hacknet for CMD" in a day.
 <br/>
 With C++, just like "Minecraft: Bedrock Edition" lol.
+
 ## How to use?
 1. Download from [Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases).
 2. Extract file.
