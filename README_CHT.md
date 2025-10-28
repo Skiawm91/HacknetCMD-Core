@@ -5,6 +5,7 @@
 <hr/>
 這個專案本來是叫【Cpp Edition】，因為我不喜歡，所以現在是【Core Edition】。
 <br/>
+<br/>
 【Hacknet for CMD】是一個遺留項目，上次更新是在一年前了。
 <br/>
 這個遊戲的靈感來自Steam上的Hacknet（我猜你應該知道了）。
