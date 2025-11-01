@@ -234,7 +234,10 @@ static void playerFunc(string filepath, shared_ptr<atomic<bool>> running) {
     ExtAudioFileDispose(ctx.audioFile);
 }
 
-void Function::Audio::play(const string& threadName, const vector<string>& sounds) {
+void Function::Audio::play(const string& threadName, const vector<string>& sounds, const int type) {
+    string filePath;
+    if (type == 0) filePath = "assets/musics/";
+    else if (type == 1) filePath = "assets/sounds/";
     lock_guard<mutex> lock(macAudioMutex);
 
     auto it = macAudioThreads.find(threadName);
@@ -245,14 +248,17 @@ void Function::Audio::play(const string& threadName, const vector<string>& sound
     }
 
     auto running = make_shared<atomic<bool>>(true);
-    string file = "assets/musics/" + randomPick(sounds);
+    string file = filePath + randomPick(sounds);
 
     thread t(playerFunc, file, running);
 
     macAudioThreads[threadName] = { std::move(t), running };
 }
 
-void Function::Audio::playL(const string& threadName, const vector<string>& sounds) {
+void Function::Audio::playL(const string& threadName, const vector<string>& sounds, const int type) {
+    string filePath;
+    if (type == 0) filePath = "assets/musics/";
+    else if (type == 1) filePath = "assets/sounds/";
     lock_guard<mutex> lock(macAudioMutex);
 
     auto it = macAudioThreads.find(threadName);
@@ -264,9 +270,9 @@ void Function::Audio::playL(const string& threadName, const vector<string>& soun
 
     auto running = make_shared<atomic<bool>>(true);
 
-    thread t([sounds, running]() {
+    thread t([filePath, sounds, running]() {
         while (running->load()) {
-            string file = "assets/musics/" + randomPick(sounds);
+            string file = filePath + randomPick(sounds);
             playerFunc(file, running);
         }
     });

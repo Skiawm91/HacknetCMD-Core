@@ -269,19 +269,19 @@ void ManageInput::initial() {
                             // handle arrow for history/cursor only if kbEnabled
                             if (kbEnabled) {
                                 if (seq[2] == 'A') { // up
-                                    if (!parent->history.empty() && parent->historyIndex > 0) {
-                                        parent->historyIndex--;
-                                        buffer = parent->history[parent->historyIndex];
+                                    if (!history.empty() && historyIndex > 0) {
+                                        historyIndex--;
+                                        buffer = history[historyIndex];
                                         cursorPos = buffer.size();
                                         redrawAfterPrompt(cursorPos);
                                     }
                                 } else if (seq[2] == 'B') { // down
-                                    if (!parent->history.empty() && parent->historyIndex < (int)parent->history.size() - 1) {
-                                        parent->historyIndex++;
-                                        buffer = parent->history[parent->historyIndex];
+                                    if (!history.empty() && historyIndex < (int)history.size() - 1) {
+                                        historyIndex++;
+                                        buffer = history[historyIndex];
                                     } else {
                                         buffer.clear();
-                                        parent->historyIndex = parent->history.size();
+                                        historyIndex = history.size();
                                     }
                                     cursorPos = buffer.size();
                                     redrawAfterPrompt(cursorPos);
@@ -366,8 +366,8 @@ void ManageInput::initial() {
                         lock_guard<mutex> lock(inputMutex);
                         lastInput = buffer;
                     }
-                    if (!buffer.empty()) parent->history.push_back(buffer);
-                    parent->historyIndex = parent->history.size();
+                    if (!buffer.empty()) history.push_back(buffer);
+                    historyIndex = history.size();
                     buffer.clear();
                     cursorPos = 0;
                     enterDetected = true;
@@ -405,7 +405,7 @@ void ManageInput::stop() {
 
 void ManageInput::Keyboard::historyClear() {
     parent->history.clear();
-    parent->historyIndex = parent->history.size();
+    parent-> historyIndex = parent->history.size();
 }
 
 string ManageInput::Keyboard::getInput() {
