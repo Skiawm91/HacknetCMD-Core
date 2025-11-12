@@ -2,28 +2,26 @@ BEGIN_TOPLINE_EN
 PRINT
 PRINT
 PRINT  ${NODENAME} File System
+PRINT
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TOPLINE_EN
 
 BEGIN_FILE
-PRINT  _____________________________
 PRINT   ${FILENAME}
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_FILE
 
 BEGIN_FOLDER_0
-PRINT  _____________________________
 PRINT  > ${FOLDERNAME}
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_FOLDER_0
 
 BEGIN_FOLDER_1
-PRINT  _____________________________
 PRINT  ∨ ${FOLDERNAME}
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_FOLDER_1
 
 BEGIN_BACK
-PRINT  _____________________________
 PRINT   BACK
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_BACK
