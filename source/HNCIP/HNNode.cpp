@@ -5,11 +5,20 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include <algorithm>
 using namespace std;
 
-HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText) {
+extern string playerName;
+
+HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText, const bool readConfig) {
     HNCInterPreter::NodeInfo node;
-    string scriptPath = "assets/nodes/" + fileName;
+    string scriptPath;
+    if (readConfig) {
+        string lowerName;
+        lowerName.resize(playerName.size());
+        transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
+        scriptPath = "config/" + lowerName + "/nodes/" + fileName;
+    } else scriptPath = "assets/nodes/" + fileName;
     ifstream file(scriptPath);
     string line, got;
     vector<string> command;
@@ -104,7 +113,6 @@ HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const opti
                     if (command[0] == "FOLDER") {
                         NodeInfo::FolderEntry newFolder;
                         newFolder.name = command[1];
- 
                         if (folderStack.empty())
                             node.folders.push_back(std::move(newFolder)),
                             folderStack.push_back(&node.folders.back());
@@ -119,8 +127,8 @@ HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const opti
                         NodeInfo::FileEntry fileEntry;
                         fileEntry.name = command[1];
                         while (getline(file, line)) {
-                            if (line == "END_FILE") break;
                             while (!line.empty() && line.front() == ' ') line.erase(0, 1);
+                            if (line == "END_FILE") break;
                             istringstream iss(line);
                             command.clear();
                             while (iss >> got) command.push_back(got);

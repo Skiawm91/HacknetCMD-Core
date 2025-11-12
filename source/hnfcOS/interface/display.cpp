@@ -36,8 +36,6 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
     mi.async(3);
 }
 
-
-
 void hnfcOS::Display() {
     con.cursor.hide();
     mi.kb.disable();
@@ -56,6 +54,7 @@ void hnfcOS::Display() {
         mi.mouse.cbCreate("DISPLAY", [&](const string& btnName){
             if (btnName == "PROBE") chse = 2;
             if (btnName == "FILESYSTEM") chse = 3;
+            if (btnName == "LOGS") chse = 4;
             if (btnName == "DISCONNECT") targetIP.clear();
         });
     } else hncip.script("hnfcOS/display/dced.chns", "DCED_" + playerLang);
@@ -65,4 +64,9 @@ void hnfcOS::Display() {
     mi.mouse.cbClean("DISPLAY");
     if (chse == 2) app.Probe(node);
     else if (chse == 3) app.FileView(node);
+    else if (chse == 4) {
+        for (auto &f : node.folders)
+            if (f.name == "log") f.expand = true;
+        app.FileView(node);
+    }
 }

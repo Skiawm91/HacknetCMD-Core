@@ -21,7 +21,7 @@ HNCInterPreter::NodeInfo hnfcOS::getNode() {
         }
     }
     for (const auto &f : files) {
-        auto node = (hncip.node(f, vector<string>{"PLAYERIP", "PLAYERNAME"}, vector<string>{playerIP, playerName}));
+        auto node = (hncip.node(f, vector<string>{"PLAYERIP", "PLAYERNAME"}, vector<string>{playerIP, playerName}, true));
         if (targetIP == node.IP) return node;
     }
     // 第一次連線將從assets獲取node

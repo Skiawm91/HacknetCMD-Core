@@ -76,8 +76,8 @@ void hnfcOS::Interface() {
     mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
     menuBarCb(backupMode, mode);
     while(true) {
-        if (!targetIP.empty()) state = "[hnfcOS] Connected: " + targetIP;
-        else state = "[hnfcOS] Disconnected";
+        if (!targetIP.empty()) state = "Location: " + targetIP;
+        else state = "Location: Not Connected";
         drp.state = state.c_str();
         Discord_UpdatePresence(&drp);
         #ifdef __APPLE__

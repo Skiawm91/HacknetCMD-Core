@@ -7,21 +7,21 @@ PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾�
 END_TOPLINE_EN
 
 BEGIN_FILE
-PRINT   ${FILENAME}
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ${BLOCK} ${FILENAME}
+PRINT  ${BLOCK}‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_FILE
 
 BEGIN_FOLDER_0
-PRINT  > ${FOLDERNAME}
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ${BLOCK}> ${FOLDERNAME}
+PRINT  ${BLOCK}‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_FOLDER_0
 
 BEGIN_FOLDER_1
-PRINT  ∨ ${FOLDERNAME}
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ${BLOCK}∨ ${FOLDERNAME}
+PRINT  ${BLOCK}‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_FOLDER_1
 
 BEGIN_BACK
-PRINT   BACK
+PRINT   Back
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_BACK
