@@ -5,7 +5,8 @@ PRINT  Open Ports
 PRINT
 PRINT   ${NODENAME} @${NODEIP}
 PRINT   Open Ports Required for Crack: ${PORTS}
-PRINT   ________________________________________
+PRINT
+PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TOPLINE
 
 BEGIN_SSH

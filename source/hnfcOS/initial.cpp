@@ -57,6 +57,7 @@ string playerIP;
 
 void hnfcOS::Initial(bool full) {
     extern string playerName;
+    extern string playerLang;
     string lowerName;
     lowerName.resize(playerName.size());
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
@@ -84,7 +85,7 @@ void hnfcOS::Initial(bool full) {
                 #endif
             }
         } else {
-            // hncip.script("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
+            hncip.script("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
             hncip.script("terminal/initial.chns", "INITIAL");
             // hncip.script("terminal/initial.chns", "TUTORIAL");
             // s.Tutorial();

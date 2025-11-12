@@ -18,7 +18,8 @@ private:
     struct Application {
     public:
         Application(hnfcOS* p) : parent(p) {} 
-        void Probe(const HNCInterPreter::NodeInfo& node);
+        void Probe(HNCInterPreter::NodeInfo& node);
+        void FileView(HNCInterPreter::NodeInfo& node);
     private:
         hnfcOS* parent;
     };

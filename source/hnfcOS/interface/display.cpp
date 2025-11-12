@@ -15,7 +15,7 @@ extern Config cfg;
 extern HNCInterPreter hncip;
 extern string playerIP, playerLang;
 
-void hnfcOS::Application::Probe(const HNCInterPreter::NodeInfo& node) {
+void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
     #ifdef _WIN32
     con.clear();
     #elif __APPLE__
@@ -36,6 +36,50 @@ void hnfcOS::Application::Probe(const HNCInterPreter::NodeInfo& node) {
     mi.async(3);
 }
 
+void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
+    bool back = false;
+    while (!back) {
+        #ifdef _WIN32
+        con.clear();
+        #elif __APPLE__
+        con.clearBuf2();
+        #endif
+        parent->MenuBar();
+        int i = 0;
+        vector<string> objects;
+        hncip.script("hnfcOS/display/fileview.chns", "TOPLINE_" + playerLang, vector<string>{"NODENAME"}, vector<string>{node.Name});
+        for (auto &f : node.folders) {
+            objects.push_back(f.name);
+            hncip.script("hnfcOS/display/fileview.chns", "FOLDER_" + to_string(f.expand), vector<string>{"FOLDERNAME"}, vector<string>{f.name});
+            if (f.expand) {
+                for (auto &fi : f.files) {
+                  hncip.script("hnfcOS/display/fileview.chns", "FILE", vector<string>{"FILENAME"}, vector<string>{fi.name});  
+                }
+                for (auto &sf : f.subfolders) {
+                  hncip.script("hnfcOS/display/fileview.chns", "FOLDER_" + to_string(f.expand), vector<string>{"FOLDERNAME"}, vector<string>{sf.name});  
+                }
+            }
+            mi.mouse.btnAdd(f.name, 1, 4 + i, 30, 3);
+            auto *ptr = &f;
+            mi.mouse.cbCreate(f.name, [ptr](const string& btnName){
+                if (btnName == ptr->name) ptr->expand = !ptr->expand;
+            });
+            i += 3;
+        }
+        objects.push_back("BACK");
+        hncip.script("hnfcOS/display/fileview.chns", "BACK");
+        mi.mouse.btnAdd("BACK", 1, 3 + i, 30, 3);
+        mi.mouse.cbCreate("BACK", [&](const string& btnName){
+            if (btnName == "BACK") back = true;
+        });
+        mi.async(3);
+        mi.mouse.btnDel(objects);
+        for (const auto &o : objects) {
+            mi.mouse.cbClean(o);
+        }
+    }
+}
+
 void hnfcOS::Display() {
     con.cursor.hide();
     mi.kb.disable();
@@ -53,6 +97,7 @@ void hnfcOS::Display() {
         mi.mouse.btnAdd("DISCONNECT", 2, 27, 30, 3);
         mi.mouse.cbCreate("DISPLAY", [&](const string& btnName){
             if (btnName == "PROBE") chse = 2;
+            if (btnName == "FILESYSTEM") chse = 3;
             if (btnName == "DISCONNECT") targetIP.clear();
         });
     } else hncip.script("hnfcOS/display/dced.chns", "DCED_" + playerLang);
@@ -61,4 +106,5 @@ void hnfcOS::Display() {
     mi.mouse.btnDel(vector<string>{"LOGIN", "PROBE", "FILESYSTEM", "LOGS", "SCAN", "DISCONNECT"});
     mi.mouse.cbClean("DISPLAY");
     if (chse == 2) app.Probe(node);
+    else if (chse == 3) app.FileView(node);
 }

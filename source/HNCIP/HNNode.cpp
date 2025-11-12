@@ -104,7 +104,7 @@ HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const opti
                     if (command[0] == "FOLDER") {
                         NodeInfo::FolderEntry newFolder;
                         newFolder.name = command[1];
-
+ 
                         if (folderStack.empty())
                             node.folders.push_back(std::move(newFolder)),
                             folderStack.push_back(&node.folders.back());

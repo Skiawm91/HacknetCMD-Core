@@ -14,6 +14,7 @@ public:
             vector<string> contents;
         };
         struct FolderEntry {
+            bool expand = false;
             string name;
             vector<FileEntry> files;
             vector<FolderEntry> subfolders;
