@@ -35,7 +35,7 @@ string playerName, playerLang;
 void UserInterface::Login() {
     string input, shapwd;
     string name, tgshapwd;
-    playerName = cfg.data.load("config/booted.hnd", 0);
+    playerName = cfg.data.load("data/booted.hnd", 0);
     int chse;
     atomic<bool> running, logoAnimation;
     while(true) {
@@ -103,7 +103,7 @@ void UserInterface::Login() {
                     transform(input.begin(), input.end(), input.begin(), ::tolower);
                     name = input;
                     {
-                        tgshapwd = cfg.data.load("config/" + name + "/pw.hnd", 0);
+                        tgshapwd = cfg.data.load("data/" + name + "/pw.hnd", 0);
                         if (!cfg.data.loaded) hncip.script("logUI/login.chns", "ERROR");
                         else {
                             hncip.script("logUI/login.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
@@ -119,9 +119,9 @@ void UserInterface::Login() {
                             }
                             shapwd = SHA256Encrypt(input);
                             if (shapwd == tgshapwd) {
-                                playerName = cfg.data.load("config/" + name + "/info.hnd", 0);
-                                playerLang = cfg.data.load("config/" + name + "/info.hnd", 1);
-                                cfg.data.del("config/booted.hnd", playerName);
+                                playerName = cfg.data.load("data/" + name + "/info.hnd", 0);
+                                playerLang = cfg.data.load("data/" + name + "/info.hnd", 1);
+                                cfg.data.del("data/booted.hnd", playerName);
                                 os.Boot();
                                 func.audio.stop();
                                 func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
@@ -138,7 +138,7 @@ void UserInterface::Login() {
                     string lowerName;
                     lowerName.resize(playerName.size());
                     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
-                    playerLang = cfg.data.load("config/" + lowerName + "/info.hnd", 1);
+                    playerLang = cfg.data.load("data/" + lowerName + "/info.hnd", 1);
                     os.Initial(false);
                     func.audio.stop();
                     func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
@@ -215,20 +215,20 @@ void UserInterface::Login() {
                                 string nameOrigin = name;
                                 transform(name.begin(), name.end(), name.begin(), ::tolower);
                                 try {
-                                    filesystem::create_directory("config/" + name);
+                                    filesystem::create_directory("data/" + name);
                                 } catch(...) {
                                     hncip.script("logUI/register.chns", "RESERVED");
                                     break;
                                 }
-                                cfg.data.save("config/" + name + "/info.hnd", nameOrigin);
+                                cfg.data.save("data/" + name + "/info.hnd", nameOrigin);
                                 if (pwd[0] == pwd[1]) {
                                     shapwd = SHA256Encrypt(pwd[1]);
-                                    cfg.data.save("config/" + name + "/pw.hnd", shapwd);
+                                    cfg.data.save("data/" + name + "/pw.hnd", shapwd);
                                 } else {
                                     hncip.script("logUI/register.chns", "INVCONFIRM");
                                     break;
                                 }
-                                cfg.data.save("config/" + name + "/info.hnd", misc.toLangName(cfg.settings.language));
+                                cfg.data.save("data/" + name + "/info.hnd", misc.toLangName(cfg.settings.language));
                                 return;
                             }
                         }

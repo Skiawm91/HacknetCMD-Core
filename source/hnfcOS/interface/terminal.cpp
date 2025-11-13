@@ -23,8 +23,10 @@ void hnfcOS::Terminal() {
     cmd.clear();
     command.clear();
     inputMasked = inputAte = false;
-    if (!targetIP.empty()) kbPrompt = targetIP + "@> ";
-    else kbPrompt = "> ";
+    if (!targetIP.empty()) {
+        if (!path.empty()) kbPrompt = targetIP + path + "> ";
+        else kbPrompt = targetIP + "@> ";
+    } else kbPrompt = "> ";
     mi.kb.spReset();
     mi.async(11);
     if (enterDetected) {
@@ -41,11 +43,12 @@ void hnfcOS::Terminal() {
                 else if (command[1] == "192.168.0.14") targetIP = "192.168.0.14";
                 else if (command[1] == "192.168.0.15") targetIP = "192.168.0.15";
                 else {
-                    string backupTIP = targetIP;
                     targetIP = command[1];
-                    HNCInterPreter::NodeInfo node = getNode();
-                    if (node.IP.empty()) targetIP = backupTIP;
+                    HNCInterPreter::NodeInfo tempNode = getNode();
+                    if (tempNode.IP.empty()) targetIP.clear();
                 }
+                node = getNode();
+                path.clear();
             }
             if(command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
         }

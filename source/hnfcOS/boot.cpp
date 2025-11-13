@@ -50,7 +50,7 @@ void hnfcOS::Boot() {
             Sleep(150 + rand() % 11);
         }
     }
-    cfg.data.save("config/booted.hnd", playerName);
+    cfg.data.save("data/booted.hnd", playerName);
     os.Initial(true);
     return;
 }

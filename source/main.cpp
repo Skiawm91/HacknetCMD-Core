@@ -85,8 +85,8 @@ int main() {
     cout << "\033[?1000h";
     cout.flush();
     #endif
-    // 初始化: 建立Config資料夾 / 載入配置檔案
-    if (!filesystem::exists("config")) filesystem::create_directory("config");
+    // 初始化: 建立Data資料夾 / 載入配置檔案
+    if (!filesystem::exists("data")) filesystem::create_directory("data");
     cfg.reload();
     // 初始化: 輸入
     mi.initial();

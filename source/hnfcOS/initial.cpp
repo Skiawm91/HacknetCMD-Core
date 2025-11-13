@@ -61,21 +61,21 @@ void hnfcOS::Initial(bool full) {
     string lowerName;
     lowerName.resize(playerName.size());
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
-    cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E474F5449503A54525545"});
+    cfg.data.load("data/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E474F5449503A54525545"});
     if (cfg.data.loaded) {
-        if (cfg.data.loadNumber == 0) playerIP = cfg.data.load("config/" + lowerName + "/info.hnd", 2);
+        if (cfg.data.loadNumber == 0) playerIP = cfg.data.load("data/" + lowerName + "/info.hnd", 2);
         else {
             playerIP = generatePublicIP();
-            cfg.data.replace("config/" + lowerName + "/info.hnd", 2, playerIP);
-            cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
+            cfg.data.replace("data/" + lowerName + "/info.hnd", 2, playerIP);
+            cfg.data.save("data/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
         }
     } else {
         playerIP = generatePublicIP();
-        cfg.data.replace("config/" + lowerName + "/info.hnd", 2, playerIP);
-        cfg.data.save("config/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
+        cfg.data.replace("data/" + lowerName + "/info.hnd", 2, playerIP);
+        cfg.data.save("data/" + lowerName + "/save.hnd", "434F4E4649472E474F5449503A54525545");
     }
     if (full) {
-        cfg.data.load("config/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E5455544F5249414C3A46414C5345"});\
+        cfg.data.load("data/" + lowerName + "/save.hnd", vector<string>{"434F4E4649472E5455544F5249414C3A46414C5345"});\
         if (cfg.data.loaded) {
             if (cfg.data.loadNumber == 0) {
                 hncip.script("terminal/initial.chns", "INITIAL");
@@ -98,6 +98,7 @@ void hnfcOS::Initial(bool full) {
         con.clear();
         cout << "\n\n> connect " << playerIP;
         targetIP = playerIP;
+        node = getNode();
         #ifdef _WIN32
         con.bufferSave(2);
         #elif __APPLE__

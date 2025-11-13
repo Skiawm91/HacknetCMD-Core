@@ -33,10 +33,10 @@ echo Compiling...
 link /nologo /OUT:Build\HacknetCMD.exe Build\*.obj icon.res lib\*.lib advapi32.lib winmm.lib user32.lib windowsapp.lib
 echo Cleaning...
 del /F /Q Build\*.obj
-if exist config (
-    echo Config detected, putting to build...
-    mkdir build\config > nul
-    xcopy /E config build\config > nul
+if exist data (
+    echo Data detected, putting to build...
+    mkdir build\data > nul
+    xcopy /E data build\data > nul
 )
 echo.
 echo Done.

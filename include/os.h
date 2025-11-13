@@ -13,6 +13,8 @@ public:
 private:
     void MenuBar();
     std::string targetIP;
+    std::string path;
+    HNCInterPreter::NodeInfo node;
     void Display();
     void Terminal();
     struct Application {

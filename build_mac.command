@@ -8,9 +8,9 @@ clang++ $(find source -name '*.cpp') $(find lib -name '*.a') -Iinclude \
     -framework AudioToolbox -framework CoreFoundation -framework Cocoa -framework AppKit -framework Foundation -framework CoreServices \
     -std=c++20 -Wdeprecated-declarations -mmacosx-version-min=11.0 -arch x86_64 -arch arm64 -o build/HacknetCMD
 FOLDER=$1
-if [ -d "config" ]; then
-    echo "Config detected, putting to build..."
-    cp -r config build/
+if [ -d "data" ]; then
+    echo "Data detected, putting to build..."
+    cp -r data build/
 fi
 echo
 echo "Done."

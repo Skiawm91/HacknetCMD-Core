@@ -39,9 +39,8 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
 void hnfcOS::Display() {
     con.cursor.hide();
     mi.kb.disable();
-    int chse = 0;
+    static int chse;
     cout << "\n\n";
-    HNCInterPreter::NodeInfo node = getNode();
     if (!node.Name.empty() && !node.Type.empty()) {
         hncip.script("hnfcOS/display/icon.chns", "ICON_" + node.Type, vector<string>{"TARGETNAME", "TARGETIP"}, vector<string>{node.Name, targetIP});
         hncip.script("hnfcOS/display/option.chns", "OPTION_" + playerLang);
@@ -68,5 +67,6 @@ void hnfcOS::Display() {
         for (auto &f : node.folders)
             if (f.name == "log") f.expand = true;
         app.FileView(node);
+        chse = 0;
     }
 }

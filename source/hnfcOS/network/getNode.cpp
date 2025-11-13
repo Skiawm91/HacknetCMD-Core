@@ -14,8 +14,8 @@ HNCInterPreter::NodeInfo hnfcOS::getNode() {
     lowerName.resize(playerName.size());
     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
     // 連線過就使用config的node
-    if (!filesystem::exists("config/" + lowerName + "/nodes")) filesystem::create_directory("config/" + lowerName + "/nodes");
-    for (const auto& entry : filesystem::directory_iterator("config/" + lowerName + "/nodes")) {
+    if (!filesystem::exists("data/" + lowerName + "/nodes")) filesystem::create_directory("data/" + lowerName + "/nodes");
+    for (const auto& entry : filesystem::directory_iterator("data/" + lowerName + "/nodes")) {
         if (entry.is_regular_file() && entry.path().extension() == ".hnn") {
             files.push_back(entry.path().filename().string());
         }
@@ -32,7 +32,7 @@ HNCInterPreter::NodeInfo hnfcOS::getNode() {
         }
     }
     for (const auto &f : files) {
-        filesystem::copy_file("assets/nodes/" + f, "config/" + lowerName + "/nodes/" + f, filesystem::copy_options::skip_existing);
+        filesystem::copy_file("assets/nodes/" + f, "data/" + lowerName + "/nodes/" + f, filesystem::copy_options::skip_existing);
         auto node = (hncip.node(f, vector<string>{"PLAYERIP", "PLAYERNAME"}, vector<string>{playerIP, playerName}));
         if (targetIP == node.IP) return node;
     }

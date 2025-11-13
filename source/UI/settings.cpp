@@ -39,18 +39,18 @@ void UserInterface::Settings(const bool isPlaying) {
         mi.mouse.btnAdd("CMDSIZE", 1, 10, 20, 3);
         mi.mouse.btnAdd("BACK", 1, 13, 20, 3);
         mi.mouse.cbCreate("SETTINGS", [&](const string& btnName){
-            if (btnName == "VERBOSE") cfg.data.replace("config/config.hnd", "VERBOSE=" + to_string(cfg.settings.verbose), "VERBOSE=" + to_string(!cfg.settings.verbose));
+            if (btnName == "VERBOSE") cfg.data.replace("data/config.hnd", "VERBOSE=" + to_string(cfg.settings.verbose), "VERBOSE=" + to_string(!cfg.settings.verbose));
             if (btnName == "LANGUAGE") {
-                if (cfg.settings.language == 2) cfg.data.replace("config/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=0");
-                else cfg.data.replace("config/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=" + to_string(cfg.settings.language + 1));
+                if (cfg.settings.language == 2) cfg.data.replace("data/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=0");
+                else cfg.data.replace("data/config.hnd", "LANGUAGE=" + to_string(cfg.settings.language), "LANGUAGE=" + to_string(cfg.settings.language + 1));
             }
             if (btnName == "LOGO") {
-                if (cfg.settings.logo == 1) cfg.data.replace("config/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LOGO=0");
-                else cfg.data.replace("config/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LOGO=" + to_string(cfg.settings.logo + 1));
+                if (cfg.settings.logo == 1) cfg.data.replace("data/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LOGO=0");
+                else cfg.data.replace("data/config.hnd", "LOGO=" + to_string(cfg.settings.logo), "LOGO=" + to_string(cfg.settings.logo + 1));
             }
             if (btnName == "CMDSIZE") {
-                if (cfg.settings.cmdsize == 3) cfg.data.replace("config/config.hnd", "CMDSIZE=" + to_string(cfg.settings.cmdsize), "CMDSIZE=0");
-                else cfg.data.replace("config/config.hnd", "CMDSIZE=" + to_string(cfg.settings.cmdsize), "CMDSIZE=" + to_string(cfg.settings.cmdsize + 1));
+                if (cfg.settings.cmdsize == 3) cfg.data.replace("data/config.hnd", "CMDSIZE=" + to_string(cfg.settings.cmdsize), "CMDSIZE=0");
+                else cfg.data.replace("data/config.hnd", "CMDSIZE=" + to_string(cfg.settings.cmdsize), "CMDSIZE=" + to_string(cfg.settings.cmdsize + 1));
             }
             if (btnName == "BACK") back = true;
         });

@@ -12,7 +12,7 @@ extern HNCInterPreter hncip;
 extern ManageInput mi;
 extern string playerLang;
 
-static void regFile(HNCInterPreter::NodeInfo::FileEntry &f, int &i, int &indent, vector<string> &objectNames) {
+static void regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, int &i, int &indent, vector<string> &objectNames) {
     // string objName = f.name + to_string(i);
     // objectNames.push_back(objName);
     hncip.script("hnfcOS/display/fileview.chns", "FILE", vector<string>{"FILENAME", "BLOCK"}, vector<string>{f.name, string(indent, ' ')});
@@ -22,25 +22,41 @@ static void regFile(HNCInterPreter::NodeInfo::FileEntry &f, int &i, int &indent,
     i += 2;
 }
 
-static void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, int &i, int &indent, vector<string> &objectNames) {
+static void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr) {
     string objName = f.name + to_string(i);
     objectNames.push_back(objName);
     hncip.script("hnfcOS/display/fileview.chns", "FOLDER_" + to_string(f.expand), vector<string>{"FOLDERNAME", "BLOCK"}, vector<string>{f.name, string(indent, ' ')});
     mi.mouse.btnAdd(objName, 1, 4 + i, 30, 3);
+
     auto *ptr = &f;
-    mi.mouse.cbCreate(objName, [ptr, objName](const string& btnName){
-        if (btnName == objName) ptr->expand = !ptr->expand;
+    mi.mouse.cbCreate(objName, [ptr, objName, &path, siblings](const string& btnName){
+        if (btnName == objName) {
+            ptr->expand = !ptr->expand;
+            if (ptr->expand) {
+                if (siblings) {
+                    for (auto &sibling : *siblings) {
+                        if (&sibling != ptr) sibling.expand = false;
+                    }
+                }
+                if (ptr->expand) path = (path.empty() ? "/" : path) + ptr->name + "/";
+                else {
+                    if (path.back() == '/') path.pop_back();
+                    size_t pos = path.rfind('/');
+                    if (pos != string::npos) path.erase(pos + 1);
+                }
+            }
+        }
     });
     i += 2;
     if (f.expand) {
         int childIndent = indent + 1;
         for (auto &sf : f.subfolders) {
-            regFolder(sf, i, childIndent, objectNames);
+            regFolder(sf, path, i, childIndent, objectNames, &f.subfolders);
         }
         for (auto &fi : f.files) {
-            regFile(fi, i, childIndent, objectNames);
+            regFile(fi, path, i, childIndent, objectNames);
         }
-    } else if (indent != 0) indent--;
+    }
 }
 
 void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
@@ -57,7 +73,7 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
         hncip.script("hnfcOS/display/fileview.chns", "TOPLINE_" + playerLang, vector<string>{"NODENAME"}, vector<string>{node.Name});
         // fs start
         for (auto &f : node.folders) {
-            regFolder(f, i, indent, objectNames);
+            regFolder(f, parent->path, i, indent, objectNames, &node.folders);
         }
         objectNames.push_back("BACK");
         hncip.script("hnfcOS/display/fileview.chns", "BACK");
