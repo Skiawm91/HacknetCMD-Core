@@ -50,6 +50,14 @@ static void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, in
                 path = (path.empty() ? "/" : path) + ptr->name + "/";
                 ptr->expand = 2;
             } else if (ptr->expand == 0) {
+                for (auto &sf : ptr->subfolders) {
+                    if (sf.expand != 0) {
+                        sf.expand = 0;
+                        if (path.back() == '/') path.pop_back();
+                        size_t pos = path.rfind('/');
+                        if (pos != string::npos) path.erase(pos + 1);
+                    }
+                }
                 if (path.back() == '/') path.pop_back();
                 size_t pos = path.rfind('/');
                 if (pos != string::npos) path.erase(pos + 1);

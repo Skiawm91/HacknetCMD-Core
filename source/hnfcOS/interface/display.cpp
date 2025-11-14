@@ -15,28 +15,8 @@ extern Config cfg;
 extern HNCInterPreter hncip;
 extern string playerIP, playerLang;
 
-void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
-    #ifdef _WIN32
-    con.clear();
-    #elif __APPLE__
-    con.clearBuf2();
-    #endif
-    parent->MenuBar();
-    int i = 0;
-    hncip.script("hnfcOS/display/probe.chns", "TOPLINE", vector<string>{"NODENAME", "NODEIP", "PORTS"}, vector<string>{node.Name, node.IP, to_string(node.Ports)});
-    for (const auto &pN : node.portNames) {
-        if (pN == "SSH") hncip.script("hnfcOS/display/probe.chns", "SSH", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
-        else if (pN == "FTP") hncip.script("hnfcOS/display/probe.chns", "FTP", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
-        else if (pN == "HTTP") hncip.script("hnfcOS/display/probe.chns", "HTTP", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
-        else if (pN == "SMTP") hncip.script("hnfcOS/display/probe.chns", "SMTP", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
-        else if (pN == "SSL") hncip.script("hnfcOS/display/probe.chns", "SSL", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
-        else if (pN == "SQL") hncip.script("hnfcOS/display/probe.chns", "SQL", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
-        i++;
-    }
-    mi.async(3);
-}
-
 void hnfcOS::Display() {
+    Mode = "Display";
     con.cursor.hide();
     mi.kb.disable();
     static int chse;
@@ -53,7 +33,7 @@ void hnfcOS::Display() {
         mi.mouse.cbCreate("DISPLAY", [&](const string& btnName){
             if (btnName == "PROBE") chse = 2;
             if (btnName == "FILESYSTEM") chse = 3;
-            if (btnName == "LOGS") chse = 4;
+            // if (btnName == "LOGS") chse = 4;
             if (btnName == "DISCONNECT") targetIP.clear();
         });
     } else hncip.script("hnfcOS/display/dced.chns", "DCED_" + playerLang);
@@ -63,10 +43,4 @@ void hnfcOS::Display() {
     mi.mouse.cbClean("DISPLAY");
     if (chse == 2) app.Probe(node);
     else if (chse == 3) app.FileView(node);
-    else if (chse == 4) {
-        for (auto &f : node.folders)
-            if (f.name == "log") f.expand = true;
-        app.FileView(node);
-        chse = 0;
-    }
 }

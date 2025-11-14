@@ -12,6 +12,7 @@ public:
     void Interface();
 private:
     void MenuBar();
+    std::string Mode;
     std::string targetIP;
     std::string path;
     HNCInterPreter::NodeInfo node;
