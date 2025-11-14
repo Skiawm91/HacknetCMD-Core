@@ -16,10 +16,12 @@ PRINT  ${BLOCK}> ${FOLDERNAME}
 PRINT  ${BLOCK}‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_FOLDER_0
 
-BEGIN_FOLDER_1
+// "1" is expanding
+
+BEGIN_FOLDER_2
 PRINT  ${BLOCK}∨ ${FOLDERNAME}
 PRINT  ${BLOCK}‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_FOLDER_1
+END_FOLDER_2
 
 BEGIN_BACK
 PRINT   Back

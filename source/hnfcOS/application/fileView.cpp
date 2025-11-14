@@ -29,26 +29,35 @@ static void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, in
     mi.mouse.btnAdd(objName, 1, 4 + i, 30, 3);
 
     auto *ptr = &f;
-    mi.mouse.cbCreate(objName, [ptr, objName, &path, siblings](const string& btnName){
+    bool expanded;
+    mi.mouse.cbCreate(objName, [ptr, objName, &path, siblings, expanded](const string& btnName){
         if (btnName == objName) {
-            ptr->expand = !ptr->expand;
-            if (ptr->expand) {
+            if (ptr->expand == 0) ptr->expand = 1;
+            else ptr->expand = 0;
+            if (ptr->expand == 1) {
                 if (siblings) {
                     for (auto &sibling : *siblings) {
-                        if (&sibling != ptr) sibling.expand = false;
+                        if (&sibling != ptr) {
+                            if (sibling.expand != 0) {
+                                sibling.expand = 0;
+                                if (path.back() == '/') path.pop_back();
+                                size_t pos = path.rfind('/');
+                                if (pos != string::npos) path.erase(pos + 1);
+                            }
+                        }
                     }
                 }
-                if (ptr->expand) path = (path.empty() ? "/" : path) + ptr->name + "/";
-                else {
-                    if (path.back() == '/') path.pop_back();
-                    size_t pos = path.rfind('/');
-                    if (pos != string::npos) path.erase(pos + 1);
-                }
+                path = (path.empty() ? "/" : path) + ptr->name + "/";
+                ptr->expand = 2;
+            } else if (ptr->expand == 0) {
+                if (path.back() == '/') path.pop_back();
+                size_t pos = path.rfind('/');
+                if (pos != string::npos) path.erase(pos + 1);
             }
         }
     });
     i += 2;
-    if (f.expand) {
+    if (f.expand == 2) {
         int childIndent = indent + 1;
         for (auto &sf : f.subfolders) {
             regFolder(sf, path, i, childIndent, objectNames, &f.subfolders);
