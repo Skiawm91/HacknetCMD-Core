@@ -5,20 +5,48 @@
 #include "input.h"
 #include <thread>
 #include <chrono>
+#include <functional>
+#include <iostream>
 
 extern Console con;
 extern HNCInterPreter hncip;
 extern ManageInput mi;
 
 void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
-    if (parent->Mode == "Display") {
+    if (parent->Mode == "Display" && !Probed) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(400));
         #ifdef _WIN32
         con.clear();
         #elif __APPLE__
         con.clearBuf2();
         #endif
         parent->MenuBar();
-        std::this_thread::sleep_for(std::chrono::milliseconds(400));
+        parent->termTasks.push_back([&](){
+            if (!parent->targetIP.empty()) {
+                if (!parent->path.empty()) std::cout << parent->targetIP << parent->path << "> Probe" << std::endl;
+                else std::cout << parent->targetIP << "@> Probe" << std::endl;
+            } else cout << "> Probe" << std::endl;
+            hncip.script("hnfcOS/application/probe.chns", "TOPLINE_T_NOWAIT", vector<string>{"NODENAME", "NODEIP", "PORTS"}, vector<string>{node.Name, node.IP, to_string(node.Ports)});
+            int i = 0;
+            for (const auto &pN : node.portNames) {
+                if (pN == "SSH") hncip.script("hnfcOS/application/probe.chns", "SSH_T", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+                else if (pN == "FTP") hncip.script("hnfcOS/application/probe.chns", "FTP_T", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+                else if (pN == "HTTP") hncip.script("hnfcOS/application/probe.chns", "HTTP_T", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+                else if (pN == "SMTP") hncip.script("hnfcOS/application/probe.chns", "SMTP_T", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+                else if (pN == "SSL") hncip.script("hnfcOS/application/probe.chns", "SSL_T", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+                else if (pN == "SQL") hncip.script("hnfcOS/application/probe.chns", "SQL_T", vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
+                i++;
+            }
+            hncip.script("hnfcOS/application/probe.chns", "ENDLINE", vector<string>{"PORTS"}, vector<string>{to_string(node.Ports)});
+        });
+        Probed = true;
+    } else if (parent->Mode == "Display" && Probed) {
+        #ifdef _WIN32
+        con.clear();
+        #elif __APPLE__
+        con.clearBuf2();
+        #endif
+        parent->MenuBar();
     }
     hncip.script("hnfcOS/application/probe.chns", "TOPLINE" + ((parent->Mode == "Terminal") ? "_T" : string("")), vector<string>{"NODENAME", "NODEIP", "PORTS"}, vector<string>{node.Name, node.IP, to_string(node.Ports)});
     int i = 0;
@@ -32,5 +60,16 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
         i++;
     }
     if (parent->Mode == "Terminal") hncip.script("hnfcOS/application/probe.chns", "ENDLINE", vector<string>{"PORTS"}, vector<string>{to_string(node.Ports)});
-    else if (parent->Mode == "Display") mi.async(3);
+    else if (parent->Mode == "Display") {
+        mi.mouse.btnAdd("BACK", 12, 2, 8, 1);
+        mi.mouse.cbCreate("PROBE", [&](const string& btnName){
+            if (btnName == "BACK") {
+                Probed = false;
+                parent->displayChse = 0;
+            }
+        });
+        mi.async(3);
+        mi.mouse.btnDel(vector<string>{"BACK"});
+        mi.mouse.cbClean("PROBE");
+    }
 }

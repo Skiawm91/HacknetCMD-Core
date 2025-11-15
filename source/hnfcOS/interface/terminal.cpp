@@ -21,6 +21,14 @@ void hnfcOS::Terminal() {
     Mode = "Terminal";
     con.cursor.show();
     mi.kb.enable();
+    if (!termTasks.empty()) {
+        for (const auto &tT : termTasks) tT();
+        termTasks.clear();
+        #ifdef _WIN32
+        con.bufferSave(2); // 儲存終端機內容
+        #endif
+        return;
+    }
     string fullCommand, cmd;
     vector<string> command;
     cmd.clear();

@@ -19,8 +19,12 @@ void hnfcOS::Display() {
     Mode = "Display";
     con.cursor.hide();
     mi.kb.disable();
-    static int chse;
     cout << "\n\n";
+    if (displayChse != 0) {
+        if (displayChse == 2) app.Probe(node);
+        else if (displayChse == 3) app.FileView(node);
+        return;
+    }
     if (!node.Name.empty() && !node.Type.empty()) {
         hncip.script("hnfcOS/display/icon.chns", "ICON_" + node.Type, vector<string>{"TARGETNAME", "TARGETIP"}, vector<string>{node.Name, targetIP});
         hncip.script("hnfcOS/display/option.chns", "OPTION_" + playerLang);
@@ -31,16 +35,25 @@ void hnfcOS::Display() {
         mi.mouse.btnAdd("SCAN", 2, 22, 30, 3);
         mi.mouse.btnAdd("DISCONNECT", 2, 27, 30, 3);
         mi.mouse.cbCreate("DISPLAY", [&](const string& btnName){
-            if (btnName == "PROBE") chse = 2;
-            if (btnName == "FILESYSTEM") chse = 3;
+            if (btnName == "PROBE") displayChse = 2;
+            if (btnName == "FILESYSTEM") displayChse = 3;
             // if (btnName == "LOGS") chse = 4;
-            if (btnName == "DISCONNECT") targetIP.clear();
+            if (btnName == "DISCONNECT") {
+                termTasks.push_back([&](){
+                    if (!targetIP.empty()) {
+                        if (!path.empty()) std::cout << targetIP << path << "> disconnect" << std::endl;
+                        else std::cout << targetIP << "@> disconnect" << std::endl;
+                    } else cout << "> disconnect" << std::endl;
+                });
+                targetIP.clear();
+                node = getNode();
+                path.clear();
+                displayChse = 0;
+            }
         });
     } else hncip.script("hnfcOS/display/dced.chns", "DCED_" + playerLang);
     cout.flush();
     mi.async(3);
     mi.mouse.btnDel(vector<string>{"LOGIN", "PROBE", "FILESYSTEM", "LOGS", "SCAN", "DISCONNECT"});
     mi.mouse.cbClean("DISPLAY");
-    if (chse == 2) app.Probe(node);
-    else if (chse == 3) app.FileView(node);
 }

@@ -3,6 +3,7 @@
 #include <tuple>
 #include <vector>
 #include <string>
+#include <functional>
 
 class hnfcOS {
 public:
@@ -16,12 +17,15 @@ private:
     std::string targetIP;
     std::string path;
     HNCInterPreter::NodeInfo node;
+    std::vector<std::function<void()>> termTasks;
     void Display();
+    int displayChse;
     void Terminal();
     struct Application {
     public:
         Application(hnfcOS* p) : parent(p) {} 
         void Probe(HNCInterPreter::NodeInfo& node);
+        bool Probed;
         void FileView(HNCInterPreter::NodeInfo& node);
     private:
         hnfcOS* parent;

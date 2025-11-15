@@ -100,6 +100,7 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
                 btnName == "SETTINGS" || btnName == "SAVE" ||
                 btnName == "TERMINAL" || btnName == "DISPLAY" ||
                 btnName == "NETMAP" || btnName == "RAM" || btnName == "MAIL") back = true;
+            if (btnName == "BACK") parent->displayChse = 0;
         });
         mi.async(3);
         mi.mouse.btnDel(objectNames);

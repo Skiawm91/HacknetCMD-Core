@@ -1,7 +1,7 @@
 BEGIN_TOPLINE
 PRINT
 PRINT
-PRINT  Open Ports
+PRINT  Open Ports | Back |
 PRINT
 PRINT   ${NODENAME} @${NODEIP}
 PRINT   Open Ports Required for Crack: ${PORTS}
@@ -46,6 +46,12 @@ PRINTWFW Probing ␣ ${NODEIP} . . . . . . . . . . . . .
 PRINT Probe Complete - Open Ports:
 PRINT -------------------------
 END_TOPLINE_T
+
+BEGIN_TOPLINE_T_NOWAIT
+PRINT Probing ${NODEIP}.............
+PRINT Probe Complete - Open Ports:
+PRINT -------------------------
+END_TOPLINE_T_NOWAIT
 
 BEGIN_SSH_T
 PRINT Port#: ${PORT} - SSH Server
