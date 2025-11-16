@@ -8,7 +8,7 @@ using namespace std;
 extern HNCInterPreter hncip;
 extern string playerName, playerIP;
 
-HNCInterPreter::NodeInfo hnfcOS::getNode() {
+HNCInterPreter::NodeInfo hnfcOS::getNode(const std::string &targetIP) {
     vector<string> files;
     string lowerName;
     lowerName.resize(playerName.size());

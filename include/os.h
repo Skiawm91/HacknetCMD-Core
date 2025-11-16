@@ -31,5 +31,5 @@ private:
         hnfcOS* parent;
     };
     Application app;
-    HNCInterPreter::NodeInfo getNode();
+    HNCInterPreter::NodeInfo getNode(const std::string &targetIP);
 };

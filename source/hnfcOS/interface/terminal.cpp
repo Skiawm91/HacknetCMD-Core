@@ -8,6 +8,7 @@
 #include <vector>
 #include <filesystem>
 #include <iostream>
+#include <iostream>
 #include <algorithm>
 using namespace std;
 
@@ -58,14 +59,19 @@ void hnfcOS::Terminal() {
                 else if (command[1] == "192.168.0.15") targetIP = "192.168.0.15";
                 else {
                     targetIP = command[1];
-                    HNCInterPreter::NodeInfo tempNode = getNode();
+                    HNCInterPreter::NodeInfo tempNode = getNode(targetIP);
                     if (tempNode.IP.empty()) targetIP.clear();
                 }
-                node = getNode();
+                node = getNode(targetIP);
                 path.clear();
             }
             else if (lowerCmd == "probe" || command[0] == "nmap") app.Probe(node);
-            else if (command[0] == "disconnect" || command[0] == "dc") targetIP.clear();
+            else if (command[0] == "disconnect" || command[0] == "dc") {
+                targetIP.clear();
+                node = getNode(targetIP);
+                path.clear();
+                std::cout << "Disconnected" << std::endl;
+            }
             else cout << "No Command " << command[0] << " - Check Syntax" << endl;
         }
         #ifdef _WIN32

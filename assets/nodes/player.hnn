@@ -14,12 +14,20 @@ FILESYSTEM
     FOLDER misc
     END_FOLDER
   END_FOLDER
+  FOLDER log
+  END_FOLDER
   FOLDER bin
     FILE SecurityTracer.exe
     END_FILE
   END_FOLDER
-  FOLDER log
-    FILE [CONNECTED]TEST
+  FOLDER sys
+    FILE os-config.sys
+    END_FILE
+    FILE bootcfg.dll
+    END_FILE
+    FILE netcfgx.dll
+    END_FILE
+    FILE x-server.sys
     END_FILE
   END_FOLDER
 END_FILESYSTEM

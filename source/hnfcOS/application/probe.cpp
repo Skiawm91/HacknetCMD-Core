@@ -21,10 +21,10 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
         con.clearBuf2();
         #endif
         parent->MenuBar();
-        parent->termTasks.push_back([&](){
-            if (!parent->targetIP.empty()) {
-                if (!parent->path.empty()) std::cout << parent->targetIP << parent->path << "> Probe" << std::endl;
-                else std::cout << parent->targetIP << "@> Probe" << std::endl;
+        parent->termTasks.push_back([targetIP = parent->targetIP, path = parent->path, node = node](){
+            if (!targetIP.empty()) {
+                if (!path.empty()) std::cout << targetIP << path << "> Probe" << std::endl;
+                else std::cout << targetIP << "@> Probe" << std::endl;
             } else cout << "> Probe" << std::endl;
             hncip.script("hnfcOS/application/probe.chns", "TOPLINE_T_NOWAIT", vector<string>{"NODENAME", "NODEIP", "PORTS"}, vector<string>{node.Name, node.IP, to_string(node.Ports)});
             int i = 0;

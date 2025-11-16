@@ -39,14 +39,15 @@ void hnfcOS::Display() {
             if (btnName == "FILESYSTEM") displayChse = 3;
             // if (btnName == "LOGS") chse = 4;
             if (btnName == "DISCONNECT") {
-                termTasks.push_back([&](){
+                termTasks.push_back([targetIP = targetIP, path = path](){
                     if (!targetIP.empty()) {
                         if (!path.empty()) std::cout << targetIP << path << "> disconnect" << std::endl;
                         else std::cout << targetIP << "@> disconnect" << std::endl;
                     } else cout << "> disconnect" << std::endl;
+                    std::cout << "Disconnected" << std::endl;
                 });
                 targetIP.clear();
-                node = getNode();
+                node = getNode(targetIP);
                 path.clear();
                 displayChse = 0;
             }
