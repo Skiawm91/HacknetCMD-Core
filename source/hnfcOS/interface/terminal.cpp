@@ -53,11 +53,6 @@ void hnfcOS::Terminal() {
             if (command[0] == "connect") {
                 string lastIP = targetIP;
                 if (command.size() == 1 || command[1] == playerIP) targetIP = playerIP;
-                else if (command[1] == "192.168.0.11") targetIP = "192.168.0.11";
-                else if (command[1] == "192.168.0.12") targetIP = "192.168.0.12";
-                else if (command[1] == "192.168.0.13") targetIP = "192.168.0.13";
-                else if (command[1] == "192.168.0.14") targetIP = "192.168.0.14";
-                else if (command[1] == "192.168.0.15") targetIP = "192.168.0.15";
                 else {
                     targetIP = command[1];
                     HNCInterPreter::NodeInfo tempNode = getNode(targetIP);
@@ -70,14 +65,14 @@ void hnfcOS::Terminal() {
                 }
             }
             else if (lowerCmd == "probe" || command[0] == "nmap") app.Probe(node);
+            else if (lowerCmd == "cd") this->cmd.ChangeDir(node, command[1]);
             else if (command[0] == "disconnect" || command[0] == "dc") {
                 targetIP.clear();
                 node = getNode(targetIP);
                 path.clear();
                 displayChse = 0;
                 std::cout << "Disconnected" << std::endl;
-            }
-            else cout << "No Command " << command[0] << " - Check Syntax" << endl;
+            } else cout << "No Command " << command[0] << " - Check Syntax" << endl;
         }
         #ifdef _WIN32
         con.bufferSave(2); // 儲存終端機內容

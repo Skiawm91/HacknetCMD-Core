@@ -7,7 +7,7 @@
 
 class hnfcOS {
 public:
-    hnfcOS() : app(this) {}
+    hnfcOS() : cmd(this), app(this) {}
     void Boot();
     void Initial(bool full);
     void Interface();
@@ -21,6 +21,14 @@ private:
     void Display();
     int displayChse;
     void Terminal();
+    struct Command {
+    public:
+        Command(hnfcOS* p) : parent(p) {} 
+        void ChangeDir(HNCInterPreter::NodeInfo& node, const std::string &dir);
+    private:
+        hnfcOS* parent;
+    };
+    Command cmd;
     struct Application {
     public:
         Application(hnfcOS* p) : parent(p) {} 
