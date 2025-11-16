@@ -87,6 +87,12 @@ void hnfcOS::Interface() {
         MenuBar();
         if (mode == 0) {
             targetIP.clear();
+            path.clear();
+            displayChse = 0;
+            #ifdef __APPLE__
+            con.bufferChange(0);
+            #endif
+            termTasks.clear();
             mi.mouse.btnDel(vector<string>{"EXIT", "SETTINGS", "SAVE", "TERMINAL", "DISPLAY", "NETMAP", "RAM"});
             mi.mouse.cbClean();
             return;

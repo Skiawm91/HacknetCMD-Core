@@ -39,6 +39,7 @@ void UserInterface::Login() {
     int chse;
     atomic<bool> running, logoAnimation;
     while(true) {
+        con.clear();
         con.cursor.hide();
         mi.kb.enable();
         chse = 0;
