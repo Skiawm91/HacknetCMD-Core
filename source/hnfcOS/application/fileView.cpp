@@ -5,6 +5,7 @@
 #include "input.h"
 #include <vector>
 #include <string>
+#include <iostream>
 using namespace std;
 
 extern Console con;
@@ -22,42 +23,75 @@ static void regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, int &i
     i += 2;
 }
 
-static void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr) {
+void collapseAll(HNCInterPreter::NodeInfo::FolderEntry* f, vector<function<void()>>& tasks, string& path, const string& targetIP) {
+    if (!f) return;
+
+    // 遞迴收 subfolders
+    for (auto &sf : f->subfolders) {
+        if (sf.expand != 0) {
+            collapseAll(&sf, tasks, path, targetIP); // deeper first
+            sf.expand = 0;
+        }
+    }
+
+    // 自己也要收回 (cd ..)
+    tasks.push_back([targetIP, path]() {
+        if (!targetIP.empty()) {
+            if (!path.empty()) std::cout << targetIP << path << "> cd .." << std::endl;
+            else std::cout << targetIP << "@> cd .." << std::endl;
+        } else cout << "> cd .." << std::endl;
+    });
+
+    // 修正 path（只 pop 一次）
+    if (!path.empty()) {
+        if (path.back() == '/') path.pop_back();
+        size_t pos = path.rfind('/');
+        if (pos != string::npos) path.erase(pos + 1);
+    }
+}
+
+
+void hnfcOS::Application::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings) {
     string objName = f.name + to_string(i);
     objectNames.push_back(objName);
     hncip.script("hnfcOS/display/fileview.chns", "FOLDER_" + to_string(f.expand), vector<string>{"FOLDERNAME", "BLOCK"}, vector<string>{f.name, string(indent, ' ')});
     mi.mouse.btnAdd(objName, 1, 4 + i, 30, 3);
 
     auto *ptr = &f;
-    bool expanded;
-    mi.mouse.cbCreate(objName, [ptr, objName, &path, siblings, expanded](const string& btnName){
+    mi.mouse.cbCreate(objName, [ptr, objName, &path, siblings, this](const string& btnName){
         if (btnName == objName) {
             if (ptr->expand == 0) ptr->expand = 1;
             else ptr->expand = 0;
             if (ptr->expand == 1) {
                 if (siblings) {
                     for (auto &sibling : *siblings) {
-                        if (&sibling != ptr) {
-                            if (sibling.expand != 0) {
-                                sibling.expand = 0;
-                                if (path.back() == '/') path.pop_back();
-                                size_t pos = path.rfind('/');
-                                if (pos != string::npos) path.erase(pos + 1);
-                            }
+                        if (&sibling != ptr && sibling.expand != 0) {
+                            collapseAll(&sibling, parent->termTasks, path, parent->targetIP);
+                            sibling.expand = 0;
                         }
                     }
                 }
+                parent->termTasks.push_back([targetIP = parent->targetIP, path = path, ptr](){
+                    if (!targetIP.empty()) {
+                        if (!path.empty()) std::cout << targetIP << path << "> cd " << ptr->name << std::endl;
+                        else std::cout << targetIP << "@> cd " << ptr->name << std::endl;
+                    } else cout << "> cd " << ptr->name << std::endl;
+                });
                 path = (path.empty() ? "/" : path) + ptr->name + "/";
                 ptr->expand = 2;
             } else if (ptr->expand == 0) {
                 for (auto &sf : ptr->subfolders) {
                     if (sf.expand != 0) {
+                        collapseAll(&sf, parent->termTasks, path, parent->targetIP);
                         sf.expand = 0;
-                        if (path.back() == '/') path.pop_back();
-                        size_t pos = path.rfind('/');
-                        if (pos != string::npos) path.erase(pos + 1);
                     }
                 }
+                parent->termTasks.push_back([targetIP = parent->targetIP, path = path, ptr](){
+                    if (!targetIP.empty()) {
+                        if (!path.empty()) std::cout << targetIP << path << "> cd .." << std::endl;
+                        else std::cout << targetIP << "@> cd .." << std::endl;
+                    } else cout << "> cd .." << std::endl;
+                });
                 if (path.back() == '/') path.pop_back();
                 size_t pos = path.rfind('/');
                 if (pos != string::npos) path.erase(pos + 1);

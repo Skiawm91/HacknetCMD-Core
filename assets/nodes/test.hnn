@@ -34,6 +34,10 @@ FILESYSTEM
     END_FOLDER
     FOLDER test
         FOLDER 1
+            FOLDER 3
+                FOLDER 4
+                END_FOLDER
+            END_FOLDER
         END_FOLDER
         FOLDER 2
         END_FOLDER

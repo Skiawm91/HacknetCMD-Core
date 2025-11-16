@@ -65,7 +65,10 @@ void hnfcOS::Terminal() {
                 }
             }
             else if (lowerCmd == "probe" || command[0] == "nmap") app.Probe(node);
-            else if (lowerCmd == "cd") this->cmd.ChangeDir(node, command[1]);
+            else if (command[0] == "cd") {
+                if (command.size() >= 2) this->cmd.ChangeDir(node, command[1]);
+                else std::cout << "Usage: [WHERE TO GO or .. TO GO BACK]" << std::endl;
+            }
             else if (command[0] == "disconnect" || command[0] == "dc") {
                 targetIP.clear();
                 node = getNode(targetIP);

@@ -42,3 +42,4 @@ Audio 多線程播放及多檔案隨機播放支援 (完成, Beta 3)
 開發人員：
 1. Skiawm91
 2. ChatGPT
+3. Gemini

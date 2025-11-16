@@ -24,7 +24,7 @@ private:
     struct Command {
     public:
         Command(hnfcOS* p) : parent(p) {} 
-        void ChangeDir(HNCInterPreter::NodeInfo& node, const std::string &dir);
+        void ChangeDir(HNCInterPreter::NodeInfo& node, const std::string &dir = "");
     private:
         hnfcOS* parent;
     };
@@ -35,6 +35,7 @@ private:
         void Probe(HNCInterPreter::NodeInfo& node);
         bool Probed;
         void FileView(HNCInterPreter::NodeInfo& node);
+        void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr);
     private:
         hnfcOS* parent;
     };
