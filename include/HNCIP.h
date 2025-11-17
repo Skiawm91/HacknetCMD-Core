@@ -25,6 +25,7 @@ public:
         vector<string> portNames;
         vector<int> portNumbers, scanIPs;
         vector<FolderEntry> folders; // <-- 新的巢狀 filesystem
+        vector<FileEntry> files;
     };
     NodeInfo node(const string& fileName, const optional<vector<string>>& targetVar = nullopt, const optional<vector<string>>& returnText = nullopt, const bool readConfig = false);
 private:

@@ -69,6 +69,7 @@ void hnfcOS::Terminal() {
                 if (command.size() >= 2) this->cmd.ChangeDir(node, command[1]);
                 else std::cout << "Usage: [WHERE TO GO or .. TO GO BACK]" << std::endl;
             }
+            else if (command[0] == "ls" || command[0] == "dir") this->cmd.ListDir(node);
             else if (command[0] == "disconnect" || command[0] == "dc") {
                 targetIP.clear();
                 node = getNode(targetIP);

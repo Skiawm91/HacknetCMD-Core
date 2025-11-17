@@ -126,6 +126,9 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
         for (auto &f : node.folders) {
             regFolder(f, parent->path, i, indent, objectNames, &node.folders);
         }
+        for (auto &f : node.files) {
+            regFile(f, parent->path, i, indent, objectNames);
+        }
         objectNames.push_back("BACK");
         hncip.script("hnfcOS/display/fileview.chns", "BACK");
         mi.mouse.btnAdd("BACK", 1, 4 + i, 30, 3);

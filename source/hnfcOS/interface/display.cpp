@@ -36,7 +36,16 @@ void hnfcOS::Display() {
         mi.mouse.btnAdd("DISCONNECT", 2, 27, 30, 3);
         mi.mouse.cbCreate("DISPLAY", [&](const string& btnName){
             if (btnName == "PROBE") displayChse = 2;
-            if (btnName == "FILESYSTEM") displayChse = 3;
+            if (btnName == "FILESYSTEM") {
+                termTasks.push_back([targetIP = targetIP, path = path, this](){
+                    if (!targetIP.empty()) {
+                        if (!path.empty()) std::cout << targetIP << path << "> ls" << std::endl;
+                        else std::cout << targetIP << "@> ls" << std::endl;
+                    } else cout << "> ls" << std::endl;
+                    this->cmd.ListDir(this->node);
+                });
+                displayChse = 3;
+            }
             // if (btnName == "LOGS") chse = 4;
             if (btnName == "DISCONNECT") {
                 termTasks.push_back([targetIP = targetIP, path = path](){

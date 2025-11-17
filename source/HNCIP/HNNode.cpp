@@ -135,14 +135,19 @@ HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const opti
                             if (command[0] == "WRITE") {
                                 string content;
                                 for (const auto &c : command) {
-                                    if (c == command[0]) continue;
-                                    content = content + " " + c;
+                                    if (c == "WRITE") continue;
+                                    content += " " + c;
                                 }
-                                content.erase(0, 1);
+                                if (!content.empty() && content.front() == ' ')
+                                    content.erase(0, 1);
+
                                 fileEntry.contents.push_back(content);
                             }
                         }
-                        if (!folderStack.empty()) folderStack.back()->files.push_back(std::move(fileEntry));
+                        if (folderStack.empty())
+                            node.files.push_back(std::move(fileEntry));
+                        else
+                            folderStack.back()->files.push_back(std::move(fileEntry));
                     }
                 }
             } else if (command[0] == "PROXY") {

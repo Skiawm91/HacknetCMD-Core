@@ -30,7 +30,7 @@ HNScript (完成, Beta 2)
     System:
         Login (WIP)
         Probe (完成, Beta 4)
-        File View (Display only, Beta 4)
+        FileSystem (完成, Beta 4)
         Scan (WIP)
 Discord RPC (完成, Beta 3)
 Audio 多線程播放及多檔案隨機播放支援 (完成, Beta 3)

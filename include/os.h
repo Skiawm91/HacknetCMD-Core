@@ -25,6 +25,7 @@ private:
     public:
         Command(hnfcOS* p) : parent(p) {} 
         void ChangeDir(HNCInterPreter::NodeInfo& node, const std::string &dir = "");
+        void ListDir(HNCInterPreter::NodeInfo& node);
     private:
         hnfcOS* parent;
     };
