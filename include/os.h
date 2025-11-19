@@ -7,7 +7,7 @@
 
 class hnfcOS {
 public:
-    hnfcOS() : cmd(this), app(this) {}
+    hnfcOS() : cmd(this), app(this), kit(this) {}
     void Boot();
     void Initial(bool full);
     void Interface();
@@ -26,6 +26,7 @@ private:
         Command(hnfcOS* p) : parent(p) {} 
         void ChangeDir(HNCInterPreter::NodeInfo& node, const std::string &dir = "");
         void ListDir(HNCInterPreter::NodeInfo& node);
+        void Concatenate(const std::string &targetName, HNCInterPreter::NodeInfo& node);
     private:
         hnfcOS* parent;
     };
@@ -36,10 +37,19 @@ private:
         void Probe(HNCInterPreter::NodeInfo& node);
         bool Probed;
         void FileView(HNCInterPreter::NodeInfo& node);
-        void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr);
     private:
         hnfcOS* parent;
     };
     Application app;
+    struct Kit {
+    public:
+        Kit(hnfcOS* p) : parent(p) {} 
+        void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr);
+        void regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, int &i, int &indent, vector<string> &objectNames);
+        void viewFile(const string &name, const vector<string> &contents, bool &opened, vector<string> &objectNames);
+    private:
+        hnfcOS* parent;
+    };
+    Kit kit;
     HNCInterPreter::NodeInfo getNode(const std::string &targetIP);
 };

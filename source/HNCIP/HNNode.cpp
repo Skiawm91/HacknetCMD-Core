@@ -132,10 +132,10 @@ HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const opti
                             istringstream iss(line);
                             command.clear();
                             while (iss >> got) command.push_back(got);
-                            if (command[0] == "WRITE") {
+                            if (command[0] == "CONTENT") {
                                 string content;
                                 for (const auto &c : command) {
-                                    if (c == "WRITE") continue;
+                                    if (c == "CONTENT") continue;
                                     content += " " + c;
                                 }
                                 if (!content.empty() && content.front() == ' ')

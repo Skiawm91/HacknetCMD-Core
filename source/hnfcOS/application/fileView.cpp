@@ -13,13 +13,38 @@ extern HNCInterPreter hncip;
 extern ManageInput mi;
 extern string playerLang;
 
-static void regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, int &i, int &indent, vector<string> &objectNames) {
-    // string objName = f.name + to_string(i);
-    // objectNames.push_back(objName);
+void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, bool &opened, vector<string> &objectNames) {
+    mi.mouse.btnDel(objectNames);
+    #ifdef _WIN32
+    con.clear();
+    #elif __APPLE
+    con.clearBuf2();
+    #endif
+    parent->MenuBar();
+    objectNames.push_back("BACK2");
+    std::cout << " " << name << " | Back |\n" << std::endl;
+    mi.mouse.btnAdd("BACK2", 2 + name.size(), 3, 8, 1);
+    mi.mouse.cbCreate("BACK2", [&opened](const string &btnName){
+        if (btnName == "BACK2") opened = false;
+    });
+    for (const auto &c : contents) {
+        std::cout << c << std::endl;
+    }
+    mi.async(3);
+}
+
+void hnfcOS::Kit::regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, int &i, int &indent, vector<string> &objectNames) {
+    string objName = f.name + to_string(i);
+    objectNames.push_back(objName);
     hncip.script("hnfcOS/display/fileview.chns", "FILE", vector<string>{"FILENAME", "BLOCK"}, vector<string>{f.name, string(indent, ' ')});
-    // mi.mouse.btnAdd(objName, 1, 4 + i, 30, 3);
-    // auto *ptr = &f;
-    // mi.mouse.cbCreate(objName, [ptr, objName](const string& btnName){});
+    mi.mouse.btnAdd(objName, 1, 4 + i, 30, 3);
+    auto *ptr = &f;
+    mi.mouse.cbCreate(objName, [ptr, objName, &objectNames, this](const string& btnName){
+        if (btnName == objName || ptr->opened) {
+            ptr->opened = true;
+            parent->kit.viewFile(ptr->name, ptr->contents, ptr->opened, objectNames);
+        }
+    });
     i += 2;
 }
 
@@ -51,7 +76,7 @@ void collapseAll(HNCInterPreter::NodeInfo::FolderEntry* f, vector<function<void(
 }
 
 
-void hnfcOS::Application::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings) {
+void hnfcOS::Kit::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings) {
     string objName = f.name + to_string(i);
     objectNames.push_back(objName);
     hncip.script("hnfcOS/display/fileview.chns", "FOLDER_" + to_string(f.expand), vector<string>{"FOLDERNAME", "BLOCK"}, vector<string>{f.name, string(indent, ' ')});
@@ -124,10 +149,10 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
         hncip.script("hnfcOS/display/fileview.chns", "TOPLINE_" + playerLang, vector<string>{"NODENAME"}, vector<string>{node.Name});
         // fs start
         for (auto &f : node.folders) {
-            regFolder(f, parent->path, i, indent, objectNames, &node.folders);
+            parent->kit.regFolder(f, parent->path, i, indent, objectNames, &node.folders);
         }
         for (auto &f : node.files) {
-            regFile(f, parent->path, i, indent, objectNames);
+            parent->kit.regFile(f, parent->path, i, indent, objectNames);
         }
         objectNames.push_back("BACK");
         hncip.script("hnfcOS/display/fileview.chns", "BACK");

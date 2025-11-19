@@ -43,6 +43,9 @@ FILESYSTEM
         END_FOLDER
     END_FOLDER
     FILE README.txt
+        CONTENT Hi, I'm Skiawm91.
+        CONTENT This is a test PC.
+        CONTENT 我也不知道我要寫啥。
     END_FILE
 END_FILESYSTEM
 SCANIP 0
