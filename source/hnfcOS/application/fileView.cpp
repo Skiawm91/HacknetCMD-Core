@@ -12,25 +12,29 @@ extern Console con;
 extern HNCInterPreter hncip;
 extern ManageInput mi;
 extern string playerLang;
+static HNCInterPreter::NodeInfo::FileEntry* file = nullptr;
 
-void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, bool &opened, vector<string> &objectNames) {
-    mi.mouse.btnDel(objectNames);
+void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, bool &opened) {
     #ifdef _WIN32
     con.clear();
     #elif __APPLE
     con.clearBuf2();
     #endif
     parent->MenuBar();
-    objectNames.push_back("BACK2");
-    std::cout << " " << name << " | Back |\n" << std::endl;
-    mi.mouse.btnAdd("BACK2", 2 + name.size(), 3, 8, 1);
+    std::cout << "\n\n " << name << " | Back |" << std::endl;
+    mi.mouse.btnAdd("BACK", 2 + name.size(), 2, 8, 1);
     mi.mouse.cbCreate("BACK2", [&opened](const string &btnName){
-        if (btnName == "BACK2") opened = false;
+        if (btnName == "BACK") {
+            opened = false;
+            file = nullptr;
+        }
     });
     for (const auto &c : contents) {
-        std::cout << c << std::endl;
+        std::cout << " " << c << std::endl;
     }
     mi.async(3);
+    mi.mouse.btnDel(vector<string>{"BACK"});
+    mi.mouse.cbClean("BACK");
 }
 
 void hnfcOS::Kit::regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, int &i, int &indent, vector<string> &objectNames) {
@@ -39,10 +43,10 @@ void hnfcOS::Kit::regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, 
     hncip.script("hnfcOS/display/fileview.chns", "FILE", vector<string>{"FILENAME", "BLOCK"}, vector<string>{f.name, string(indent, ' ')});
     mi.mouse.btnAdd(objName, 1, 4 + i, 30, 3);
     auto *ptr = &f;
-    mi.mouse.cbCreate(objName, [ptr, objName, &objectNames, this](const string& btnName){
+    mi.mouse.cbCreate(objName, [ptr, objName](const string& btnName){
         if (btnName == objName || ptr->opened) {
             ptr->opened = true;
-            parent->kit.viewFile(ptr->name, ptr->contents, ptr->opened, objectNames);
+            file = ptr;
         }
     });
     i += 2;
@@ -164,7 +168,20 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
                 btnName == "NETMAP" || btnName == "RAM" || btnName == "MAIL") back = true;
             if (btnName == "BACK") parent->displayChse = 0;
         });
-        mi.async(3);
+        if (file && file->opened) {
+            mi.mouse.btnDel(objectNames);
+            for (const auto &oN : objectNames) {
+                mi.mouse.cbClean(oN);
+            }
+            mi.mouse.cbCreate("BACK", [&](const string& btnName){
+                if (btnName == "EXIT" ||
+                    btnName == "SETTINGS" || btnName == "SAVE" ||
+                    btnName == "TERMINAL" || btnName == "DISPLAY" ||
+                    btnName == "NETMAP" || btnName == "RAM" || btnName == "MAIL") back = true;
+            });
+            parent->kit.viewFile(file->name, file->contents, file->opened);
+            mi.mouse.cbClean("BACK");
+        } else mi.async(3);
         mi.mouse.btnDel(objectNames);
         for (const auto &oN : objectNames) {
             mi.mouse.cbClean(oN);
