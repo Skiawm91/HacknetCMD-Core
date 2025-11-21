@@ -13,6 +13,13 @@ FILESYSTEM
     FOLDER home
         FOLDER misc
         END_FOLDER
+        FILE developers_talk.txt
+            CONTENT Skiawm91: @.NULL It's twenty-five past six, I still don’t get home.
+            CONTENT .NULL: 💀
+            CONTENT Skiawm91: 是說你確定C# Discord RPC能用於VBNET?
+            CONTENT (Reply to Skiawm91) .NULL: 可以但不好用
+            CONTENT  
+            CONTENT 節錄自 2025/11/9 的 Discord 對話
     END_FOLDER
     FOLDER log
         FILE [CONNECTED]TEST

@@ -55,10 +55,7 @@ void hnfcOS::Display() {
                     } else cout << "> disconnect" << std::endl;
                     std::cout << "Disconnected" << std::endl;
                 });
-                targetIP.clear();
-                node = getNode(targetIP);
-                path.clear();
-                displayChse = 0;
+                sys.cleanNode();
             }
         });
     } else hncip.script("hnfcOS/display/dced.chns", "DCED_" + playerLang);

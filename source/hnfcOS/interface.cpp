@@ -86,9 +86,7 @@ void hnfcOS::Interface() {
         #endif
         MenuBar();
         if (mode == 0) {
-            targetIP.clear();
-            path.clear();
-            displayChse = 0;
+            sys.cleanNode();
             #ifdef __APPLE__
             con.bufferChange(0);
             #endif

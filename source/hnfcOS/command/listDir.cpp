@@ -68,8 +68,8 @@ void hnfcOS::Command::ListDir(HNCInterPreter::NodeInfo& node) {
     // Display 模式：排入 termTasks
     if (parent->Mode == "Display") {
         parent->termTasks.push_back([objectNames]() {
-            for (const auto& o : objectNames) {
-                std::cout << o << std::endl;
+            for (const auto& oN : objectNames) {
+                std::cout << oN << std::endl;
             }
         });
     }

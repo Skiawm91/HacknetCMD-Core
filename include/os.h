@@ -7,7 +7,7 @@
 
 class hnfcOS {
 public:
-    hnfcOS() : cmd(this), app(this), kit(this) {}
+    hnfcOS() : sys(this), cmd(this), app(this), kit(this) {}
     void Boot();
     void Initial(bool full);
     void Interface();
@@ -16,11 +16,26 @@ private:
     std::string Mode;
     std::string targetIP;
     std::string path;
+    HNCInterPreter::NodeInfo::FileEntry* file = nullptr;
     HNCInterPreter::NodeInfo node;
     std::vector<std::function<void()>> termTasks;
     void Display();
     int displayChse;
     void Terminal();
+    struct System {
+    public:
+        System(hnfcOS* p) : parent(p) {}
+        void cleanNode() {
+            parent->targetIP.clear();
+            parent->path.clear();
+            parent->file = nullptr;
+            parent->node = parent->getNode(parent->targetIP);
+            parent->displayChse = 0;
+        }
+    private:
+        hnfcOS* parent;
+    };
+    System sys;
     struct Command {
     public:
         Command(hnfcOS* p) : parent(p) {} 

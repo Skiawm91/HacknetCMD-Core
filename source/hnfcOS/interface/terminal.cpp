@@ -67,14 +67,15 @@ void hnfcOS::Terminal() {
             else if (lowerCmd == "probe" || command[0] == "nmap") app.Probe(node);
             else if (command[0] == "cd") {
                 if (command.size() >= 2) this->cmd.ChangeDir(node, command[1]);
-                else std::cout << "Usage: [WHERE TO GO or .. TO GO BACK]" << std::endl;
+                else std::cout << "Usage: cd [WHERE TO GO or .. TO GO BACK]" << std::endl;
             }
             else if (command[0] == "ls" || command[0] == "dir") this->cmd.ListDir(node);
+            else if (command[0] == "cat") {
+                if (command.size() >= 2) this->cmd.Concatenate(command[1], node);
+                else std::cout << "Usage: cat [FILENAME]" << std::endl;
+            }
             else if (command[0] == "disconnect" || command[0] == "dc") {
-                targetIP.clear();
-                node = getNode(targetIP);
-                path.clear();
-                displayChse = 0;
+                sys.cleanNode();
                 std::cout << "Disconnected" << std::endl;
             } else cout << "No Command " << command[0] << " - Check Syntax" << endl;
         }
