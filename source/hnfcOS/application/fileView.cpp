@@ -16,7 +16,7 @@ extern string playerLang;
 void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, bool &opened) {
     #ifdef _WIN32
     con.clear();
-    #elif __APPLE
+    #elif __APPLE__
     con.clearBuf2();
     #endif
     parent->MenuBar();
