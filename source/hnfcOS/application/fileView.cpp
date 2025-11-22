@@ -16,14 +16,14 @@ extern string playerLang;
 void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, bool &opened) {
     #ifdef _WIN32
     con.clear();
-    #elif __APPLE__
+    #elif __APPLE
     con.clearBuf2();
     #endif
     parent->MenuBar();
     std::cout << "\n\n " << name << " | Back |" << std::endl;
     mi.mouse.btnAdd("BACK", 2 + name.size(), 2, 8, 1);
     mi.mouse.cbCreate("BACK2", [&opened, path = parent->path, this](const string &btnName){
-        if (btnName == "BACK" || path != parent->path) {
+        if (btnName == "BACK") {
             opened = false;
             parent->file = nullptr;
         }
@@ -41,16 +41,73 @@ void hnfcOS::Kit::regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, 
     objectNames.push_back(objName);
     hncip.script("hnfcOS/display/fileview.chns", "FILE", vector<string>{"FILENAME", "BLOCK"}, vector<string>{f.name, string(indent, ' ')});
     mi.mouse.btnAdd(objName, 1, 4 + i, 30, 3);
+    
     auto *ptr = &f;
-    mi.mouse.cbCreate(objName, [ptr, objName, this](const string& btnName){
-        if (btnName == objName || ptr->opened) {
-            parent->termTasks.push_back([ptr = ptr, targetIP = parent->targetIP, path = parent->path, this](){
+    
+    mi.mouse.cbCreate(objName, [ptr, objName, this, path = path](const string& btnName) mutable { 
+        if (btnName == objName) {
+            
+            string filePath;
+            
+            // 檔案所在目錄 (File Directory, FD)
+            string fileDir = path;
+            if (fileDir.back() != '/') fileDir += '/';
+            
+            // 當前工作目錄 (Current Working Directory, CWD)
+            string currentDir = parent->path;
+            if (currentDir.back() != '/') currentDir += '/';
+            if (currentDir == "") currentDir = "/";
+
+            // 1. FD == CWD: 簡單使用檔名
+            if (fileDir == currentDir) {
+                filePath = ptr->name;
+            } 
+            // 2. FD 是 CWD 的父目錄 (需要 ../)
+            else if (currentDir.rfind(fileDir, 0) == 0 && currentDir.size() > fileDir.size()) {
+                
+                // 找出 CWD 相對於 FD 多出來的路徑部分 (e.g., "misc/")
+                string relative_segment = currentDir.substr(fileDir.size());
+                int depth_diff = 0;
+
+                // 修正後：更穩定的相對深度計算
+                if (relative_segment.back() == '/') {
+                    relative_segment.pop_back();
+                }
+
+                if (!relative_segment.empty()) {
+                    depth_diff = 1; // 至少有一個節點
+                    for (char c : relative_segment) {
+                        if (c == '/') {
+                            depth_diff++;
+                        }
+                    }
+                }
+                
+                // 生成 ../ 前綴
+                for (int j = 0; j < depth_diff; ++j) {
+                    filePath += "../";
+                }
+                
+                filePath += ptr->name;
+            } 
+            // 3. 其他情況 (使用絕對路徑回退)
+            else {
+                if (fileDir == "/") {
+                    filePath = "/" + ptr->name;
+                } else {
+                    filePath = fileDir + ptr->name;
+                }
+            }
+            
+            // 顯示 cat 命令
+            parent->termTasks.push_back([filePath = filePath, targetIP = parent->targetIP, path = parent->path](){
                 if (!targetIP.empty()) {
-                    if (!path.empty()) std::cout << targetIP << path << "> cat " << ptr->name << std::endl;
-                    else std::cout << targetIP << "@> cat " << ptr->name << std::endl;
-                } else cout << "> cat " << ptr->name << std::endl;
+                    if (!path.empty()) std::cout << targetIP << path << "> cat " << filePath << std::endl;
+                    else std::cout << targetIP << "@> cat " << filePath << std::endl;
+                } else cout << "> cat " << filePath << std::endl;
             });
-            parent->cmd.Concatenate(ptr->name, parent->node);
+            
+            parent->cmd.Concatenate(filePath, parent->node);
             ptr->opened = true;
             parent->file = ptr;
         }
@@ -61,15 +118,13 @@ void hnfcOS::Kit::regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, 
 void collapseAll(HNCInterPreter::NodeInfo::FolderEntry* f, vector<function<void()>>& tasks, string& path, const string& targetIP) {
     if (!f) return;
 
-    // 遞迴收 subfolders
     for (auto &sf : f->subfolders) {
         if (sf.expand != 0) {
-            collapseAll(&sf, tasks, path, targetIP); // deeper first
+            collapseAll(&sf, tasks, path, targetIP);
             sf.expand = 0;
         }
     }
 
-    // 自己也要收回 (cd ..)
     tasks.push_back([targetIP, path]() {
         if (!targetIP.empty()) {
             if (!path.empty()) std::cout << targetIP << path << "> cd .." << std::endl;
@@ -77,7 +132,6 @@ void collapseAll(HNCInterPreter::NodeInfo::FolderEntry* f, vector<function<void(
         } else cout << "> cd .." << std::endl;
     });
 
-    // 修正 path（只 pop 一次）
     if (!path.empty()) {
         if (path.back() == '/') path.pop_back();
         size_t pos = path.rfind('/');
@@ -157,13 +211,16 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
         int i = 0, indent = 0;
         vector<string> objectNames;
         hncip.script("hnfcOS/display/fileview.chns", "TOPLINE_" + playerLang, vector<string>{"NODENAME"}, vector<string>{node.Name});
-        // fs start
+        
         for (auto &f : node.folders) {
             parent->kit.regFolder(f, parent->path, i, indent, objectNames, &node.folders);
         }
+        
+        string rootPath = "/";
         for (auto &f : node.files) {
-            parent->kit.regFile(f, parent->path, i, indent, objectNames);
+            parent->kit.regFile(f, rootPath, i, indent, objectNames);
         }
+        
         objectNames.push_back("BACK");
         hncip.script("hnfcOS/display/fileview.chns", "BACK");
         mi.mouse.btnAdd("BACK", 1, 4 + i, 30, 3);

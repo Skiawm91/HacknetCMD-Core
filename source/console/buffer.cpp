@@ -21,7 +21,7 @@ void Console::bufferSave(int startRow) {
     COORD bufferSize = { (SHORT)width, (SHORT)totalRows };
     COORD bufferCoord = { 0, 0 };
     SMALL_RECT readRegion = { 0, (SHORT)startRow, (SHORT)(width - 1), (SHORT)(totalRows - 1) };
-    ReadConsoleOutputA(hOut, screenBuffer.data(), bufferSize, bufferCoord, &readRegion);
+    ReadConsoleOutputW(hOut, screenBuffer.data(), bufferSize, bufferCoord, &readRegion);
     int lastContentRow = -1;
     for (int row = 0; row < totalRows - startRow; ++row) {
         bool hasContent = false;
@@ -57,7 +57,7 @@ void Console::bufferRestore() {
     COORD bufferSize = { (SHORT)savedWidth, (SHORT)savedHeight };
     COORD bufferCoord = { 0, 0 };
     SMALL_RECT writeRegion = { 0, (SHORT)savedRow, (SHORT)(savedWidth - 1), (SHORT)(savedRow + savedHeight - 1) };
-    WriteConsoleOutputA(hOut, savedBuffer.data(), bufferSize, bufferCoord, &writeRegion);
+    WriteConsoleOutputW(hOut, savedBuffer.data(), bufferSize, bufferCoord, &writeRegion);
     SHORT newCursorY = (SHORT)(savedRow + savedHeight);
     if (newCursorY >= csbi.dwSize.Y) {
         SHORT scrollAmount = newCursorY - (csbi.dwSize.Y - 1);
@@ -66,7 +66,7 @@ void Console::bufferRestore() {
         CHAR_INFO fill{};
         fill.Char.AsciiChar = ' ';
         fill.Attributes = csbi.wAttributes;
-        ScrollConsoleScreenBufferA(hOut, &scrollRect, nullptr, destOrigin, &fill);
+        ScrollConsoleScreenBufferW(hOut, &scrollRect, nullptr, destOrigin, &fill);
         newCursorY = (SHORT)(csbi.dwSize.Y - 1);
     }
     COORD newCursor = { 0, newCursorY };
