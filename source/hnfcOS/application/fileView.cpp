@@ -16,14 +16,14 @@ extern string playerLang;
 void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, bool &opened) {
     #ifdef _WIN32
     con.clear();
-    #elif __APPLE
+    #elif __APPLE__
     con.clearBuf2();
     #endif
     parent->MenuBar();
     std::cout << "\n\n " << name << " | Back |" << std::endl;
     mi.mouse.btnAdd("BACK", 2 + name.size(), 2, 8, 1);
     mi.mouse.cbCreate("BACK2", [&opened, path = parent->path, this](const string &btnName){
-        if (btnName == "BACK" || path != parent->path) {
+        if (btnName == "BACK") {
             opened = false;
             parent->file = nullptr;
         }
