@@ -74,5 +74,6 @@ void hnfcOS::Command::ListDir(HNCInterPreter::NodeInfo& node) {
         });
     }
 
+    parent->file = nullptr; // 中斷 file 顯示
     parent->displayChse = 3;
 }

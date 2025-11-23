@@ -73,7 +73,6 @@ void hnfcOS::Command::Concatenate(const string &targetName, HNCInterPreter::Node
     for (auto &f : *fileList) {
         if (f.name == finalFileName) {
             fileContents = &f.contents;
-            f.opened = true;
             parent->file = &f;
             fileFound = true;
             break;

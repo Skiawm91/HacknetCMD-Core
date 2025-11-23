@@ -108,6 +108,6 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
     }
 
     parent->path = currentPath; // 更新 path
-    parent->file = nullptr; // 清掉正在開啟的 file
+    parent->file = nullptr; // 中斷 file 顯示
     parent->displayChse = 3;
 }

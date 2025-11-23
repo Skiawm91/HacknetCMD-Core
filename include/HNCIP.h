@@ -10,7 +10,6 @@ public:
     void script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar = nullopt, const optional<vector<string>>& returnText = nullopt);
     struct NodeInfo {
         struct FileEntry {
-            bool opened = false;
             string name;
             vector<string> contents = {" "};
         };

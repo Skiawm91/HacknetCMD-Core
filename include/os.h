@@ -50,10 +50,10 @@ private:
     public:
         Application(hnfcOS* p) : parent(p) {} 
         void Probe(HNCInterPreter::NodeInfo& node);
-        bool Probed;
         void FileView(HNCInterPreter::NodeInfo& node);
     private:
         hnfcOS* parent;
+        bool Probed;
     };
     Application app;
     struct Kit {
@@ -61,7 +61,7 @@ private:
         Kit(hnfcOS* p) : parent(p) {} 
         void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, std::string thisPath, std::string &path, int &i, int &indent, std::vector<std::string> &objectNames, std::vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr);
         void regFile(HNCInterPreter::NodeInfo::FileEntry &f, std::string &path, int &i, int &indent, std::vector<std::string> &objectNames);
-        void viewFile(const std::string &name, const std::vector<std::string> &contents, bool &opened);
+        void viewFile(const std::string &name, const std::vector<std::string> &contents);
     private:
         hnfcOS* parent;
     };

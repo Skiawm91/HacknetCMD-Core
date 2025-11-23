@@ -15,11 +15,22 @@ FILESYSTEM
         END_FOLDER
         FILE developers_talk.txt
             CONTENT Skiawm91: @.NULL It's twenty-five past six, I still don’t get home.
-            CONTENT .NULL: 💀
+            CONTENT .NULL: :skull:
             CONTENT Skiawm91: 是說你確定C# Discord RPC能用於VBNET?
             CONTENT (Reply to Skiawm91) .NULL: 可以但不好用
-            CONTENT  
+            CONTENT
             CONTENT 節錄自 2025/11/9 的 Discord 對話
+        END_FILE
+        FILE developers_talk2.txt
+            CONTENT .NULL: @Skiawm91 What Extensions can I install for VBNET?
+            CONTENT Skiawm91: no any
+            CONTENT Skiawm91: C#
+            CONTENT .NULL: 我要代碼高亮
+            CONTENT .NULL: Space Required for JetBrains Rider: ||6.1 GB||
+            CONTENT Skiawm91: :skull:
+            CONTENT
+            CONTENT 節錄自 2025/11/23 的 Discord 對話
+        END_FILE
     END_FOLDER
     FOLDER log
         FILE [CONNECTED]TEST

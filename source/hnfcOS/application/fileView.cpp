@@ -13,7 +13,7 @@ extern HNCInterPreter hncip;
 extern ManageInput mi;
 extern string playerLang;
 
-void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, bool &opened) {
+void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents) {
     #ifdef _WIN32
     con.clear();
     #elif __APPLE__
@@ -22,9 +22,8 @@ void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, b
     parent->MenuBar();
     std::cout << "\n\n " << name << " | Back |" << std::endl;
     mi.mouse.btnAdd("BACK", 2 + name.size(), 2, 8, 1);
-    mi.mouse.cbCreate("BACK2", [&opened, path = parent->path, this](const string &btnName){
+    mi.mouse.cbCreate("BACK2", [path = parent->path, this](const string &btnName){
         if (btnName == "BACK") {
-            opened = false;
             parent->file = nullptr;
         }
     });
@@ -108,7 +107,6 @@ void hnfcOS::Kit::regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, 
             });
             
             parent->cmd.Concatenate(filePath, parent->node);
-            ptr->opened = true;
             parent->file = ptr;
         }
     });
@@ -231,7 +229,7 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
                 btnName == "NETMAP" || btnName == "RAM" || btnName == "MAIL") back = true;
             if (btnName == "BACK") parent->displayChse = 0;
         });
-        if (parent->file && parent->file->opened) {
+        if (parent->file) {
             mi.mouse.btnDel(objectNames);
             for (const auto &oN : objectNames) {
                 mi.mouse.cbClean(oN);
@@ -242,7 +240,7 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
                     btnName == "TERMINAL" || btnName == "DISPLAY" ||
                     btnName == "NETMAP" || btnName == "RAM" || btnName == "MAIL") back = true;
             });
-            parent->kit.viewFile(parent->file->name, parent->file->contents, parent->file->opened);
+            parent->kit.viewFile(parent->file->name, parent->file->contents);
             mi.mouse.cbClean("BACK");
         } else mi.async(3);
         mi.mouse.btnDel(objectNames);
