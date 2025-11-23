@@ -59,7 +59,7 @@ private:
     struct Kit {
     public:
         Kit(hnfcOS* p) : parent(p) {} 
-        void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, std::string &path, int &i, int &indent, std::vector<std::string> &objectNames, std::vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr);
+        void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, std::string thisPath, std::string &path, int &i, int &indent, std::vector<std::string> &objectNames, std::vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr);
         void regFile(HNCInterPreter::NodeInfo::FileEntry &f, std::string &path, int &i, int &indent, std::vector<std::string> &objectNames);
         void viewFile(const std::string &name, const std::vector<std::string> &contents, bool &opened);
     private:

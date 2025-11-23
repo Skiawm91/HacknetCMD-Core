@@ -23,7 +23,7 @@ void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents, b
     std::cout << "\n\n " << name << " | Back |" << std::endl;
     mi.mouse.btnAdd("BACK", 2 + name.size(), 2, 8, 1);
     mi.mouse.cbCreate("BACK2", [&opened, path = parent->path, this](const string &btnName){
-        if (btnName == "BACK") {
+        if (btnName == "BACK" || path != parent->path) {
             opened = false;
             parent->file = nullptr;
         }
@@ -92,7 +92,7 @@ void hnfcOS::Kit::regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, 
             } 
             // 3. 其他情況 (使用絕對路徑回退)
             else {
-                if (fileDir == "/") {
+                if (fileDir == "/" || fileDir.empty()) {
                     filePath = "/" + ptr->name;
                 } else {
                     filePath = fileDir + ptr->name;
@@ -140,7 +140,7 @@ void collapseAll(HNCInterPreter::NodeInfo::FolderEntry* f, vector<function<void(
 }
 
 
-void hnfcOS::Kit::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings) {
+void hnfcOS::Kit::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string thisPath, string &path, int &i, int &indent, vector<string> &objectNames, vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings) {
     string objName = f.name + to_string(i);
     objectNames.push_back(objName);
     hncip.script("hnfcOS/display/fileview.chns", "FOLDER_" + to_string(f.expand), vector<string>{"FOLDERNAME", "BLOCK"}, vector<string>{f.name, string(indent, ' ')});
@@ -188,13 +188,15 @@ void hnfcOS::Kit::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string &pa
         }
     });
     i += 2;
+
     if (f.expand == 2) {
+        thisPath += f.name + "/";
         int childIndent = indent + 1;
         for (auto &sf : f.subfolders) {
-            regFolder(sf, path, i, childIndent, objectNames, &f.subfolders);
+            regFolder(sf, thisPath, path, i, childIndent, objectNames, &f.subfolders);
         }
         for (auto &fi : f.files) {
-            regFile(fi, path, i, childIndent, objectNames);
+            regFile(fi, thisPath, i, childIndent, objectNames);
         }
     }
 }
@@ -211,14 +213,12 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
         int i = 0, indent = 0;
         vector<string> objectNames;
         hncip.script("hnfcOS/display/fileview.chns", "TOPLINE_" + playerLang, vector<string>{"NODENAME"}, vector<string>{node.Name});
-        
+        string thisPath = "/";
         for (auto &f : node.folders) {
-            parent->kit.regFolder(f, parent->path, i, indent, objectNames, &node.folders);
+            parent->kit.regFolder(f, thisPath, parent->path, i, indent, objectNames, &node.folders);
         }
-        
-        string rootPath = "/";
         for (auto &f : node.files) {
-            parent->kit.regFile(f, rootPath, i, indent, objectNames);
+            parent->kit.regFile(f, thisPath, i, indent, objectNames);
         }
         
         objectNames.push_back("BACK");

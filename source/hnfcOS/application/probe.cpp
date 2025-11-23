@@ -39,7 +39,6 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
             }
             hncip.script("hnfcOS/application/probe.chns", "ENDLINE", vector<string>{"PORTS"}, vector<string>{to_string(node.Ports)});
         });
-        Probed = true;
     } else if (parent->Mode == "Display" && Probed) {
         #ifdef _WIN32
         con.clear();
@@ -59,7 +58,11 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
         else if (pN == "SQL") hncip.script("hnfcOS/application/probe.chns", "SQL" + ((parent->Mode == "Terminal") ? "_T" : string("")), vector<string>{"PORT"}, vector<string>{to_string(node.portNumbers[i])});
         i++;
     }
-    if (parent->Mode == "Terminal") hncip.script("hnfcOS/application/probe.chns", "ENDLINE", vector<string>{"PORTS"}, vector<string>{to_string(node.Ports)});
+    Probed = true;
+    if (parent->Mode == "Terminal") {
+        hncip.script("hnfcOS/application/probe.chns", "ENDLINE", vector<string>{"PORTS"}, vector<string>{to_string(node.Ports)});
+        parent->displayChse = 2;
+    }
     else if (parent->Mode == "Display") {
         mi.mouse.btnAdd("BACK", 12, 2, 8, 1);
         mi.mouse.cbCreate("PROBE", [&](const string& btnName){
