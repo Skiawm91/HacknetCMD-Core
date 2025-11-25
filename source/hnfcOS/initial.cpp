@@ -98,7 +98,7 @@ void hnfcOS::Initial(bool full) {
         con.clear();
         cout << "\n\n> connect " << playerIP;
         targetIP = playerIP;
-        node = getNode(targetIP);
+        node = sys.getNode(targetIP);
         #ifdef _WIN32
         con.bufferSave(2);
         #elif __APPLE__

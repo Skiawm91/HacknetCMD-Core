@@ -18,18 +18,22 @@ private:
     std::string path;
     HNCInterPreter::NodeInfo::FileEntry* file = nullptr;
     HNCInterPreter::NodeInfo node;
+    void Terminal();
     std::vector<std::function<void()>> termTasks;
     void Display();
     int displayChse;
-    void Terminal();
+    void NetMap();
+    void RAMUI();
+    void MailUI();
     struct System {
     public:
         System(hnfcOS* p) : parent(p) {}
+        HNCInterPreter::NodeInfo getNode(const std::string &targetIP);
         void cleanNode() {
             parent->targetIP.clear();
             parent->path.clear();
             parent->file = nullptr;
-            parent->node = parent->getNode(parent->targetIP);
+            parent->node = getNode(parent->targetIP);
             parent->displayChse = 0;
         }
     private:
@@ -66,5 +70,4 @@ private:
         hnfcOS* parent;
     };
     Kit kit;
-    HNCInterPreter::NodeInfo getNode(const std::string &targetIP);
 };

@@ -15,12 +15,12 @@ extern Config cfg;
 extern HNCInterPreter hncip;
 extern string playerIP, playerLang;
 
-void hnfcOS::NetMap() {
-    Mode = "NetMap";
+void hnfcOS::MailUI() {
+    Mode = "MailUI";
     con.cursor.hide();
     mi.kb.disable();
     cout << "\n\n";
-    cout << "NetMap is coming soon!";
+    cout << "MailUI is coming soon!";
     cout.flush();
     mi.async(3);
     // mi.mouse.btnDel(vector<string>{""});

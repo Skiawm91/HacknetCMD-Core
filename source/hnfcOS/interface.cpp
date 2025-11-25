@@ -43,8 +43,9 @@ void menuBarCb(int& backupMode, int& mode) {
         // if (btnName == "SAVE") sessionSave();
         if (btnName == "TERMINAL") mode = 2;
         if (btnName == "DISPLAY") mode = 3;
-        // if (btnName == "NETMAP") mode = 4;
-        // if (btnName == "RAM") mode = 5;
+        if (btnName == "NETMAP") mode = 4;
+        if (btnName == "RAM") mode = 5;
+        if (btnName == "MAIL") mode = 6;
     });
 }
 
@@ -74,6 +75,7 @@ void hnfcOS::Interface() {
     mi.mouse.btnAdd("DISPLAY", 25, 0, 9, 1);
     mi.mouse.btnAdd("NETMAP", 35, 0, 8, 1);
     mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
+    mi.mouse.btnAdd("MAIL", 120 * (cfg.settings.cmdsize + 1) - 4, 0, 4, 1);
     menuBarCb(backupMode, mode);
     while(true) {
         if (!targetIP.empty()) state = "Location: " + targetIP;
@@ -91,7 +93,7 @@ void hnfcOS::Interface() {
             con.bufferChange(0);
             #endif
             termTasks.clear();
-            mi.mouse.btnDel(vector<string>{"EXIT", "SETTINGS", "SAVE", "TERMINAL", "DISPLAY", "NETMAP", "RAM"});
+            mi.mouse.btnDel(vector<string>{"EXIT", "SETTINGS", "SAVE", "TERMINAL", "DISPLAY", "NETMAP", "RAM", "MAIL"});
             mi.mouse.cbClean();
             return;
         } else if (mode == 1) {
@@ -107,6 +109,9 @@ void hnfcOS::Interface() {
             #endif
             Terminal();
         } else if (mode == 3) Display();
+        else if (mode == 4) RAMUI();
+        else if (mode == 5) NetMap();
+        else if (mode == 6) MailUI();
         #ifdef _WIN32
         con.clear();
         #endif

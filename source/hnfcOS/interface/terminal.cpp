@@ -55,11 +55,11 @@ void hnfcOS::Terminal() {
                 if (command.size() == 1 || command[1] == playerIP) targetIP = playerIP;
                 else {
                     targetIP = command[1];
-                    HNCInterPreter::NodeInfo tempNode = getNode(targetIP);
+                    HNCInterPreter::NodeInfo tempNode = sys.getNode(targetIP);
                     if (tempNode.IP.empty()) targetIP.clear();
                 }
                 if (targetIP != lastIP) {
-                    node = getNode(targetIP);
+                    node = sys.getNode(targetIP);
                     path.clear();
                     displayChse = 0;
                 }

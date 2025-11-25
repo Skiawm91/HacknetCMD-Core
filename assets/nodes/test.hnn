@@ -31,6 +31,19 @@ FILESYSTEM
             CONTENT
             CONTENT 節錄自 2025/11/23 的 Discord 對話
         END_FILE
+        FILE developers_talk3.txt
+            CONTENT .NULL: @Skiawm91 有趣的事實:
+            CONTENT        HacknetCMD: Basic成為了有史以來專案最大的HacknetCMD
+            CONTENT        [image.png]
+            CONTENT (Reply to .NULL) .NULL: @.𝘼𝙝𝙌𝙞𝙖𝙣𝙜𝙏𝙒
+            CONTENT .𝘼𝙝𝙌𝙞𝙖𝙣𝙜𝙏𝙒: 臥槽
+            CONTENT .𝘼𝙝𝙌𝙞𝙖𝙣𝙜𝙏𝙒: 你牛逼
+            CONTENT Skiawm91: Sure :skull:
+            CONTENT           [image.png]
+            CONTENT Skiawm91: @.𝘼𝙝𝙌𝙞𝙖𝙣𝙜𝙏𝙒
+            CONTENT
+            CONTENT 節錄自 2025/11/25 的 Discord 對話
+        END_FILE
     END_FOLDER
     FOLDER log
         FILE [CONNECTED]TEST

@@ -15,12 +15,12 @@ extern Config cfg;
 extern HNCInterPreter hncip;
 extern string playerIP, playerLang;
 
-void hnfcOS::NetMap() {
-    Mode = "NetMap";
+void hnfcOS::RAMUI() {
+    Mode = "RAMUI";
     con.cursor.hide();
     mi.kb.disable();
     cout << "\n\n";
-    cout << "NetMap is coming soon!";
+    cout << "RAMUI is coming soon!";
     cout.flush();
     mi.async(3);
     // mi.mouse.btnDel(vector<string>{""});
