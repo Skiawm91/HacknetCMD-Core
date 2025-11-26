@@ -1,7 +1,7 @@
 #define _HAS_STD_BYTE 0
 #include "UI.h"
 #include "crypto.h"
-#include "config.h"
+#include "data.h"
 #include "console.h"
 #include "misc.h"
 #include "function.h"
@@ -24,7 +24,7 @@ using namespace std;
 
 extern ManageInput mi;
 extern Misc misc;
-extern Config cfg;
+extern Data dta;
 extern Function func;
 extern hnfcOS os;
 extern HNCInterPreter hncip;
@@ -35,7 +35,7 @@ string playerName, playerLang;
 void UserInterface::Login() {
     string input, shapwd;
     string name, tgshapwd;
-    playerName = cfg.data.load("data/booted.hnd", 0);
+    playerName = dta.load("data/booted.hnd", 0);
     int chse;
     atomic<bool> running, logoAnimation;
     while(true) {
@@ -45,7 +45,7 @@ void UserInterface::Login() {
         chse = 0;
         if (!playerName.empty()) hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
         else hncip.script("ui.chns", "USER", vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
-        if (cfg.settings.logo == 1) {
+        if (dta.cfg.logo == 1) {
             logoAnimation = true;
             thread([&]{
                 running = true;
@@ -80,7 +80,7 @@ void UserInterface::Login() {
         } else if (enterDetected) {
             enterDetected = false;
         }
-        if (cfg.settings.logo == 1) {
+        if (dta.cfg.logo == 1) {
             logoAnimation = false;
             while(running);
         }
@@ -90,7 +90,7 @@ void UserInterface::Login() {
             case 1:
                 while(true) {
                     con.cursor.show();
-                    hncip.script("logUI/login.chns", "NAME_" + misc.toLangName(cfg.settings.language));
+                    hncip.script("logUI/login.chns", "NAME_" + misc.toLangName(dta.cfg.language));
                     mi.kb.historyClear();
                     mi.kb.spReset();
                     mi.async(2);
@@ -104,10 +104,10 @@ void UserInterface::Login() {
                     transform(input.begin(), input.end(), input.begin(), ::tolower);
                     name = input;
                     {
-                        tgshapwd = cfg.data.load("data/" + name + "/pw.hnd", 0);
-                        if (!cfg.data.loaded) hncip.script("logUI/login.chns", "ERROR");
+                        tgshapwd = dta.load("data/" + name + "/pw.hnd", 0);
+                        if (!dta.loaded) hncip.script("logUI/login.chns", "ERROR");
                         else {
-                            hncip.script("logUI/login.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
+                            hncip.script("logUI/login.chns", "PASSWD_" + misc.toLangName(dta.cfg.language));
                             mi.kb.historyClear();
                             mi.kb.spReset();
                             mi.async(2);
@@ -120,9 +120,9 @@ void UserInterface::Login() {
                             }
                             shapwd = SHA256Encrypt(input);
                             if (shapwd == tgshapwd) {
-                                playerName = cfg.data.load("data/" + name + "/info.hnd", 0);
-                                playerLang = cfg.data.load("data/" + name + "/info.hnd", 1);
-                                cfg.data.del("data/booted.hnd", playerName);
+                                playerName = dta.load("data/" + name + "/info.hnd", 0);
+                                playerLang = dta.load("data/" + name + "/info.hnd", 1);
+                                dta.del("data/booted.hnd", playerName);
                                 os.Boot();
                                 func.audio.stop();
                                 func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
@@ -139,7 +139,7 @@ void UserInterface::Login() {
                     string lowerName;
                     lowerName.resize(playerName.size());
                     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
-                    playerLang = cfg.data.load("data/" + lowerName + "/info.hnd", 1);
+                    playerLang = dta.load("data/" + lowerName + "/info.hnd", 1);
                     os.Initial(false);
                     func.audio.stop();
                     func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
@@ -152,7 +152,7 @@ void UserInterface::Login() {
                     while (true) {
                         con.cursor.show();
                         hncip.script("logUI/register.chns", "REGISTER");
-                        hncip.script("logUI/register.chns", "NAME_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("logUI/register.chns", "NAME_" + misc.toLangName(dta.cfg.language));
                         mi.kb.historyClear();
                         mi.kb.spReset();
                         mi.async(2);
@@ -164,7 +164,7 @@ void UserInterface::Login() {
                             input = mi.kb.getInput();
                         }
                         name = input;
-                        hncip.script("logUI/register.chns", "PASSWD_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("logUI/register.chns", "PASSWD_" + misc.toLangName(dta.cfg.language));
                         mi.kb.historyClear();
                         mi.kb.spReset();
                         mi.async(2);
@@ -176,7 +176,7 @@ void UserInterface::Login() {
                             input = mi.kb.getInput();
                         }
                         pwd[0] = input;
-                        hncip.script("logUI/register.chns", "CONFIRM_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("logUI/register.chns", "CONFIRM_" + misc.toLangName(dta.cfg.language));
                         mi.kb.historyClear();
                         mi.kb.spReset();
                         mi.async(2);
@@ -190,7 +190,7 @@ void UserInterface::Login() {
                         pwd[1] = input;
                         chse = 0;
                         con.cursor.hide();
-                        hncip.script("logUI/register.chns", "DETAILS_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("logUI/register.chns", "DETAILS_" + misc.toLangName(dta.cfg.language));
                         while(true) {
                             mi.mouse.btnAdd("CONFIRM", 1, 8, 20, 3);
                             mi.mouse.btnAdd("CANCEL", 1, 11, 20, 3);
@@ -221,15 +221,15 @@ void UserInterface::Login() {
                                     hncip.script("logUI/register.chns", "RESERVED");
                                     break;
                                 }
-                                cfg.data.save("data/" + name + "/info.hnd", nameOrigin);
+                                dta.save("data/" + name + "/info.hnd", nameOrigin);
                                 if (pwd[0] == pwd[1]) {
                                     shapwd = SHA256Encrypt(pwd[1]);
-                                    cfg.data.save("data/" + name + "/pw.hnd", shapwd);
+                                    dta.save("data/" + name + "/pw.hnd", shapwd);
                                 } else {
                                     hncip.script("logUI/register.chns", "INVCONFIRM");
                                     break;
                                 }
-                                cfg.data.save("data/" + name + "/info.hnd", misc.toLangName(cfg.settings.language));
+                                dta.save("data/" + name + "/info.hnd", misc.toLangName(dta.cfg.language));
                                 return;
                             }
                         }

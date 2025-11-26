@@ -1,7 +1,7 @@
 #define _HAS_STD_BYTE 0
 #include "os.h"
 #include "input.h"
-#include "config.h"
+#include "data.h"
 #include "console.h"
 #include "HNCIP.h"
 #include <sstream>
@@ -13,7 +13,7 @@
 using namespace std;
 
 extern ManageInput mi;
-extern Config cfg;
+extern Data dta;
 extern Console con;
 extern HNCInterPreter hncip;
 extern string playerIP;

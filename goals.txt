@@ -1,4 +1,4 @@
-Hacknet for CMD: C++ Edition // Goals
+Hacknet for CMD: Core Edition // Goals
 
 [版本號]
 目標 (進度, 完成的版本)

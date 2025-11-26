@@ -1,4 +1,4 @@
-#include "config.h"
+#include "data.h"
 #include <vector>
 #include <string>
 #include <filesystem>
@@ -9,7 +9,7 @@ using namespace std;
 string line;
 vector<string> newLine;
 
-void Config::Data::save(const string& filePath, const string& data) {
+void Data::save(const string& filePath, const string& data) {
     line.clear();
     newLine.clear();
     ifstream inFile(filePath);
@@ -31,7 +31,7 @@ void Config::Data::save(const string& filePath, const string& data) {
     }
 }
 
-void Config::Data::del(const string& filePath, const string& targetData) {
+void Data::del(const string& filePath, const string& targetData) {
     line.clear();
     newLine.clear();
     ifstream inFile(filePath);
@@ -53,7 +53,7 @@ void Config::Data::del(const string& filePath, const string& targetData) {
     }
 }
 
-void Config::Data::replace(const string& filePath, const string& targetData, const string& data) {
+void Data::replace(const string& filePath, const string& targetData, const string& data) {
     line.clear();
     newLine.clear();
     ifstream inFile(filePath);
@@ -81,7 +81,7 @@ void Config::Data::replace(const string& filePath, const string& targetData, con
     }
 }
 
-void Config::Data::replace(const string& filePath, const int targetLine, const string& data) {
+void Data::replace(const string& filePath, const int targetLine, const string& data) {
     line.clear();
     newLine.clear();
     ifstream inFile(filePath);
@@ -111,7 +111,7 @@ void Config::Data::replace(const string& filePath, const int targetLine, const s
     }
 }
 
-void Config::Data::load(const string& filePath, const vector<string>& targetData) {
+void Data::load(const string& filePath, const vector<string>& targetData) {
     line.clear();
     this->loaded = false;
     ifstream inFile(filePath);
@@ -131,7 +131,7 @@ void Config::Data::load(const string& filePath, const vector<string>& targetData
     }
 }
 
-string Config::Data::load(const string& filePath, const int targetLine) {
+string Data::load(const string& filePath, const int targetLine) {
     line.clear();
     this->loaded = false;
     ifstream inFile(filePath);

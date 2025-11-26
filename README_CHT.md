@@ -46,7 +46,11 @@ cd HacknetCMD-Core
 * [Skiawm91](https://github.com/Skiawm91)
 * [65536Java](https://github.com/65536Java)
 * OpenAI GPT
+* Google Gemini
 ## 致謝
 * [AhQiang](https://github.com/Hoyiqiang)
 * [discord/discord-rpc](https://github.com/discord/discord-rpc)
-## [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition) 在這裡！
+## 其他版本
+* [Original](https://drive.google.com/drive/folders/1P23sV2mwOlDx-oI0giCKQuBuxQ9sCLtq)
+* [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition)
+* [Basic Edition](https://github.com/65536Java/HacknetCMD-Basic)

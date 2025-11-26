@@ -3,7 +3,7 @@
 #include "UI.h"
 #include "function.h"
 #include "console.h"
-#include "config.h"
+#include "data.h"
 #include "input.h"
 #include "HNCIP.h"
 #include "discord_rpc.h"
@@ -17,7 +17,7 @@ using namespace std;
 
 extern UserInterface UI;
 extern Function func;
-extern Config cfg;
+extern Data dta;
 extern Console con;
 extern ManageInput mi;
 extern DiscordRichPresence drp;
@@ -55,8 +55,8 @@ void hnfcOS::MenuBar() {
     #elif __APPLE__
     int preRemove = 51;
     #endif
-    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (cfg.settings.cmdsize + 1) - preRemove, '/') + string("|✉️|"));
-    con.printAt(0, 1, overlines(120 * (cfg.settings.cmdsize + 1)));
+    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (dta.cfg.cmdsize + 1) - preRemove, '/') + string("|✉️|"));
+    con.printAt(0, 1, overlines(120 * (dta.cfg.cmdsize + 1)));
 }
 
 void hnfcOS::Interface() {
@@ -75,7 +75,7 @@ void hnfcOS::Interface() {
     mi.mouse.btnAdd("DISPLAY", 25, 0, 9, 1);
     mi.mouse.btnAdd("NETMAP", 35, 0, 8, 1);
     mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
-    mi.mouse.btnAdd("MAIL", 120 * (cfg.settings.cmdsize + 1) - 4, 0, 4, 1);
+    mi.mouse.btnAdd("MAIL", 120 * (dta.cfg.cmdsize + 1) - 4, 0, 4, 1);
     menuBarCb(backupMode, mode);
     while(true) {
         if (!targetIP.empty()) state = "Location: " + targetIP;
@@ -109,8 +109,8 @@ void hnfcOS::Interface() {
             #endif
             Terminal();
         } else if (mode == 3) Display();
-        else if (mode == 4) RAMUI();
-        else if (mode == 5) NetMap();
+        else if (mode == 4) NetMap();
+        else if (mode == 5) RAMUI();
         else if (mode == 6) MailUI();
         #ifdef _WIN32
         con.clear();

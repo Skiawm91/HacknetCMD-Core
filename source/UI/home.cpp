@@ -1,7 +1,7 @@
 ﻿#define _HAS_STD_BYTE 0
 #include "UI.h"
 #include "function.h"
-#include "config.h"
+#include "data.h"
 #include "input.h"
 #include "HNCIP.h"
 #include "misc.h"
@@ -15,7 +15,7 @@ using namespace std;
 
 extern ManageInput mi;
 extern Function func;
-extern Config cfg;
+extern Data dta;
 extern UserInterface UI;
 extern Misc misc;
 extern string ver, verStage;
@@ -36,7 +36,7 @@ void UserInterface::Home(){
         mi.kb.disable();
         chse = 0;
         hncip.script("ui.chns", "HOME");
-        if (cfg.settings.logo == 1) {
+        if (dta.cfg.logo == 1) {
             logoAnimation = true;
             thread([&]{
                 running = true;
@@ -63,7 +63,7 @@ void UserInterface::Home(){
             if (btnName == "QUIT") chse = 4;
         });
         mi.async(3);
-        if (cfg.settings.logo == 1) {
+        if (dta.cfg.logo == 1) {
             logoAnimation = false;
             while(running);
         }
@@ -80,7 +80,7 @@ void UserInterface::Home(){
                 {
                     while(true) {
                         chse = 0;
-                        hncip.script("ui.chns", "QUIT_" + misc.toLangName(cfg.settings.language));
+                        hncip.script("ui.chns", "QUIT_" + misc.toLangName(dta.cfg.language));
                         mi.mouse.btnAdd("QUIT", 1, 2, 30, 3);
                         mi.mouse.btnAdd("CANCEL", 1, 5, 30, 3);
                         mi.mouse.cbCreate("QUIT", [&](const string& btnName){

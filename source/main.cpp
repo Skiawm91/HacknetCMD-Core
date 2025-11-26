@@ -1,5 +1,5 @@
 #define _HAS_STD_BYTE 0
-#include "config.h"
+#include "data.h"
 #include "function.h"
 #include "console.h"
 #include "UI.h"
@@ -20,11 +20,11 @@
 #endif
 #include <string>
 #include <filesystem>
-using namespace std;
+using std::string;
 
 // 初始化 class 部分
 ManageInput mi;
-Config cfg;
+Data dta;
 Console con;
 Function func;
 Misc misc;
@@ -87,7 +87,7 @@ int main() {
     #endif
     // 初始化: 建立Data資料夾 / 載入配置檔案
     if (!filesystem::exists("data")) filesystem::create_directory("data");
-    cfg.reload();
+    dta.cfg.reload();
     // 初始化: 輸入
     mi.initial();
     // 初始化: Discord Presence

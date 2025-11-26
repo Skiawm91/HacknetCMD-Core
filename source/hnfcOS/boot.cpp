@@ -1,6 +1,6 @@
 #define _HAS_STD_BYTE 0
 #include "os.h"
-#include "config.h"
+#include "data.h"
 #include "function.h"
 #include "HNCIP.h"
 #include <iostream>
@@ -18,7 +18,7 @@ using namespace std;
 #ifndef _WIN32
 inline void Sleep(const int& ms) {usleep(ms * 1000);}
 #endif
-extern Config cfg;
+extern Data dta;
 extern Function func;
 extern hnfcOS os;
 extern HNCInterPreter hncip;
@@ -27,7 +27,7 @@ extern string playerName;
 void hnfcOS::Boot() {
     func.audio.stop();
     func.audio.play("BOOT", vector<string>{"boot.wav"}, 1);
-    if (cfg.settings.verbose) {
+    if (dta.cfg.verbose) {
         hncip.script("boot.chns", "BOOT");
         hncip.script("boot.chns", "OSCONFIG");
         hncip.script("boot.chns", "BOOTCFG");
@@ -51,7 +51,7 @@ void hnfcOS::Boot() {
             Sleep(150 + rand() % 11);
         }
     }
-    cfg.data.save("data/booted.hnd", playerName);
+    dta.save("data/booted.hnd", playerName);
     os.Initial(true);
     return;
 }
