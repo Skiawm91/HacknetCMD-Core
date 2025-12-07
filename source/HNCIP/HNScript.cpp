@@ -8,8 +8,8 @@
 #include <vector>
 using namespace std;
 
-void HNCInterPreter::script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText) {
-    string scriptPath = "assets/scripts/" + fileName;
+void HNCInterPreter::script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText, const string& filePath) {
+    string scriptPath = filePath + fileName;
     ifstream file(scriptPath);
     string line;
     string command, content;

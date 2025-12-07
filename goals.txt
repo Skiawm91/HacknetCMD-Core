@@ -1,7 +1,7 @@
 Hacknet for CMD: Core Edition // Goals
 
 [版本號]
-目標 (進度, 完成的版本)
+目標 (進度, 完成的階段)
 
 [0.1.0]
 完成Batch版本的進度 (完成, Release)

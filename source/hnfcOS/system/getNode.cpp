@@ -21,7 +21,7 @@ HNCInterPreter::NodeInfo hnfcOS::System::getNode(const std::string &targetIP) {
         }
     }
     for (const auto &f : files) {
-        auto node = (hncip.node(f, vector<string>{"PLAYERIP", "PLAYERNAME"}, vector<string>{playerIP, playerName}, true));
+        auto node = hncip.node(f, vector<string>{"PLAYERIP", "PLAYERNAME"}, vector<string>{playerIP, playerName}, "data/" + lowerName + "/nodes/");
         if (targetIP == node.IP) return node;
     }
     // 第一次連線將從assets獲取node
@@ -32,9 +32,12 @@ HNCInterPreter::NodeInfo hnfcOS::System::getNode(const std::string &targetIP) {
         }
     }
     for (const auto &f : files) {
-        filesystem::copy_file("assets/nodes/" + f, "data/" + lowerName + "/nodes/" + f, filesystem::copy_options::skip_existing);
         auto node = (hncip.node(f, vector<string>{"PLAYERIP", "PLAYERNAME"}, vector<string>{playerIP, playerName}));
-        if (targetIP == node.IP) return node;
+        if (targetIP == node.IP) {
+            if (node.IP == playerIP) filesystem::copy_file("assets/nodes/" + f, "data/" + lowerName + "/nodes/player.hnn", filesystem::copy_options::skip_existing);
+            else filesystem::copy_file("assets/nodes/" + f, "data/" + lowerName + "/nodes/" + node.IP + ".hnn", filesystem::copy_options::skip_existing);
+            return node;
+        }
     }
     return HNCInterPreter::NodeInfo{};
 }

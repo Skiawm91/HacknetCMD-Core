@@ -7,7 +7,7 @@ using namespace std;
 
 class HNCInterPreter {
 public:
-    void script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar = nullopt, const optional<vector<string>>& returnText = nullopt);
+    void script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar = nullopt, const optional<vector<string>>& returnText = nullopt, const string& filePath = "assets/scripts/");
     struct NodeInfo {
         struct FileEntry {
             string name;
@@ -27,6 +27,6 @@ public:
         vector<FolderEntry> folders; // <-- 新的巢狀 filesystem
         vector<FileEntry> files;
     };
-    NodeInfo node(const string& fileName, const optional<vector<string>>& targetVar = nullopt, const optional<vector<string>>& returnText = nullopt, const bool readConfig = false);
+    NodeInfo node(const string& fileName, const optional<vector<string>>& targetVar = nullopt, const optional<vector<string>>& returnText = nullopt, const string& filePath = "assets/nodes/");
 private:
 };

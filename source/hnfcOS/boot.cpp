@@ -26,7 +26,7 @@ extern string playerName;
 
 void hnfcOS::Boot() {
     func.audio.stop();
-    func.audio.play("BOOT", vector<string>{"boot.wav"}, 1);
+    func.audio.play("BOOT", vector<string>{"boot.wav"}, "assets/sounds/");
     if (dta.cfg.verbose) {
         hncip.script("boot.chns", "BOOT");
         hncip.script("boot.chns", "OSCONFIG");

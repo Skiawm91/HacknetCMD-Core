@@ -10,15 +10,9 @@ using namespace std;
 
 extern string playerName;
 
-HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText, const bool readConfig) {
+HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText, const string& filePath) {
     HNCInterPreter::NodeInfo node;
-    string scriptPath;
-    if (readConfig) {
-        string lowerName;
-        lowerName.resize(playerName.size());
-        transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
-        scriptPath = "config/" + lowerName + "/nodes/" + fileName;
-    } else scriptPath = "assets/nodes/" + fileName;
+    string scriptPath = filePath + fileName;
     ifstream file(scriptPath);
     string line, got;
     vector<string> command;

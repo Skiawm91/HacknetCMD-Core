@@ -3,25 +3,25 @@
 <br/>
 [繁體中文](README_ZH-TW.md)
 <hr/>
-這個專案本來是叫【Cpp Edition】，因為我不喜歡，所以現在是【Core Edition】。
+這個專案本來是 "Cpp Edition"，但看起來不太對，所以現在是 "Core Edition"。
 <br/>
 <br/>
-【Hacknet for CMD】是一個遺留項目，上次更新是在一年前了。
+"Hacknet for CMD" 是一個遺留項目，上次更新是在一年前了。
 <br/>
 這個遊戲的靈感來自Steam上的Hacknet（我猜你應該知道了）。
 <br/>
 <br/>
-在製作這個版本前，我剛加入了Discord上的【Hacknet for CMD | Official Server】。
+在製作這個版本前，我剛加入了Discord上的 "Hacknet for CMD | Official Server"。
 <br/>
 <br>
-有一天，一個叫【65536Java (NULL)】的人加入了並且發送了一個關於HacknetCMD的程式。
+有一天，65536Java (NULL) 加入了這個伺服器並且發送了一個關於 "Hacknet for CMD" 的程式。
 <br/>
-然後，這個程式用Java重新製作了【Hacknet for CMD】。
+然後，這個程式用Java重新製作了"Hacknet for CMD"。
 <br/>
 <br>
-所以，我也在同一天重做了【Hacknet for CMD】。
+所以，我也在同一天重做了 "Hacknet for CMD"。
 <br/>
-使用C++，就像【Minecraft：基岩板】lol。
+使用C++，就像 "Minecraft：基岩板" lol。
 
 ## 怎麼使用？
 1. 從[Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases)下載。

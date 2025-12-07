@@ -14,7 +14,7 @@ This game idea is from Hacknet from Steam (I guess you already know).
 Before I made C++ ver, I just joined "Hacknet for CMD | Official Server" on Discord.
 <br/>
 <br>
-One day, a person "65536Java (NULL)" joined and sent a program about HacknetCMD.
+One day, a person 65536Java (NULL) joined and sent a program about HacknetCMD.
 <br/>
 Then, this program remade "Hacknet for CMD" with Java.
 <br/>
@@ -41,7 +41,7 @@ cd HacknetCMD-Core
 2. Run `build_win.bat` for Windows.
 2. Run `build_mac.command` for macOS.
 4. If Done, Press Enter key.
-5. If has no any errors, should it run.
+5. If has no any errors, it should run.
 ## Developers
 * [Skiawm91](https://github.com/Skiawm91)
 * [65536Java](https://github.com/65536Java)

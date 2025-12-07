@@ -54,11 +54,7 @@ static void mciStop(const string& alias) {
 }
 
 // 單次播放
-void Function::Audio::play(const string& threadName, const vector<string>& fileNames, const int type) {
-    string filePath;
-    if (type == 0) filePath = "assets/musics/";
-    else if (type == 1) filePath = "assets/sounds/";
-
+void Function::Audio::play(const string& threadName, const vector<string>& fileNames, const string& filePath) {
     lock_guard<mutex> lock(gAudioImpl.audioMutex);
 
     // 若該音軌存在，先關閉
@@ -83,11 +79,7 @@ void Function::Audio::play(const string& threadName, const vector<string>& fileN
 }
 
 // 迴圈播放
-void Function::Audio::playL(const string& threadName, const vector<string>& fileNames, const int type) {
-    string filePath;
-    if (type == 0) filePath = "assets/musics/";
-    else if (type == 1) filePath = "assets/sounds/";
-
+void Function::Audio::playL(const string& threadName, const vector<string>& fileNames, const string& filePath) {
     lock_guard<mutex> lock(gAudioImpl.audioMutex);
 
     // 若該音軌存在，先關閉
@@ -234,7 +226,7 @@ static void playerFunc(string filepath, shared_ptr<atomic<bool>> running) {
     ExtAudioFileDispose(ctx.audioFile);
 }
 
-void Function::Audio::play(const string& threadName, const vector<string>& sounds, const int type) {
+void Function::Audio::play(const string& threadName, const vector<string>& sounds, const string& filePath) {
     string filePath;
     if (type == 0) filePath = "assets/musics/";
     else if (type == 1) filePath = "assets/sounds/";
@@ -255,7 +247,7 @@ void Function::Audio::play(const string& threadName, const vector<string>& sound
     macAudioThreads[threadName] = { std::move(t), running };
 }
 
-void Function::Audio::playL(const string& threadName, const vector<string>& sounds, const int type) {
+void Function::Audio::playL(const string& threadName, const vector<string>& sounds, const string& filePath) {
     string filePath;
     if (type == 0) filePath = "assets/musics/";
     else if (type == 1) filePath = "assets/sounds/";
