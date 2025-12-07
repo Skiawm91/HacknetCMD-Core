@@ -156,29 +156,29 @@ static string randomPick(const vector<string>& sounds) {
 
 static void AQOutputCallback(void* inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer) {
     PlayerContext* ctx = (PlayerContext*)inUserData;
-    if (!ctx->running || !ctx->running->load()) { // ✅ 直接用
+
+    // 播放器被要求停止
+    if (!ctx->running || !ctx->running->load()) {
         AudioQueueStop(ctx->queue, false);
         return;
     }
+
     UInt32 numPackets = ctx->numPacketsToRead;
     AudioBufferList bufferList;
     bufferList.mNumberBuffers = 1;
     bufferList.mBuffers[0].mData = inBuffer->mAudioData;
     bufferList.mBuffers[0].mDataByteSize = ctx->maxPacketSize * numPackets;
     bufferList.mBuffers[0].mNumberChannels = ctx->clientFormat.mChannelsPerFrame;
+
     OSStatus status = ExtAudioFileRead(ctx->audioFile, &numPackets, &bufferList);
+
+    // ❗ 讀不到 = 播完 = 停止
     if (status != noErr || numPackets == 0) {
-        ExtAudioFileSeek(ctx->audioFile, 0);
-        numPackets = ctx->numPacketsToRead;
-        bufferList.mBuffers[0].mData = inBuffer->mAudioData;
-        bufferList.mBuffers[0].mDataByteSize = ctx->maxPacketSize * numPackets;
-        status = ExtAudioFileRead(ctx->audioFile, &numPackets, &bufferList);
-        if (status != noErr || numPackets == 0) {
-            inBuffer->mAudioDataByteSize = 0;
-            AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, nullptr);
-            return;
-        }
+        ctx->running->store(false);      // 通知 thread 停止
+        AudioQueueStop(inAQ, false);     // 停止 queue
+        return;
     }
+
     inBuffer->mAudioDataByteSize = bufferList.mBuffers[0].mDataByteSize;
     AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, nullptr);
 }
@@ -227,9 +227,6 @@ static void playerFunc(string filepath, shared_ptr<atomic<bool>> running) {
 }
 
 void Function::Audio::play(const string& threadName, const vector<string>& sounds, const string& filePath) {
-    string filePath;
-    if (type == 0) filePath = "assets/musics/";
-    else if (type == 1) filePath = "assets/sounds/";
     lock_guard<mutex> lock(macAudioMutex);
 
     auto it = macAudioThreads.find(threadName);
@@ -248,9 +245,6 @@ void Function::Audio::play(const string& threadName, const vector<string>& sound
 }
 
 void Function::Audio::playL(const string& threadName, const vector<string>& sounds, const string& filePath) {
-    string filePath;
-    if (type == 0) filePath = "assets/musics/";
-    else if (type == 1) filePath = "assets/sounds/";
     lock_guard<mutex> lock(macAudioMutex);
 
     auto it = macAudioThreads.find(threadName);
