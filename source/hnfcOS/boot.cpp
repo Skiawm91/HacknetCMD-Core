@@ -3,6 +3,7 @@
 #include "data.h"
 #include "function.h"
 #include "HNCIP.h"
+#include "input.h"
 #include <iostream>
 #include <string>
 #ifdef _WIN32
@@ -23,10 +24,12 @@ extern Function func;
 extern hnfcOS os;
 extern HNCInterPreter hncip;
 extern string playerName;
+extern ManageInput mi;
 
 void hnfcOS::Boot() {
     func.audio.stop();
     func.audio.play("BOOT", vector<string>{"boot.wav"}, "assets/sounds/");
+    mi.kb.disable();
     if (dta.cfg.verbose) {
         hncip.script("boot.chns", "BOOT");
         hncip.script("boot.chns", "OSCONFIG");

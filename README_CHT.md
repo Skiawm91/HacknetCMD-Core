@@ -26,11 +26,11 @@
 ## 怎麼使用？
 1. 從[Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases)下載。
 2. 解壓縮檔案。
-3. 打開【HacknetCMD】。
+3. 打開 "HacknetCMD"。
 4. 遊玩！
-## 我不想用發布版，但怎麼編譯？
+## 我不想用發行版，但怎麼編譯？
 ### 需求
-1. (Windows) [Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 並且選擇【Desktop development with C++】。
+1. (Windows) [Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 並且選擇 "Desktop development with C++"。
 1. (macOS) "Clang++" - 只需在終端機執行`clang++`。
 ### 步驟
 1. 複製存儲庫。
