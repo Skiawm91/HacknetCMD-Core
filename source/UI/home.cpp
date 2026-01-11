@@ -40,7 +40,7 @@ void UserInterface::Home(){
             logoAnimation = true;
             thread([&]{
                 running = true;
-                int fps = 30, frame = 1;
+                int fps = 60, frame = 1;
                 while(logoAnimation) {
                     if (frame > 60) frame = 1;
                     if (verStage != "Release") hncip.script("logo.chns", "LOGOFPS" + to_string(frame), vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});

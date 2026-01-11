@@ -17,20 +17,24 @@ HNScript (完成, Beta 2)
 整理代碼 / 檔案 (完成, Beta 2)
 設定介面 (完成, Beta 1)
 中英文介面之切換 (完成, Beta 2)
-新的CMD介面：
-    MenuBar:
-        Exit (完成, Beta 2)
-        Settings (完成, Beta 3)
-        Save (WIP)
+遊戲存檔 (WIP)
+HnfcOS:
+    System:
         Terminal (完成, Beta 2)
         Display (完成, Beta 3)
         NetMap (WIP)
         RAM (WIP)
         Mail (WIP)
-    System:
+    Node:
         Login (WIP)
         Probe (完成, Beta 4)
-        FileSystem (完成, Beta 4)
+        FileSystem:
+            Graphical User Interface (完成, Beta 4)
+            Change Dir (完成, Beta 4)
+            List Dir (完成, Beta 4)
+            Concatenate (完成, Beta 4)
+            Move (WIP)
+            Remove (WIP)
         Scan (WIP)
 Applications:
     PortHack (WIP)
