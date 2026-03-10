@@ -20,7 +20,10 @@
 #include <thread>
 #include <chrono>
 #include <atomic>
-using namespace std;
+using std::vector;
+using std::string, std::to_string;
+using std::thread;
+using std::atomic;
 
 extern ManageInput mi;
 extern Misc misc;

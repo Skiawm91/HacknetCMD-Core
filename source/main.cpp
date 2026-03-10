@@ -43,7 +43,7 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
     // 初始化: 基本視窗大小/字體
-    con.resize(120, 30);
+    con.resize(144, 36);
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_FONT_INFOEX cfi;
     cfi.cbSize = sizeof(cfi);

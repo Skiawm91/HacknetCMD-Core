@@ -14,7 +14,7 @@ PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINT   ______________________________
 PRINT   | Scan Network               |
 PRINT   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 2 27 ______________________________
-PRINTAT_NB 2 28 | Disconnect                 |
-PRINTAT_NB 2 29 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINTAT_NB 2 ${ENDPOS1} ______________________________
+PRINTAT_NB 2 ${ENDPOS2} | Disconnect                 |
+PRINTAT_NB 2 ${ENDPOS3} ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_OPTION_EN

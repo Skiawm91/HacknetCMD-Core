@@ -14,6 +14,7 @@ extern Console con;
 extern Data dta;
 extern HNCInterPreter hncip;
 extern string playerIP, playerLang;
+extern Data dta;
 
 void hnfcOS::Display() {
     Mode = "Display";
@@ -27,13 +28,14 @@ void hnfcOS::Display() {
     }
     if (!node.Name.empty() && !node.Type.empty()) {
         hncip.script("hnfcOS/display/icon.chns", "ICON_" + node.Type, vector<string>{"TARGETNAME", "TARGETIP"}, vector<string>{node.Name, targetIP});
-        hncip.script("hnfcOS/display/option.chns", "OPTION_" + playerLang);
+        int endPos = 34 + 3 * dta.cfg.cmdsize;
+        hncip.script("hnfcOS/display/option.chns", "OPTION_" + playerLang, vector<string>{"ENDPOS1", "ENDPOS2", "ENDPOS3"}, vector<string>{to_string(endPos), to_string(endPos + 1), to_string(endPos + 2)});
         mi.mouse.btnAdd("LOGIN", 2, 10, 30, 3);
         mi.mouse.btnAdd("PROBE", 2, 13, 30, 3);
         mi.mouse.btnAdd("FILESYSTEM", 2, 16, 30, 3);
         mi.mouse.btnAdd("LOGS", 2, 19, 30, 3);
         mi.mouse.btnAdd("SCAN", 2, 22, 30, 3);
-        mi.mouse.btnAdd("DISCONNECT", 2, 27, 30, 3);
+        mi.mouse.btnAdd("DISCONNECT", 2, 34 + 3 * dta.cfg.cmdsize, 30, 3);
         mi.mouse.cbCreate("DISPLAY", [&](const string& btnName){
             if (btnName == "PROBE") displayChse = 2;
             if (btnName == "FILESYSTEM") {

@@ -55,8 +55,8 @@ void hnfcOS::MenuBar() {
     #elif __APPLE__
     int preRemove = 51;
     #endif
-    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(120 * (dta.cfg.cmdsize + 1) - preRemove, '/') + string("|✉️|"));
-    con.printAt(0, 1, overlines(120 * (dta.cfg.cmdsize + 1)));
+    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(144 + 12 * dta.cfg.cmdsize - preRemove, '/') + string("|✉️|"));
+    con.printAt(0, 1, overlines(144 + 12 * dta.cfg.cmdsize));
 }
 
 void hnfcOS::Interface() {

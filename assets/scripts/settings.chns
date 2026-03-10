@@ -54,25 +54,25 @@ END_LANGUAGE_2
 
 BEGIN_CMDSIZE_0
 PRINT  ____________________
-PRINT  | CMD Size: 1x     |
+PRINT  | CMD Size: 144*36 |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_CMDSIZE_0
 
 BEGIN_CMDSIZE_1
 PRINT  ____________________
-PRINT  | CMD Size: 2x     |
+PRINT  | CMD Size: 156*39 |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_CMDSIZE_1
 
 BEGIN_CMDSIZE_2
 PRINT  ____________________
-PRINT  | CMD Size: 3x     |
+PRINT  | CMD Size: 168*42 |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_CMDSIZE_2
 
 BEGIN_CMDSIZE_3
 PRINT  ____________________
-PRINT  | CMD Size: 4x     |
+PRINT  | CMD Size: 180*45 |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_CMDSIZE_3
 
