@@ -34,7 +34,7 @@ HnfcOS:
             List Dir (完成, Beta 4)
             Concatenate (完成, Beta 4)
             Move (WIP)
-            Remove (WIP)
+            Remove (完成, Beta 5)
         Scan (WIP)
 Applications:
     PortHack (WIP)
@@ -45,8 +45,3 @@ Dynamic Logo (完成, Beta 4)
 [0.4.0]
 重寫Tutorial (WIP)
 整理代碼 / 簡單化 (WIP)
-
-開發人員：
-1. Skiawm91
-2. ChatGPT
-3. Gemini

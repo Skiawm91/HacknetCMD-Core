@@ -36,6 +36,7 @@ HNCInterPreter::NodeInfo hnfcOS::System::getNode(const std::string &targetIP) {
         if (targetIP == node.IP) {
             if (node.IP == playerIP) filesystem::copy_file("assets/nodes/" + f, "data/" + lowerName + "/nodes/player.hnn", filesystem::copy_options::skip_existing);
             else filesystem::copy_file("assets/nodes/" + f, "data/" + lowerName + "/nodes/" + node.IP + ".hnn", filesystem::copy_options::skip_existing);
+            node.filePath = "data/" + lowerName + "/nodes/" + f;
             return node;
         }
     }

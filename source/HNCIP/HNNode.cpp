@@ -13,6 +13,7 @@ extern string playerName;
 HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const optional<vector<string>>& targetVar, const optional<vector<string>>& returnText, const string& filePath) {
     HNCInterPreter::NodeInfo node;
     string scriptPath = filePath + fileName;
+    node.filePath = scriptPath;
     ifstream file(scriptPath);
     string line, got;
     vector<string> command;

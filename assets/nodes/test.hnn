@@ -44,6 +44,14 @@ FILESYSTEM
             CONTENT
             CONTENT 節錄自 2025/11/25 的 Discord 對話
         END_FILE
+        FILE note1.txt
+            CONTENT 貌似很久沒有新版本了對吧...
+            CONTENT 主要就是我太懶了 (甚至懶得用AI) lol
+            CONTENT 所以為什麼突然更新？因為我突然想用AI了，就這樣
+            CONTENT (順帶一提Claude真的蠻好用的)
+            CONTENT
+            CONTENT 2026/4/13 (話說這也太久了吧)
+        END_FILE
     END_FOLDER
     FOLDER log
         FILE [CONNECTED]TEST

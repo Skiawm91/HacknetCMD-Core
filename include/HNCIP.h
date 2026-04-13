@@ -9,6 +9,7 @@ class HNCInterPreter {
 public:
     void script(const string& fileName, const string& partName, const optional<vector<string>>& targetVar = nullopt, const optional<vector<string>>& returnText = nullopt, const string& filePath = "assets/scripts/");
     struct NodeInfo {
+        string filePath;
         struct FileEntry {
             string name;
             vector<string> contents = {" "};

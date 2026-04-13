@@ -47,6 +47,7 @@ cd HacknetCMD-Core
 * [65536Java](https://github.com/65536Java)
 * OpenAI GPT
 * Google Gemini
+* Anthropic Claude
 ## 致謝
 * [AhQiang](https://github.com/Hoyiqiang)
 * [discord/discord-rpc](https://github.com/discord/discord-rpc)

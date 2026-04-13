@@ -74,6 +74,10 @@ void hnfcOS::Terminal() {
                 if (command.size() >= 2) this->cmd.Concatenate(command[1], node);
                 else std::cout << "Usage: cat [FILENAME]" << std::endl;
             }
+            else if (lowerCmd == "rm") {
+                if (command.size() >= 2) this->cmd.Remove(command[1], node);
+                else std::cout << "Not Enough Arguments" << std::endl;
+            }
             else if (command[0] == "disconnect" || command[0] == "dc") {
                 sys.cleanNode();
                 std::cout << "Disconnected" << std::endl;
