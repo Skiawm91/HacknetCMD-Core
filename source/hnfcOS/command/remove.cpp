@@ -102,9 +102,9 @@ void hnfcOS::Command::Remove(const string& path, HNCInterPreter::NodeInfo& node)
     // * 清空
     if (fileName == "*") {
         for (auto it = targetFiles->begin(); it != targetFiles->end();) {
+            parent->MenuBar(); // 避免頂欄消失
             hncip.script("hnfcOS/command/remove.chns", "REMOVE", vector<string>{"FILENAME"}, vector<string>{it->name});
             it = targetFiles->erase(it);
-            parent->MenuBar(); // 避免頂欄消失
         }
         parent->sys.saveNode(node);
         return;

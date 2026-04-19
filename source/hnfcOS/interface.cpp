@@ -84,7 +84,7 @@ void hnfcOS::Interface() {
         Discord_UpdatePresence(&drp);
         #ifdef __APPLE__
         if (mode == 2) con.bufferChange(0);
-        else if (mode == 1 || mode == 3) con.bufferChange(1);
+        else if (mode == 1 || mode == 3 || mode == 4 || mode == 5 || mode == 6) con.bufferChange(1);
         #endif
         MenuBar();
         if (mode == 0) {
