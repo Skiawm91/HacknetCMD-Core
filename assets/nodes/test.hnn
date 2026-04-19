@@ -72,13 +72,17 @@ FILESYSTEM
         END_FILE
     END_FOLDER
     FOLDER test
-        FOLDER 1
-            FOLDER 3
-                FOLDER 4
-                END_FOLDER
-            END_FOLDER
-        END_FOLDER
-        FOLDER 2
+        FOLDER Some_Files
+            FILE 1.txt
+            END_FILE
+            FILE 2.txt
+            END_FILE
+            FILE 3.txt
+            END_FILE
+            FILE 4.txt
+            END_FILE
+            FILE 5.txt
+            END_FILE
         END_FOLDER
     END_FOLDER
     FILE README.txt

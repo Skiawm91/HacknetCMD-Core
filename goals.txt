@@ -17,7 +17,6 @@ HNScript (完成, Beta 2)
 整理代碼 / 檔案 (完成, Beta 2)
 設定介面 (完成, Beta 1)
 中英文介面之切換 (完成, Beta 2)
-遊戲存檔 (WIP)
 HnfcOS:
     System:
         Terminal (完成, Beta 2)
@@ -33,7 +32,7 @@ HnfcOS:
             Change Dir (完成, Beta 4)
             List Dir (完成, Beta 4)
             Concatenate (完成, Beta 4)
-            Move (WIP)
+            Move (完成, Beta 5)
             Remove (完成, Beta 5)
         Scan (WIP)
 Applications:
@@ -43,5 +42,6 @@ Audio 多線程播放及多檔案隨機播放支援 (完成, Beta 3)
 Dynamic Logo (完成, Beta 4)
 
 [0.4.0]
-重寫Tutorial (WIP)
-整理代碼 / 簡單化 (WIP)
+重寫Tutorial
+遊戲存檔
+整理代碼 / 簡單化

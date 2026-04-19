@@ -1,54 +1,31 @@
 #include "os.h"
+#include "HNCIP.h"
 #include <vector>
 #include <string>
 #include <iostream>
 #include <sstream>
 using std::vector, std::string, std::cout, std::endl, std::stringstream;
 
-void hnfcOS::Command::Remove(const string& path, HNCInterPreter::NodeInfo& node) {
-    vector<HNCInterPreter::NodeInfo::FolderEntry>* targetFolders = &node.folders;
-    vector<HNCInterPreter::NodeInfo::FileEntry>* targetFiles = &node.files;
+extern HNCInterPreter hncip;
 
-    // 先走到 parent->path 所在層
-    if (!parent->path.empty() && parent->path != "/") {
-        string p = parent->path;
+static bool resolvePath(
+    const string& path, bool isAbsolute,
+    const string& currentPath,
+    HNCInterPreter::NodeInfo& node,
+    vector<HNCInterPreter::NodeInfo::FolderEntry>*& outFolders,
+    vector<HNCInterPreter::NodeInfo::FileEntry>*& outFiles)
+{
+    outFolders = &node.folders;
+    outFiles = &node.files;
+
+    vector<HNCInterPreter::NodeInfo::FolderEntry*> folderStack;
+    if (!isAbsolute && !currentPath.empty() && currentPath != "/") {
+        string p = currentPath;
         if (p.back() == '/') p.pop_back();
         stringstream ss(p);
         string part;
-        while (getline(ss, part, '/')) {
-            if (part.empty()) continue;
-            for (auto& f : *targetFolders) {
-                if (f.name == part) {
-                    targetFiles = &f.files;
-                    targetFolders = &f.subfolders;
-                    break;
-                }
-            }
-        }
-    }
-
-    // 切割 path，處理 ../
-    vector<string> parts;
-    stringstream ss(path);
-    string part;
-    while (getline(ss, part, '/')) {
-        if (part.empty() || part == ".") continue;
-        parts.push_back(part);
-    }
-
-    // 走到目標的父層（最後一個 part 是目標檔名）
-    string fileName = parts.back();
-    parts.pop_back();
-
-    // 重建完整路徑stack 以支援 ..
-    // 先把當前路徑拆成 stack
-    vector<HNCInterPreter::NodeInfo::FolderEntry*> folderStack;
-    if (!parent->path.empty() && parent->path != "/") {
-        string p = parent->path;
-        if (p.back() == '/') p.pop_back();
-        stringstream ss2(p);
         vector<HNCInterPreter::NodeInfo::FolderEntry>* cur = &node.folders;
-        while (getline(ss2, part, '/')) {
+        while (getline(ss, part, '/')) {
             if (part.empty()) continue;
             for (auto& f : *cur) {
                 if (f.name == part) {
@@ -60,40 +37,85 @@ void hnfcOS::Command::Remove(const string& path, HNCInterPreter::NodeInfo& node)
         }
     }
 
-    // 處理 parts（含 ..）
-    for (const auto& p : parts) {
-        if (p == "..") {
-            if (!folderStack.empty()) folderStack.pop_back();
-        } else {
-            vector<HNCInterPreter::NodeInfo::FolderEntry>* cur = folderStack.empty() ? &node.folders : &folderStack.back()->subfolders;
-            for (auto& f : *cur) {
-                if (f.name == p) {
-                    folderStack.push_back(&f);
-                    break;
+    if (!path.empty()) {
+        stringstream ss(path);
+        string part;
+        while (getline(ss, part, '/')) {
+            if (part.empty() || part == ".") continue;
+            if (part == "..") {
+                if (!folderStack.empty()) folderStack.pop_back();
+            } else {
+                vector<HNCInterPreter::NodeInfo::FolderEntry>* cur = folderStack.empty() ? &node.folders : &folderStack.back()->subfolders;
+                bool found = false;
+                for (auto& f : *cur) {
+                    if (f.name == part) {
+                        folderStack.push_back(&f);
+                        found = true;
+                        break;
+                    }
                 }
+                if (!found) return false;
             }
         }
     }
 
-    // 取得最終的 files
     if (folderStack.empty()) {
-        targetFiles = &node.files;
+        outFolders = &node.folders;
+        outFiles = &node.files;
     } else {
-        targetFiles = &folderStack.back()->files;
+        outFolders = &folderStack.back()->subfolders;
+        outFiles = &folderStack.back()->files;
+    }
+
+    return true;
+}
+
+void hnfcOS::Command::Remove(const string& path, HNCInterPreter::NodeInfo& node) {
+    bool isAbsolute = (!path.empty() && path[0] == '/');
+
+    vector<string> parts;
+    stringstream ss(path);
+    string part;
+    while (getline(ss, part, '/')) {
+        if (part.empty() || part == ".") continue;
+        parts.push_back(part);
+    }
+
+    string fileName = parts.back();
+    parts.pop_back();
+
+    string dirPath = "";
+    for (const auto& p : parts) dirPath += p + "/";
+
+    vector<HNCInterPreter::NodeInfo::FolderEntry>* targetFolders;
+    vector<HNCInterPreter::NodeInfo::FileEntry>* targetFiles;
+
+    if (!resolvePath(dirPath, isAbsolute, parent->path, node, targetFolders, targetFiles)) {
+        string displayPath = dirPath;
+        if (!displayPath.empty() && displayPath.back() == '/') displayPath.pop_back();
+        if (isAbsolute && !displayPath.empty() && displayPath[0] != '/') displayPath = "/" + displayPath;
+        cout << "Invalid Path" << endl;
+        cout << "Folder " << displayPath << " not found!" << endl;
+        return;
     }
 
     // * 清空
     if (fileName == "*") {
-        targetFiles->clear();
-        parent->kit.saveNode(node);
+        for (auto it = targetFiles->begin(); it != targetFiles->end();) {
+            hncip.script("hnfcOS/command/remove.chns", "REMOVE", vector<string>{"FILENAME"}, vector<string>{it->name});
+            it = targetFiles->erase(it);
+            parent->MenuBar(); // 避免頂欄消失
+        }
+        parent->sys.saveNode(node);
         return;
     }
 
     // 刪除指定檔案
     for (auto it = targetFiles->begin(); it != targetFiles->end(); ++it) {
         if (it->name == fileName) {
+            hncip.script("hnfcOS/command/remove.chns", "REMOVE", vector<string>{"FILENAME"}, vector<string>{it->name});
             targetFiles->erase(it);
-            parent->kit.saveNode(node);
+            parent->sys.saveNode(node);
             return;
         }
     }

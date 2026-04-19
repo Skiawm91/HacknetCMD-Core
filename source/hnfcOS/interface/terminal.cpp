@@ -78,6 +78,10 @@ void hnfcOS::Terminal() {
                 if (command.size() >= 2) this->cmd.Remove(command[1], node);
                 else std::cout << "Not Enough Arguments" << std::endl;
             }
+            else if (lowerCmd == "mv") {
+                if (command.size() >= 3) this->cmd.Move(command[1], command[2], node);
+                else std::cout << "Not Enough Arguments. Usage: mv [FILE] [DESTINATION]" << std::endl;
+            }
             else if (command[0] == "disconnect" || command[0] == "dc") {
                 sys.cleanNode();
                 std::cout << "Disconnected" << std::endl;

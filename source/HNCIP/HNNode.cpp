@@ -154,8 +154,8 @@ HNCInterPreter::NodeInfo HNCInterPreter::node(const string& fileName, const opti
             } else if (command[0] == "SCANIPS") {
                 if (command[1] != "0") {
                     bool first = true;
-                    for (const auto &sIP : command) {
-                        try { if (!first) node.scanIPs.push_back(stoi(sIP)); } catch (...) {}
+                    for (const auto &IP : command) {
+                        try { if (!first) node.scanIPs.push_back(IP); } catch (...) {}
                         first = false;
                     }
                 }

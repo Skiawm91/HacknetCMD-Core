@@ -75,7 +75,7 @@ void hnfcOS::Interface() {
     mi.mouse.btnAdd("DISPLAY", 25, 0, 9, 1);
     mi.mouse.btnAdd("NETMAP", 35, 0, 8, 1);
     mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
-    mi.mouse.btnAdd("MAIL", 120 * (dta.cfg.cmdsize + 1) - 4, 0, 4, 1);
+    mi.mouse.btnAdd("MAIL", 144 * (dta.cfg.cmdsize + 1) - 4, 0, 4, 1);
     menuBarCb(backupMode, mode);
     while(true) {
         if (!targetIP.empty()) state = "Location: " + targetIP;

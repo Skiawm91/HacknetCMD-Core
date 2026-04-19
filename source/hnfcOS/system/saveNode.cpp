@@ -6,7 +6,7 @@
 #include <fstream>
 using namespace std;
 
-void hnfcOS::Kit::saveNode(const HNCInterPreter::NodeInfo& node) {
+void hnfcOS::System::saveNode(const HNCInterPreter::NodeInfo& node) {
     ofstream f(node.filePath);
     if (!f.is_open()) return;
 

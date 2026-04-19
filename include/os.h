@@ -29,6 +29,8 @@ private:
     public:
         System(hnfcOS* p) : parent(p) {}
         HNCInterPreter::NodeInfo getNode(const std::string &targetIP);
+        void saveNode(const HNCInterPreter::NodeInfo& node);
+        void editNode(const string& key, const string& value);
         void cleanNode() {
             parent->targetIP.clear();
             parent->path.clear();
@@ -47,6 +49,7 @@ private:
         void ListDir(HNCInterPreter::NodeInfo& node);
         void Concatenate(const std::string &targetName, HNCInterPreter::NodeInfo& node);
         void Remove(const string& path, HNCInterPreter::NodeInfo& node);
+        void Move(const string& src, const string& dst, HNCInterPreter::NodeInfo& node);
     private:
         hnfcOS* parent;
     };
@@ -67,7 +70,6 @@ private:
         void regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, std::string thisPath, std::string &path, int &i, int &indent, std::vector<std::string> &objectNames, std::vector<HNCInterPreter::NodeInfo::FolderEntry>* siblings = nullptr);
         void regFile(HNCInterPreter::NodeInfo::FileEntry &f, std::string &path, int &i, int &indent, std::vector<std::string> &objectNames);
         void viewFile(const std::string &name, const std::vector<std::string> &contents);
-        void saveNode(const HNCInterPreter::NodeInfo& node);
     private:
         hnfcOS* parent;
     };

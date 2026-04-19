@@ -1,6 +1,7 @@
 #include "os.h"
+#include <iostream>
 #include <string>
-using std::string, std::vector;
+using std::cout, std::endl, std::string, std::vector;
 
 void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& dir) {
     if (dir.empty()) return;
@@ -103,7 +104,10 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
                     break;
                 }
             }
-            if (!found) return; // 找不到資料夾就退出
+            if (!found) {
+                cout << "Invaild Path" << endl;
+                return; // 找不到資料夾就退出
+            }
         }
     }
 
