@@ -45,3 +45,4 @@ Dynamic Logo (完成, Beta 4)
 重寫Tutorial
 遊戲存檔
 整理代碼 / 簡單化
+多語言支援

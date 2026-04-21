@@ -35,7 +35,7 @@ void UserInterface::Home(){
         Discord_UpdatePresence(&drp);
         mi.kb.disable();
         chse = 0;
-        hncip.script("ui.chns", "HOME");
+        hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language));
         if (dta.cfg.logo == 1) {
             logoAnimation = true;
             thread([&]{

@@ -44,7 +44,7 @@ void hnfcOS::Boot() {
         string loading;
         string block = "=";
         string preLoading = "--------------------";
-        string spaces(48, ' ');
+        string spaces(60, ' ');
         for (int i = 1; i <= 100; ++i) {
             if (i % 5 == 0) {
                 loading += block;
@@ -54,7 +54,7 @@ void hnfcOS::Boot() {
             Sleep(150 + rand() % 11);
         }
     }
-    dta.save("data/booted.hnd", playerName);
+    dta.replace("data/booted.hnd", 0, playerName);
     os.Initial(true);
     return;
 }

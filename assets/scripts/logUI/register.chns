@@ -7,6 +7,11 @@ BEGIN_NAME_EN
 GETINPUT  USERNAME : 
 END_NAME_EN
 
+BEGIN_NAME_CHS
+CLEAR
+GETINPUT  用戶名 : 
+END_NAME_CHS
+
 BEGIN_NAME_CHT
 GETINPUT  使用者名稱 : 
 END_NAME_CHT
@@ -15,6 +20,10 @@ BEGIN_PASSWD_EN
 GETINPUTPWD  PASSWORD : 
 END_PASSWD_EN
 
+BEGIN_PASSWD_CHS
+GETINPUTPWD  密码 : 
+END_PASSWD_CHS
+
 BEGIN_PASSWD_CHT
 GETINPUTPWD  密碼 : 
 END_PASSWD_CHT
@@ -22,6 +31,10 @@ END_PASSWD_CHT
 BEGIN_CONFIRM_EN
 GETINPUTPWD  CONFIRM PASS : 
 END_CONFIRM_EN
+
+BEGIN_CONFIRM_CHS
+GETINPUTPWD  重复密码 : 
+END_CONFIRM_CHS
 
 BEGIN_CONFIRM_CHT
 GETINPUTPWD  確認密碼 : 
@@ -41,16 +54,30 @@ PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 GETINPUTNUL
 END_DETAILS_EN
 
+BEGIN_DETAILS_CHS
+PRINT   -- 信息已确认 --
+PRINT  警告 : 一旦创建，存档的语言不可更改。
+PRINT  准备 - 按回车键（ENTER）确认
+PRINT  --------------------------------------------------------
+PRINT  ____________________
+PRINT  | 重复             |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ____________________
+PRINT  | 取消             |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+GETINPUTNUL
+END_DETAILS_CHS
+
 BEGIN_DETAILS_CHT
 PRINT   -- 資訊已確認 --
 PRINT  警告 : 一旦創建，該存檔的語言無法再更改
 PRINT  準備好了 - 按下 ENTER 來確認
 PRINT  --------------------------------------------------------
 PRINT  ____________________
-PRINT  | Confirm          |
+PRINT  | 確認             |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINT  ____________________
-PRINT  | Cancel           |
+PRINT  | 取消             |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 GETINPUTNUL
 END_DETAILS_CHT
