@@ -1,4 +1,4 @@
-Hacknet4CMD: C++ Edition // Goals
+Hacknet for CMD: Core Edition // Goals
 
 [0.1.0]
 完成Batch版本的進度 (完成, Release)

@@ -45,7 +45,7 @@ int main(){
     wcscpy_s(cfi.FaceName, L"Cascadia Mono");
     SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
     // 初始化: 標題
-    SetConsoleTitleA("Hacknet For CMD");
+    SetConsoleTitleA("Hacknet for CMD");
     // 初始化: 終端機輸入
     mi.hIn = GetStdHandle(STD_INPUT_HANDLE);
     DWORD prevMode;
@@ -68,7 +68,7 @@ int main(){
     cout << "\033[8;30;120t";
     cout.flush();
     // 初始化: 標題
-    cout << "\033]0;Hacknet For CMD\007";
+    cout << "\033]0;Hacknet for CMD\007";
     // 初始化: 終端機輸入
     tcgetattr(STDIN_FILENO, &origTermios);
     termios raw = origTermios;

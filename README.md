@@ -1,42 +1,57 @@
-# Hacknet4CMD: C++ Edition
-Hacknet4CMD is a legacy project, last updated about 1 year ago yet.
+# Hacknet for CMD: Core Edition
+[English](README.md)
 <br/>
-This game likely Hacknet, from Steam (I guess you already know).
+[繁體中文](README_CHT.md)
+<hr/>
+I named it "Core Edition" because I don't like "Cpp Edition". 
 <br/>
 <br/>
-Before make C++ ver, I just joined "Hacknet For CMD | Official Server" from Discord.
+"Hacknet for CMD" is a legacy project, last updated about 1 year ago yet.
+<br/>
+This game idea is from Hacknet from Steam (I guess you already know).
+<br/>
+<br/>
+Before I made C++ ver, I just joined "Hacknet for CMD | Official Server" on Discord.
 <br/>
 <br>
-Then, a person "65536Java (NULL)" joined and sent a program about Hacknet4CMD.
+One day, a person 65536Java (NULL) joined and sent a program about HacknetCMD.
 <br/>
-And, this program remade Hacknet4CMD with Java.
+Then, this program remade "Hacknet for CMD" with Java.
 <br/>
 <br>
-So, I made a program remade Hacknet4CMD in a day.
+So, I made a program remade "Hacknet for CMD" in a day.
 <br/>
 With C++, just like "Minecraft: Bedrock Edition" lol.
+
 ## How to use?
-1. Download from [Releases](https://github.com/Skiawm91/Hacknet-For-CMD-Cpp/releases)
+1. Download from [Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases).
 2. Extract file.
-3. Open "Hacknet"
+3. Open "HacknetCMD".
 4. Enjoy!
 ## I don't want to use release, but how to build?
 ### Requirements
-1. (Windows) [Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) with "Desktop development with C++"
+1. (Windows) [Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) and select "Desktop development with C++".
 1. (macOS) "Clang++" - just run `clang++` in terminal.
 ### Step
-1. Clone repository
+1. Clone repository.
 ```
-git clone https://github.com/Skiawm91/Hacknet-For-CMD-Cpp.git
-cd Hacknet-For-CMD-Cpp
+git clone https://github.com/Skiawm91/HacknetCMD-Core.git
+cd HacknetCMD-Core
 ```
-2. Run `build_win.bat` for Windows
-2. Run `build_mac.command` for macOS
-4. If Done, Press Enter key
-5. If has no any errors, should it run
-## Thanks
+2. Run `build_win.bat` for Windows.
+2. Run `build_mac.command` for macOS.
+4. If Done, Press Enter key.
+5. If has no any errors, it should run.
+## Developers
 * [Skiawm91](https://github.com/Skiawm91)
-* [AhQiang](https://github.com/Hoyiqiang)
 * [65536Java](https://github.com/65536Java)
-## [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition) is here!
-
+* OpenAI GPT
+* Google Gemini
+* Anthropic Claude
+## Thanks
+* [AhQiang](https://github.com/Hoyiqiang)
+* [discord/discord-rpc](https://github.com/discord/discord-rpc)
+## Other Editions
+* [Original](https://drive.google.com/drive/folders/1P23sV2mwOlDx-oI0giCKQuBuxQ9sCLtq)
+* [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition)
+* [Basic Edition](https://github.com/65536Java/HacknetCMD-Basic)
