@@ -18,5 +18,5 @@ void Data::Config::reload() {
     // CMDSIZE
     parent->load("data/config.hnd", vector<string>{"CMDSIZE=0", "CMDSIZE=1", "CMDSIZE=2", "CMDSIZE=3"});
     if (parent->loaded) cmdsize = parent->loadNumber;
-    con.resize(144 + 12 * cmdsize, 36 + 3 * cmdsize + 1);
+    con.resize(144 + 12 * cmdsize, 36 + 3 * cmdsize);
 }

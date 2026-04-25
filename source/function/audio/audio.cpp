@@ -258,8 +258,18 @@ void Function::Audio::playL(const string& threadName, const vector<string>& soun
 
     thread t([filePath, sounds, running]() {
         while (running->load()) {
+            auto loopRunning = make_shared<atomic<bool>>(true);
+
+            thread watcher([running, loopRunning]() {
+                while (running->load() && loopRunning->load())
+                    this_thread::sleep_for(chrono::milliseconds(50));
+                if (!running->load()) loopRunning->store(false);
+            });
+
             string file = filePath + randomPick(sounds);
-            playerFunc(file, running);
+            playerFunc(file, loopRunning);
+
+            if (watcher.joinable()) watcher.join();
         }
     });
 
