@@ -7,8 +7,8 @@
 #include "input.h"
 #include "HNCIP.h"
 #include "os.h"
-#include "discord_rpc.h"
-#include "discord_register.h"
+#include "discord-rpc/discord_rpc.h"
+#include "discord-rpc/discord_register.h"
 #ifdef _WIN32
 #include <windows.h>
 #elif __APPLE__

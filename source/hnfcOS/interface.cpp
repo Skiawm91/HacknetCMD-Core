@@ -6,7 +6,7 @@
 #include "data.h"
 #include "input.h"
 #include "HNCIP.h"
-#include "discord_rpc.h"
+#include "discord-rpc/discord_rpc.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -61,7 +61,7 @@ void hnfcOS::MenuBar() {
 
 void hnfcOS::Interface() {
     func.audio.stop();
-    func.audio.playL("InGame", vector<string>{"Revolve.wav", "out_run_the_wolves.wav"});
+    func.audio.playL("InGame", vector<string>{"Revolve.ogg", "out_run_the_wolves.ogg"});
     string state;
     extern string playerName;
     extern string playerLang;

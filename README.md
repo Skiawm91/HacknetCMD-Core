@@ -31,7 +31,7 @@ With C++, just like "Minecraft: Bedrock Edition" lol.
 ## I don't want to use release, but how to build?
 ### Requirements
 1. (Windows) [Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) and select "Desktop development with C++".
-1. (macOS) "Clang++" - just run `clang++` in terminal.
+1. (macOS) Xcode Command Tools - `xcode-select install`
 ### Step
 1. Clone repository.
 ```
@@ -51,6 +51,7 @@ cd HacknetCMD-Core
 ## Thanks
 * [AhQiang](https://github.com/Hoyiqiang)
 * [discord/discord-rpc](https://github.com/discord/discord-rpc)
+* [mackron/miniaudio](https://github.com/mackron/miniaudio)
 ## Other Editions
 * [Original](https://drive.google.com/drive/folders/1P23sV2mwOlDx-oI0giCKQuBuxQ9sCLtq)
 * [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition)

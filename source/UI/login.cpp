@@ -128,7 +128,7 @@ void UserInterface::Login() {
                                 dta.del("data/booted.hnd", playerName);
                                 os.Boot();
                                 func.audio.stop();
-                                func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
+                                func.audio.playL("ADC", vector<string>{"AmbientDrone_Clipped.ogg"});
                                 return;
                             } else {
                                 hncip.script("logUI/login.chns", "ERROR");
@@ -145,7 +145,7 @@ void UserInterface::Login() {
                     playerLang = dta.load("data/" + lowerName + "/info.hnd", 1);
                     os.Initial(false);
                     func.audio.stop();
-                    func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
+                    func.audio.playL("ADC", vector<string>{"AmbientDrone_Clipped.ogg"});
                     return;
                 }
                 break;

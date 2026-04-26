@@ -6,7 +6,7 @@
 #include "HNCIP.h"
 #include "misc.h"
 #include "console.h"
-#include "discord_rpc.h"
+#include "discord-rpc/discord_rpc.h"
 #include <vector>
 #include <thread>
 #include <chrono>
@@ -27,7 +27,7 @@ void UserInterface::Home(){
     int chse;
     atomic<bool> running, logoAnimation;
     func.audio.stop();
-    func.audio.playL("ADC", vector<string>{"AmbientDroneClipped.wav"});
+    func.audio.playL("ADC", vector<string>{"AmbientDrone_Clipped.ogg"});
     while(true) {
         con.clear();
         con.cursor.hide();

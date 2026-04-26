@@ -1,7 +1,10 @@
 #define _HAS_STD_BYTE 0
+#define STB_VORBIS_HEADER_ONLY
+#include "miniaudio/stb_vorbis.c"
 #define MINIAUDIO_IMPLEMENTATION
-#define MA_ENABLE_VORBIS
-#include "miniaudio.h"
+#include "miniaudio/miniaudio.h"
+#undef STB_VORBIS_HEADER_ONLY
+#include "miniaudio/stb_vorbis.c"
 #include "function.h"
 #include <string>
 #include <vector>

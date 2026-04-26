@@ -31,7 +31,7 @@
 ## 我不想用發行版，但怎麼編譯？
 ### 需求
 1. (Windows) [Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 並且選擇 "Desktop development with C++"。
-1. (macOS) "Clang++" - 只需在終端機執行`clang++`。
+1. (macOS) Xcode Command Tools - `xcode-select install`
 ### 步驟
 1. 複製存儲庫。
 ```
@@ -51,6 +51,7 @@ cd HacknetCMD-Core
 ## 致謝
 * [AhQiang](https://github.com/Hoyiqiang)
 * [discord/discord-rpc](https://github.com/discord/discord-rpc)
+* [mackron/miniaudio](https://github.com/mackron/miniaudio)
 ## 其他版本
 * [Original](https://drive.google.com/drive/folders/1P23sV2mwOlDx-oI0giCKQuBuxQ9sCLtq)
 * [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition)
