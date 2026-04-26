@@ -1,10 +1,34 @@
 #define _HAS_STD_BYTE 0
 #define STB_VORBIS_HEADER_ONLY
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4018)
+#else
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtautological-compare"
+#endif
 #include "miniaudio/stb_vorbis.c"
+#ifdef _WIN32
+#pragma warning(pop)
+#else
+#pragma clang diagnostic pop
+#endif
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio/miniaudio.h"
 #undef STB_VORBIS_HEADER_ONLY
+#ifdef _WIN32
+#pragma warning(push)
+#pragma warning(disable: 4018)
+#else
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtautological-compare"
+#endif
 #include "miniaudio/stb_vorbis.c"
+#ifdef _WIN32
+#pragma warning(pop)
+#else
+#pragma clang diagnostic pop
+#endif
 #include "function.h"
 #include <string>
 #include <vector>
@@ -87,7 +111,7 @@ void Function::Audio::play(const string& threadName, const vector<string>& sound
     string file = filePath + randomPick(sounds);
 
     thread t(playFunc, file, running);
-    audioThreads[threadName] = { move(t), running };
+    audioThreads[threadName] = { std::move(t), running };
 }
 
 void Function::Audio::playL(const string& threadName, const vector<string>& sounds, const string& filePath) {
@@ -102,7 +126,7 @@ void Function::Audio::playL(const string& threadName, const vector<string>& soun
 
     auto running = make_shared<atomic<bool>>(true);
     thread t(playLoopFunc, filePath, sounds, running);
-    audioThreads[threadName] = { move(t), running };
+    audioThreads[threadName] = { std::move(t), running };
 }
 
 void Function::Audio::stop(const string& threadName) {
