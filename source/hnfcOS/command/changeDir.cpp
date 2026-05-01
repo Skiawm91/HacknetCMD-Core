@@ -1,13 +1,17 @@
 #include "os.h"
 #include <iostream>
 #include <string>
+#include <functional>
+#include <vector>
 using std::cout, std::endl, std::string, std::vector;
 
 void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& dir) {
     if (dir.empty()) return;
 
+    bool isAbsolute = (!dir.empty() && dir[0] == '/');
+
     vector<string> foldersToCd;
-    size_t start = 0, end;
+    size_t start = isAbsolute ? 1 : 0, end;
     while ((end = dir.find('/', start)) != string::npos) {
         if (end > start)
             foldersToCd.push_back(dir.substr(start, end - start));
@@ -16,6 +20,20 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
     if (start < dir.size())
         foldersToCd.push_back(dir.substr(start));
 
+    // 絕對路徑：從根目錄開始，收起所有展開的資料夾
+    if (isAbsolute) {
+        // 收起所有展開的資料夾
+        function<void(vector<HNCInterPreter::NodeInfo::FolderEntry>&)> collapseAll;
+        collapseAll = [&](vector<HNCInterPreter::NodeInfo::FolderEntry>& folders) {
+            for (auto& f : folders) {
+                f.expand = 0;
+                collapseAll(f.subfolders);
+            }
+        };
+        collapseAll(node.folders);
+        parent->path = "/";
+    }
+
     // 起始層級
     string currentPath = parent->path.empty() ? "/" : parent->path;
     HNCInterPreter::NodeInfo::FolderEntry* currentFolder = nullptr;
@@ -23,7 +41,7 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
     // 找到目前所在的展開資料夾
     if (currentPath != "/") {
         vector<string> pathParts;
-        start = 1; // skip '/'
+        start = 1;
         while ((end = currentPath.find('/', start)) != string::npos) {
             pathParts.push_back(currentPath.substr(start, end - start));
             start = end + 1;
@@ -42,7 +60,7 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
                     break;
                 }
             }
-            if (!found) return; // 當前 path 錯誤，直接退出
+            if (!found) return;
         }
         currentFolder = f;
     }
@@ -51,18 +69,15 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
     vector<HNCInterPreter::NodeInfo::FolderEntry>* targetFolders = currentFolder ? &currentFolder->subfolders : &node.folders;
 
     for (auto &folderName : foldersToCd) {
-        if (folderName == ".") continue; // 保持當前目錄
+        if (folderName == ".") continue;
         else if (folderName == "..") {
-            // 回上一層
             if (currentFolder) {
-                currentFolder->expand = 0; // 收起當前資料夾
+                currentFolder->expand = 0;
                 size_t pos = currentPath.rfind('/', currentPath.length() - 2);
                 if (pos != string::npos) currentPath.erase(pos + 1);
                 else currentPath = "/";
-                // 更新 currentFolder 到上一層
                 currentFolder = nullptr;
                 targetFolders = &node.folders;
-                // 遍歷 path 找到上一層 folder
                 if (currentPath != "/") {
                     vector<string> pathParts;
                     size_t s = 1, e;
@@ -85,18 +100,15 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
                     targetFolders = currentFolder ? &currentFolder->subfolders : &node.folders;
                 }
             } else {
-                currentPath = "/"; // 根目錄
+                currentPath = "/";
             }
         } else {
-            // 在當前資料夾下找要 cd 的資料夾
             bool found = false;
             for (auto &f : *targetFolders) {
                 if (f.name == folderName) {
-                    // 收起同層其他資料夾
                     for (auto &sibling : *targetFolders)
                         if (&sibling != &f) sibling.expand = 0;
-
-                    f.expand = 2; // 已展開
+                    f.expand = 2;
                     currentPath = (currentPath.empty() ? "/" : currentPath) + f.name + "/";
                     currentFolder = &f;
                     targetFolders = &f.subfolders;
@@ -105,13 +117,13 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
                 }
             }
             if (!found) {
-                cout << "Invaild Path" << endl;
-                return; // 找不到資料夾就退出
+                cout << "Invalid Path" << endl;
+                return;
             }
         }
     }
 
-    parent->path = currentPath; // 更新 path
-    parent->file = nullptr; // 中斷 file 顯示
+    parent->path = currentPath;
+    parent->file = nullptr;
     parent->displayChse = 3;
 }

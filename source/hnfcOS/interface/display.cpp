@@ -48,7 +48,17 @@ void hnfcOS::Display() {
                 });
                 displayChse = 3;
             }
-            // if (btnName == "LOGS") chse = 4;
+            if (btnName == "LOGS") {
+                cmd.ChangeDir(node, "/log");
+                termTasks.push_back([targetIP = targetIP, path = path, this](){
+                    if (!targetIP.empty()) {
+                        if (!path.empty()) std::cout << targetIP << path << "> ls" << std::endl;
+                        else std::cout << targetIP << "@> ls" << std::endl;
+                    } else cout << "> ls" << std::endl;
+                    this->cmd.ListDir(this->node);
+                });
+                displayChse = 3;
+            }
             if (btnName == "DISCONNECT") {
                 termTasks.push_back([targetIP = targetIP, path = path](){
                     if (!targetIP.empty()) {
