@@ -26,7 +26,8 @@ With C++, just like "Minecraft: Bedrock Edition" lol.
 ## How to use?
 1. Download from [Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases).
 2. Extract file.
-3. Open "HacknetCMD".
+3. Run "HacknetCMD".
+3. Run "launch.sh" with application (Linux).
 4. Enjoy!
 ## I don't want to use release, but how to build?
 ### Requirements
@@ -52,6 +53,7 @@ cd HacknetCMD-Core
 * [AhQiang](https://github.com/Hoyiqiang)
 * [discord/discord-rpc](https://github.com/discord/discord-rpc)
 * [mackron/miniaudio](https://github.com/mackron/miniaudio)
+* [okdshin/PicoSHA2](https://github.com/okdshin/PicoSHA2)
 ## Other Editions
 * [Original](https://drive.google.com/drive/folders/1P23sV2mwOlDx-oI0giCKQuBuxQ9sCLtq)
 * [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition)

@@ -1,4 +1,4 @@
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 #include "input.h"
 #include <unistd.h>
 #include <sys/select.h>

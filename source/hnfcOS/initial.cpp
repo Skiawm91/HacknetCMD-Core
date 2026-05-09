@@ -101,7 +101,7 @@ void hnfcOS::Initial(bool full) {
         node = sys.getNode(targetIP);
         #ifdef _WIN32
         con.bufferSave(2);
-        #elif __APPLE__
+        #elif defined(__APPLE__) || defined(__linux__)
         cout << "\n";
         #endif
         mi.kb.historyClear();

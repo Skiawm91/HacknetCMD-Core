@@ -11,10 +11,12 @@
 #include "discord-rpc/discord_register.h"
 #ifdef _WIN32
 #include <windows.h>
-#elif __APPLE__
+#elif defined(__APPLE__) || defined(__linux__)
 #include <unistd.h>
 #include <libgen.h>
+#ifdef __APPLE__
 #include <mach-o/dyld.h>
+#endif
 #include <termios.h>
 #include <iostream>
 #endif
@@ -59,8 +61,9 @@ int main() {
     DWORD mode = prevMode & ~ENABLE_QUICK_EDIT_MODE;
     mode |= ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT | ENABLE_PROCESSED_INPUT;
     SetConsoleMode(mi.hIn, mode);
-    #elif __APPLE__
+    #elif defined(__APPLE__) || defined(__linux__)
     // 初始化: 資料夾位置
+    #ifdef __APPLE__
     char path[PATH_MAX];
     uint32_t size = sizeof(path);
     if (_NSGetExecutablePath(path, &size) == 0) {
@@ -70,6 +73,15 @@ int main() {
         char* dir = dirname(path_copy);
         chdir(dir);
     }
+    #elif __linux__
+    char path[PATH_MAX];
+    ssize_t len = readlink("/proc/self/exe", path, sizeof(path) - 1);
+    if (len != -1) {
+        path[len] = '\0';
+        char* dir = dirname(path);
+        chdir(dir);
+    }
+    #endif
     // 初始化: 基本視窗大小
     con.resize(144, 36);
     // 初始化: 標題

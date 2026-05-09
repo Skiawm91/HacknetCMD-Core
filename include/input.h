@@ -23,7 +23,7 @@ extern atomic<bool> running;
 extern atomic<bool> runningKb;
 extern atomic<bool> runningMouse;
 extern atomic<bool> mouseSync;
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 extern atomic<bool> isQuary;
 extern atomic<int> cursorRow;
 extern atomic<int> cursorCol;
@@ -86,7 +86,7 @@ public:
         kb.stop();
         mouse.stop();
     };
-    #elif __APPLE__
+    #elif defined(__APPLE__) || defined(__linux__)
     void initial();
     void stop();
     #endif
@@ -139,7 +139,7 @@ public:
         }
     }
 private:
-    #ifdef __APPLE__
+    #if defined(__APPLE__) || defined(__linux__)
     thread inputThread;
     #endif
     // Keyboard

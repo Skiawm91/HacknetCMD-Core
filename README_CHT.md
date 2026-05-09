@@ -26,7 +26,8 @@
 ## 怎麼使用？
 1. 從[Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases)下載。
 2. 解壓縮檔案。
-3. 打開 "HacknetCMD"。
+3. 執行 "HacknetCMD"。
+3. 以程式執行 "launch.sh" (Linux)。
 4. 遊玩！
 ## 我不想用發行版，但怎麼編譯？
 ### 需求
@@ -52,6 +53,7 @@ cd HacknetCMD-Core
 * [AhQiang](https://github.com/Hoyiqiang)
 * [discord/discord-rpc](https://github.com/discord/discord-rpc)
 * [mackron/miniaudio](https://github.com/mackron/miniaudio)
+* [okdshin/PicoSHA2](https://github.com/okdshin/PicoSHA2)
 ## 其他版本
 * [Original](https://drive.google.com/drive/folders/1P23sV2mwOlDx-oI0giCKQuBuxQ9sCLtq)
 * [Java Edition](https://github.com/65536Java/Hacknet4CMD-Java-Edition)

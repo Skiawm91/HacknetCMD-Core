@@ -52,7 +52,7 @@ void menuBarCb(int& backupMode, int& mode) {
 void hnfcOS::MenuBar() {
     #ifdef _WIN32
     int preRemove = 53;
-    #elif __APPLE__
+    #elif defined(__APPLE__) || defined(__linux__)
     int preRemove = 51;
     #endif
     con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(144 + 12 * dta.cfg.cmdsize - preRemove, '/') + string("|✉️|"));
@@ -82,14 +82,14 @@ void hnfcOS::Interface() {
         else state = "Location: Not Connected";
         drp.state = state.c_str();
         Discord_UpdatePresence(&drp);
-        #ifdef __APPLE__
+        #if defined(__APPLE__) || defined(__linux__)
         if (mode == 2) con.bufferChange(0);
         else if (mode == 1 || mode == 3 || mode == 4 || mode == 5 || mode == 6) con.bufferChange(1);
         #endif
         MenuBar();
         if (mode == 0) {
             sys.cleanNode();
-            #ifdef __APPLE__
+            #if defined(__APPLE__) || defined(__linux__)
             con.bufferChange(0);
             #endif
             termTasks.clear();
@@ -104,7 +104,7 @@ void hnfcOS::Interface() {
         } else if (mode == 2) {
             #ifdef _WIN32
             con.bufferRestore();
-            #elif __APPLE__
+            #elif defined(__APPLE__) || defined(__linux__)
             cout << "\033[2K\r" << flush; // 先清掉
             #endif
             Terminal();

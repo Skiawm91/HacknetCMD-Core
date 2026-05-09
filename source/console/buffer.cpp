@@ -2,7 +2,7 @@
 #include "console.h"
 #ifdef _WIN32
 #include <windows.h>
-#elif __APPLE__
+#elif defined(__APPLE__) || defined(__linux__)
 #include "input.h"
 #endif
 #include <iostream>
@@ -74,7 +74,7 @@ void Console::bufferRestore() {
 }
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 bool modeNow = 0;
 int backupX, backupY;
 void Console::bufferChange(int mode) {
@@ -93,6 +93,7 @@ void Console::bufferChange(int mode) {
     }
     else if (mode == 1) {
         cout << "\033[?1049h" << flush;
+        cout << "\033[H\033[2J" << flush; // 切換後立即清除
         modeNow = 1;
     }
 }

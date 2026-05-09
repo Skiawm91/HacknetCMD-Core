@@ -1,7 +1,7 @@
 #pragma once
 #ifdef _WIN32
 #include <windows.h>
-#elif __APPLE__
+#elif defined(__APPLE__) || defined(__linux__)
 #include <optional>
 #endif
 #include <string>
@@ -18,7 +18,7 @@ public:
     #ifdef _WIN32
     void bufferSave(int startRow = 0);
     void bufferRestore();
-    #elif __APPLE__
+    #elif defined(__APPLE__) || defined(__linux__)
     void clearBuf2();
     void bufferChange(int mode = 0);
     #endif
@@ -33,7 +33,7 @@ private:
     int savedWidth = 0;
     int savedHeight = 0;
     int savedRow = 0;
-    #elif __APPLE__
+    #elif defined(__APPLE__) || defined(__linux__)
     std::vector<std::string> savedLines;
     #endif
 };

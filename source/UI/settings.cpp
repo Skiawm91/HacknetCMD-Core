@@ -20,7 +20,7 @@ void UserInterface::Settings(const bool isPlaying) {
         mi.kb.disable();
         // 重新載入Config
         dta.cfg.reload();
-        #ifdef __APPLE__
+        #if defined(__APPLE__) || defined(__linux__)
         if (isPlaying) con.clearBuf2();
         else con.clear();
         #elif _WIN32

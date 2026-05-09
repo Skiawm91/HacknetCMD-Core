@@ -3,7 +3,7 @@
 #include <string>
 #ifdef _WIN32
 #include <windows.h>
-#elif __APPLE__
+#elif defined(__APPLE__) || defined(__linux__)
 #include "input.h"
 #include <iostream>
 #include <regex>
@@ -23,7 +23,7 @@ void Console::printAt(const int x, const int y, const string& text) {
     WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     SetConsoleCursorPosition(hOut, origPos);
 }
-#elif __APPLE__
+#elif defined(__APPLE__) || defined(__linux__)
 void Console::printAt(int x, int y, const std::string& text) {
     std::cout << "\033[6n" << flush; // 透過 Input 函式來幫助取得
     isQuary = true;
@@ -47,7 +47,7 @@ void Console::PrintAtExtension::noBack(int x, int y, const std::string& text) {
     DWORD written;
     FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X, pos, &written);
     WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
-    #elif __APPLE__
+    #elif defined(__APPLE__) || defined(__linux__)
     std::cout << "\033[" << (y+1) << ";" << (x+1) << "H";
     std::cout << "\033[2K";
     std::cout << text;

@@ -2,7 +2,7 @@
 #include "console.h"
 #ifdef _WIN32
 #include <windows.h>
-#elif __APPLE__
+#elif defined(__APPLE__) || defined(__linux__)
 #include <iostream>
 #endif
 using namespace std;
@@ -24,7 +24,7 @@ void Console::resize(const int width, const int height) {
         SetConsoleWindowInfo(hOut, TRUE, &windowSize);
         SetConsoleScreenBufferSize(hOut, bufferSize);
     }
-    #elif __APPLE__
+    #elif defined(__APPLE__) || defined(__linux__)
     cout << "\033[8;" << height << ";" << width << "t";
     cout.flush();
     #endif
