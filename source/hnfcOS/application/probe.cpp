@@ -17,7 +17,7 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
         std::this_thread::sleep_for(std::chrono::milliseconds(400));
         #ifdef _WIN32
         con.clear();
-        #elif __APPLE__
+        #elif defined(__APPLE__) || defined(__linux__)
         con.clearBuf2();
         #endif
         parent->MenuBar();
@@ -42,7 +42,7 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
     } else if (parent->Mode == "Display" && Probed) {
         #ifdef _WIN32
         con.clear();
-        #elif __APPLE__
+        #elif defined(__APPLE__) || defined(__linux__)
         con.clearBuf2();
         #endif
         parent->MenuBar();
