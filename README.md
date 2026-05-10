@@ -27,7 +27,7 @@ With C++, just like "Minecraft: Bedrock Edition" lol.
 1. Download from [Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases).
 2. Extract file.
 3. Run "HacknetCMD".
-3. Run "launch.sh" with application for Linux.
+3. Run "launch.sh" for Linux.
 4. Enjoy!
 ## I don't want to use release, but how to build?
 ### Requirements
@@ -45,7 +45,12 @@ cd HacknetCMD-Core
 2. Run `build_linux.sh` for Linux.
 4. If Done, Press Enter key.
 5. Enjoy!
-6. Then, you can pack it for release.
+### Pack
+1. Run `pack_win.bat` for Windows.
+1. Run `pack_mac.command` for macOS.
+1. Run `pack_linux.sh` for Linux.
+2. Enter verion.
+3. Done!
 ## Developers
 * [Skiawm91](https://github.com/Skiawm91)
 * [65536Java](https://github.com/65536Java)

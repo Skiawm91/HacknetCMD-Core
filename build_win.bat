@@ -40,13 +40,7 @@ if exist data (
 )
 echo.
 echo Done.
-echo Press Enter to Run Application.
+echo Press Enter to run the application.
 pause > nul
 cd build
 start HacknetCMD.exe
-set /p Do=Do you want to pack the build? (y/N)
-if /I "%Do%"=="y" (
-    set /p ver=Enter version: 
-    7z a -t7z HacknetCMD_%ver%-win.7z * -x!'data' -mx=9 -m0=lzma2 -mmt=on
-    echo Done.
-)

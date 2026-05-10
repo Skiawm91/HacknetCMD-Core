@@ -27,7 +27,7 @@
 1. 從[Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases)下載。
 2. 解壓縮檔案。
 3. 執行 "HacknetCMD"。
-3. 對於Linux，以程式執行 "launch.sh"。
+3. 對於Linux，執行 "launch.sh"。
 4. 遊玩！
 ## 我不想用發行版，但怎麼編譯？
 ### 需求
@@ -42,10 +42,15 @@ cd HacknetCMD-Core
 ```
 2. 對於Windows，執行`build_win.bat`。
 2. 對於macOS，執行`build_mac.command`。
-2. 對於Linux，執行`build_linux.command`。
+2. 對於Linux，以程式執行`build_linux.sh`。
 4. 如果完成，按下Enter。
 5. 遊玩！
-6. 然後，你可以將它打包並發布。
+### 打包
+1. 對於Windows，執行`pack_win.bat`。
+1. 對於macOS，執行`pack_mac.command`。
+1. 對於Linux，執行`pack_linux.sh`。
+2. 輸入版本號。
+3. 完成！
 ## 開發者
 * [Skiawm91](https://github.com/Skiawm91)
 * [65536Java](https://github.com/65536Java)
