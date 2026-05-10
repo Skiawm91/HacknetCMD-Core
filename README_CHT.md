@@ -11,7 +11,7 @@
 這個遊戲的靈感來自Steam上的Hacknet（我猜你應該知道了）。
 <br/>
 <br/>
-在製作這個版本前，我剛加入了Discord上的 [Hacknet for CMD | Official Server](https://discord.gg/vxu4ep6nQg)。
+在製作這個版本前，我剛加入了Discord上的 <a href="https://discord.gg/vxu4ep6nQg">Hacknet for CMD | Official Server</a>。
 <br/>
 <br>
 有一天，65536Java (NULL) 加入了這個伺服器並且發送了一個關於 "Hacknet for CMD" 的程式。

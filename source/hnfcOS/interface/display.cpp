@@ -52,9 +52,9 @@ void hnfcOS::Display() {
                 cmd.ChangeDir(node, "/log");
                 termTasks.push_back([targetIP = targetIP, path = path, this](){
                     if (!targetIP.empty()) {
-                        if (!path.empty()) std::cout << targetIP << path << "> ls" << std::endl;
-                        else std::cout << targetIP << "@> ls" << std::endl;
-                    } else cout << "> ls" << std::endl;
+                        if (!path.empty()) std::cout << targetIP << path << "> cd /log" << std::endl;
+                        else std::cout << targetIP << "@> cd /log" << std::endl;
+                    } else cout << "> cd /log" << std::endl;
                     this->cmd.ListDir(this->node);
                 });
                 displayChse = 3;

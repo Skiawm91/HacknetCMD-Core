@@ -11,7 +11,7 @@ I named it "Core Edition" because I don't like "Cpp Edition".
 This game idea is from Hacknet from Steam (I guess you already know).
 <br/>
 <br/>
-Before I made C++ ver, I just joined [Hacknet for CMD | Official Server](https://discord.gg/vxu4ep6nQg) on Discord.
+Before I made C++ ver, I just joined <a href="https://discord.gg/vxu4ep6nQg">Hacknet for CMD | Official Server</a> on Discord.
 <br/>
 <br>
 One day, a person 65536Java (NULL) joined and sent a program about HacknetCMD.
