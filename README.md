@@ -11,7 +11,7 @@ I named it "Core Edition" because I don't like "Cpp Edition".
 This game idea is from Hacknet from Steam (I guess you already know).
 <br/>
 <br/>
-Before I made C++ ver, I just joined "Hacknet for CMD | Official Server" on Discord.
+Before I made C++ ver, I just joined [Hacknet for CMD | Official Server](https://discord.gg/vxu4ep6nQg) on Discord.
 <br/>
 <br>
 One day, a person 65536Java (NULL) joined and sent a program about HacknetCMD.
@@ -27,12 +27,13 @@ With C++, just like "Minecraft: Bedrock Edition" lol.
 1. Download from [Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases).
 2. Extract file.
 3. Run "HacknetCMD".
-3. Run "launch.sh" with application (Linux).
+3. Run "launch.sh" with application for Linux.
 4. Enjoy!
 ## I don't want to use release, but how to build?
 ### Requirements
 1. (Windows) [Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) and select "Desktop development with C++".
 1. (macOS) Xcode Command Tools - `xcode-select install`
+1. (Linux) For debian - `sudo apt update && sudo apt install clang`
 ### Step
 1. Clone repository.
 ```
@@ -41,8 +42,10 @@ cd HacknetCMD-Core
 ```
 2. Run `build_win.bat` for Windows.
 2. Run `build_mac.command` for macOS.
+2. Run `build_linux.sh` for Linux.
 4. If Done, Press Enter key.
-5. If has no any errors, it should run.
+5. Enjoy!
+6. Then, you can pack it for release.
 ## Developers
 * [Skiawm91](https://github.com/Skiawm91)
 * [65536Java](https://github.com/65536Java)

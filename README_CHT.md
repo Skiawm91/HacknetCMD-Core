@@ -11,7 +11,7 @@
 這個遊戲的靈感來自Steam上的Hacknet（我猜你應該知道了）。
 <br/>
 <br/>
-在製作這個版本前，我剛加入了Discord上的 "Hacknet for CMD | Official Server"。
+在製作這個版本前，我剛加入了Discord上的 [Hacknet for CMD | Official Server](https://discord.gg/vxu4ep6nQg)。
 <br/>
 <br>
 有一天，65536Java (NULL) 加入了這個伺服器並且發送了一個關於 "Hacknet for CMD" 的程式。
@@ -27,12 +27,13 @@
 1. 從[Releases](https://github.com/Skiawm91/HacknetCMD-Core/releases)下載。
 2. 解壓縮檔案。
 3. 執行 "HacknetCMD"。
-3. 以程式執行 "launch.sh" (Linux)。
+3. 對於Linux，以程式執行 "launch.sh"。
 4. 遊玩！
 ## 我不想用發行版，但怎麼編譯？
 ### 需求
 1. (Windows) [Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 並且選擇 "Desktop development with C++"。
 1. (macOS) Xcode Command Tools - `xcode-select install`
+1. (Linux) 對於debian - `sudo apt update && sudo apt install clang`
 ### 步驟
 1. 複製存儲庫。
 ```
@@ -41,8 +42,10 @@ cd HacknetCMD-Core
 ```
 2. 對於Windows，執行`build_win.bat`。
 2. 對於macOS，執行`build_mac.command`。
+2. 對於Linux，執行`build_linux.command`。
 4. 如果完成，按下Enter。
-5. 如果沒有任何錯誤，那應該會執行。
+5. 遊玩！
+6. 然後，你可以將它打包並發布。
 ## 開發者
 * [Skiawm91](https://github.com/Skiawm91)
 * [65536Java](https://github.com/65536Java)

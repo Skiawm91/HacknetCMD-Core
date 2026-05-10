@@ -17,3 +17,9 @@ echo "Done."
 read -p "Press Enter to Run Application."
 cd build
 ./HacknetCMD
+read -p "Do you want to pack the build? (y/N) " Do
+if [[ "$Do" == "y" || "$Do" == "Y" ]]; then
+    read -p "Enter version: " ver
+    7zz a -t7z HacknetCMD_${ver}-mac.7z * -x!'data' -mx=9 -m0=lzma2 -mmt=on
+    echo "Done."
+fi
