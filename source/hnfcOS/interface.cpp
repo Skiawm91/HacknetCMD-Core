@@ -55,7 +55,9 @@ void hnfcOS::MenuBar() {
     #elif defined(__APPLE__) || defined(__linux__)
     int preRemove = 51;
     #endif
-    con.printAt(0, 0, string("|❌||⚙️||💾|//|TERMINAL|/|DISPLAY|/|NETMAP|/|RAM|") + string(144 + 12 * dta.cfg.cmdsize - preRemove, '/') + string("|✉️|"));
+    con.colorbg("AA5523");
+    con.color("eef2ed");
+    con.printAt(0, 0, string("|❌||⚙️||💾|  |TERMINAL| |DISPLAY| |NETMAP| |RAM|") + string(144 + 12 * dta.cfg.cmdsize - preRemove, ' ') + string("|✉️|"));
     con.printAt(0, 1, overlines(144 + 12 * dta.cfg.cmdsize));
 }
 

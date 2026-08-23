@@ -76,6 +76,18 @@ PRINT  | CMD Size: 180*45 |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_CMDSIZE_3
 
+BEGIN_VT100COLOR_0
+PRINT  ____________________
+PRINT  | VT100 Color: Off |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VT100COLOR_0
+
+BEGIN_VT100COLOR_1
+PRINT  ____________________
+PRINT  | VT100 Color: On  |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VT100COLOR_1
+
 BEGIN_BACK_EN
 PRINT  ____________________
 PRINT  | Back             |

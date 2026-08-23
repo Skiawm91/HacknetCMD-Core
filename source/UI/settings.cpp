@@ -32,12 +32,20 @@ void UserInterface::Settings(const bool isPlaying) {
         if (isPlaying) cout << "\n\n\n" << flush;
         else hncip.script("settings.chns", "LANGUAGE_" + to_string(dta.cfg.language));
         hncip.script("settings.chns", "CMDSIZE_" + to_string(dta.cfg.cmdsize));
+        #ifdef _WIN32
+            hncip.script("settings.chns", "VT100COLOR_" + to_string(dta.cfg.vt100color));
+        #endif
         hncip.script("settings.chns", "BACK_" + misc.toLangName(dta.cfg.language));
         mi.mouse.btnAdd("VERBOSE", 1, 1, 20, 3);
         mi.mouse.btnAdd("LOGO", 1, 4, 20, 3);
         if (!isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 7, 20, 3);
         mi.mouse.btnAdd("CMDSIZE", 1, 10, 20, 3);
-        mi.mouse.btnAdd("BACK", 1, 13, 20, 3);
+        #ifdef _WIN32
+            mi.mouse.btnAdd("VT100COLOR", 1, 13, 20, 3);
+            mi.mouse.btnAdd("BACK", 1, 16, 20, 3);
+        #else
+            mi.mouse.btnAdd("BACK", 1, 13, 20, 3);
+        #endif
         mi.mouse.cbCreate("SETTINGS", [&](const string& btnName){
             if (btnName == "VERBOSE") dta.replace("data/config.hnd", "VERBOSE=" + to_string(dta.cfg.verbose), "VERBOSE=" + to_string(!dta.cfg.verbose));
             if (btnName == "LANGUAGE") {
@@ -52,6 +60,10 @@ void UserInterface::Settings(const bool isPlaying) {
                 if (dta.cfg.cmdsize == 3) dta.replace("data/config.hnd", "CMDSIZE=" + to_string(dta.cfg.cmdsize), "CMDSIZE=0");
                 else dta.replace("data/config.hnd", "CMDSIZE=" + to_string(dta.cfg.cmdsize), "CMDSIZE=" + to_string(dta.cfg.cmdsize + 1));
             }
+            if (btnName == "VT100COLOR") {
+                if (dta.cfg.vt100color == 1) dta.replace("data/config.hnd", "VT100COLOR=" + to_string(dta.cfg.vt100color), "VT100COLOR=0");
+                else dta.replace("data/config.hnd", "VT100COLOR=" + to_string(dta.cfg.vt100color), "VT100COLOR=" + to_string(dta.cfg.vt100color + 1));
+            }
             if (btnName == "BACK") back = true;
         });
         mi.async(1);
@@ -61,7 +73,7 @@ void UserInterface::Settings(const bool isPlaying) {
             escDetected = false;
             back = true;
         }
-        mi.mouse.btnDel(vector<string>{"VERBOSE", "LOGO", "LANGUAGE", "CMDSIZE" ,"BACK"});
+        mi.mouse.btnDel(vector<string>{"VERBOSE", "LOGO", "LANGUAGE", "CMDSIZE", "VT100COLOR", "BACK"});
         mi.mouse.cbClean("SETTINGS");
     }
 }

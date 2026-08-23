@@ -11,6 +11,8 @@ public:
     void clear();
     void resize(const int width, const int height);
     void printAt(int x, int y, const std::string& text);
+    void colorbg(const std::string& hexColor);
+    void color(const std::string& hexColor);
     struct PrintAtExtension {
         void noBack(int x, int y, const std::string& text);
     };

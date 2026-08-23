@@ -20,6 +20,7 @@ public:
         int logo = 1; // Dynamic
         int language = 0; // English
         int cmdsize = 0; // 1x
+        int vt100color = 0; // Off
     private:
         Data* parent;
     };

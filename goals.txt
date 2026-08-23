@@ -28,7 +28,7 @@ HnfcOS:
         Login (WIP)
         Probe (完成, Beta 4)
         FileSystem:
-            Graphical User Interface (完成, Beta 4)
+            GUI (完成, Beta 4)
             Change Dir (完成, Beta 4)
             List Dir (完成, Beta 4)
             Concatenate (完成, Beta 4)

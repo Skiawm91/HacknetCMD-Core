@@ -1,5 +1,8 @@
 #include "data.h"
 #include "console.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <vector>
 using namespace std;
 
@@ -19,4 +22,20 @@ void Data::Config::reload() {
     parent->load("data/config.hnd", vector<string>{"CMDSIZE=0", "CMDSIZE=1", "CMDSIZE=2", "CMDSIZE=3"});
     if (parent->loaded) cmdsize = parent->loadNumber;
     con.resize(144 + 12 * cmdsize, 36 + 3 * cmdsize);
+    parent->load("data/config.hnd", vector<string>{"VT100COLOR=0", "VT100COLOR=1"});
+    if (parent->loaded) vt100color = parent->loadNumber;
+    #ifdef _WIN32
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (vt100color == 1) {
+        DWORD outMode;
+        GetConsoleMode(hOut, &outMode);
+        outMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, outMode);
+    } else {
+        DWORD outMode;
+        GetConsoleMode(hOut, &outMode);
+        outMode &= ~ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, outMode);
+    }
+    #endif
 }
