@@ -36,7 +36,7 @@ void UserInterface::Home(){
         mi.kb.disable();
         chse = 0;
         hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language));
-        if (dta.cfg.logo == 1) {
+        if (dta.cfg.dynamicLogo == 1) {
             logoAnimation = true;
             thread([&]{
                 running = true;
@@ -63,7 +63,7 @@ void UserInterface::Home(){
             if (btnName == "QUIT") chse = 4;
         });
         mi.async(3);
-        if (dta.cfg.logo == 1) {
+        if (dta.cfg.dynamicLogo == 1) {
             logoAnimation = false;
             while(running);
         }

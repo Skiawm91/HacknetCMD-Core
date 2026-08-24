@@ -30,7 +30,7 @@ void hnfcOS::Boot() {
     func.audio.stop();
     func.audio.play("BOOT", vector<string>{"boot.wav"}, "assets/sounds/");
     mi.kb.disable();
-    if (dta.cfg.verbose) {
+    if (dta.cfg.verboseBoot) {
         hncip.script("boot.chns", "BOOT");
         hncip.script("boot.chns", "OSCONFIG");
         hncip.script("boot.chns", "BOOTCFG");

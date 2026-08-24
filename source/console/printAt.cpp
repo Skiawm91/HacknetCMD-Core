@@ -22,8 +22,8 @@ void Console::printAt(const int x, const int y, const string& text) {
     COORD pos = { (SHORT)x, (SHORT)y };
     SetConsoleCursorPosition(hOut, pos);
     DWORD written;
-    FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X, pos, &written);
-    FillConsoleOutputAttribute(hOut, csbi.wAttributes, csbi.dwSize.X, pos, &written);
+FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, pos, &written);
+FillConsoleOutputAttribute(hOut, csbi.wAttributes, csbi.dwSize.X - x, pos, &written);
     WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     // 自動重置
     if (dta.cfg.vt100color == 1) {
@@ -40,7 +40,7 @@ void Console::printAt(int x, int y, const std::string& text) {
     isQuary = true;
     while(isQuary);
     std::cout << "\033[" << (y+1) << ";" << (x+1) << "H";
-    std::cout << "\033[2K";
+    std::cout << "\033[K";
     std::cout << text;
     std::cout << "\033[0m";
     std::cout << "\033[" << cursorRow << ";" << cursorCol << "H";
@@ -57,8 +57,8 @@ void Console::PrintAtExtension::noBack(int x, int y, const std::string& text) {
     COORD pos = { (SHORT)x, (SHORT)y };
     SetConsoleCursorPosition(hOut, pos);
     DWORD written;
-    FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X, pos, &written);
-    FillConsoleOutputAttribute(hOut, csbi.wAttributes, csbi.dwSize.X, pos, &written);
+FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, pos, &written);
+FillConsoleOutputAttribute(hOut, csbi.wAttributes, csbi.dwSize.X - x, pos, &written);
     WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     // 自動重置
     if (dta.cfg.vt100color == 1) {
@@ -69,7 +69,7 @@ void Console::PrintAtExtension::noBack(int x, int y, const std::string& text) {
     }
 #elif defined(__APPLE__) || defined(__linux__)
     std::cout << "\033[" << (y+1) << ";" << (x+1) << "H";
-    std::cout << "\033[2K";
+    std::cout << "\033[K";
     std::cout << text;
     std::cout << "\033[0m";
     std::cout.flush();

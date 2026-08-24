@@ -27,8 +27,10 @@ void UserInterface::Settings(const bool isPlaying) {
         con.clear();
         #endif
         hncip.script("settings.chns", "TITLE_" + misc.toLangName(dta.cfg.language));
-        hncip.script("settings.chns", "VERBOSE_" + to_string(dta.cfg.verbose));
-        hncip.script("settings.chns", "LOGO_" + to_string(dta.cfg.logo));
+        hncip.script("settings.chns", "VERBOSEBOOTINFO_" + misc.toLangName(dta.cfg.language));
+        hncip.script("settings.chns", "VERBOSEBOOTCB_" + to_string(dta.cfg.verboseBoot));
+        hncip.script("settings.chns", "DYNAMICLOGOINFO_" + misc.toLangName(dta.cfg.language));
+        hncip.script("settings.chns", "DYNAMICLOGOCB_" + to_string(dta.cfg.dynamicLogo));
         if (isPlaying) cout << "\n\n\n" << flush;
         else hncip.script("settings.chns", "LANGUAGE_" + to_string(dta.cfg.language));
         hncip.script("settings.chns", "CMDSIZE_" + to_string(dta.cfg.cmdsize));
@@ -36,8 +38,8 @@ void UserInterface::Settings(const bool isPlaying) {
             hncip.script("settings.chns", "VT100COLOR_" + to_string(dta.cfg.vt100color));
         #endif
         hncip.script("settings.chns", "BACK_" + misc.toLangName(dta.cfg.language));
-        mi.mouse.btnAdd("VERBOSE", 1, 1, 20, 3);
-        mi.mouse.btnAdd("LOGO", 1, 4, 20, 3);
+        mi.mouse.btnAdd("VERBOSEBOOT", 16, 2, 4, 3);
+        mi.mouse.btnAdd("DYNAMICLOGO", 16, 5, 4, 3);
         if (!isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 7, 20, 3);
         mi.mouse.btnAdd("CMDSIZE", 1, 10, 20, 3);
         #ifdef _WIN32
@@ -47,14 +49,14 @@ void UserInterface::Settings(const bool isPlaying) {
             mi.mouse.btnAdd("BACK", 1, 13, 20, 3);
         #endif
         mi.mouse.cbCreate("SETTINGS", [&](const string& btnName){
-            if (btnName == "VERBOSE") dta.replace("data/config.hnd", "VERBOSE=" + to_string(dta.cfg.verbose), "VERBOSE=" + to_string(!dta.cfg.verbose));
+            if (btnName == "VERBOSEBOOT") dta.replace("data/config.hnd", "VERBOSEBOOT=" + to_string(dta.cfg.verboseBoot), "VERBOSEBOOT=" + to_string(!dta.cfg.verboseBoot));
             if (btnName == "LANGUAGE") {
                 if (dta.cfg.language == 2) dta.replace("data/config.hnd", "LANGUAGE=" + to_string(dta.cfg.language), "LANGUAGE=0");
                 else dta.replace("data/config.hnd", "LANGUAGE=" + to_string(dta.cfg.language), "LANGUAGE=" + to_string(dta.cfg.language + 1));
             }
-            if (btnName == "LOGO") {
-                if (dta.cfg.logo == 1) dta.replace("data/config.hnd", "LOGO=" + to_string(dta.cfg.logo), "LOGO=0");
-                else dta.replace("data/config.hnd", "LOGO=" + to_string(dta.cfg.logo), "LOGO=" + to_string(dta.cfg.logo + 1));
+            if (btnName == "DYNAMICLOGO") {
+                if (dta.cfg.dynamicLogo == 1) dta.replace("data/config.hnd", "DYNAMICLOGO=" + to_string(dta.cfg.dynamicLogo), "DYNAMICLOGO=0");
+                else dta.replace("data/config.hnd", "DYNAMICLOGO=" + to_string(dta.cfg.dynamicLogo), "DYNAMICLOGO=" + to_string(dta.cfg.dynamicLogo + 1));
             }
             if (btnName == "CMDSIZE") {
                 if (dta.cfg.cmdsize == 3) dta.replace("data/config.hnd", "CMDSIZE=" + to_string(dta.cfg.cmdsize), "CMDSIZE=0");
@@ -73,7 +75,7 @@ void UserInterface::Settings(const bool isPlaying) {
             escDetected = false;
             back = true;
         }
-        mi.mouse.btnDel(vector<string>{"VERBOSE", "LOGO", "LANGUAGE", "CMDSIZE", "VT100COLOR", "BACK"});
+        mi.mouse.btnDel(vector<string>{"VERBOSEBOOT", "DYNAMICLOGO", "LANGUAGE", "CMDSIZE", "VT100COLOR", "BACK"});
         mi.mouse.cbClean("SETTINGS");
     }
 }

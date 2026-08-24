@@ -48,7 +48,7 @@ void UserInterface::Login() {
         chse = 0;
         if (!playerName.empty()) hncip.script("ui.chns", "USER_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(16 - playerName.size(), ' ')});
         else hncip.script("ui.chns", "USER_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(13, ' ')});
-        if (dta.cfg.logo == 1) {
+        if (dta.cfg.dynamicLogo == 1) {
             logoAnimation = true;
             thread([&]{
                 running = true;
@@ -83,7 +83,7 @@ void UserInterface::Login() {
         } else if (enterDetected) {
             enterDetected = false;
         }
-        if (dta.cfg.logo == 1) {
+        if (dta.cfg.dynamicLogo == 1) {
             logoAnimation = false;
             while(running);
         }

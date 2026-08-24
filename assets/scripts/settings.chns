@@ -1,38 +1,87 @@
 BEGIN_TITLE_EN
-PRINT  Settings
+PRINT // Settings // |General| |VT100 configure|
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TITLE_EN
 
 BEGIN_TITLE_CHS
-PRINT  设置
+PRINT // 设置 // |通用| |VT100 配置|
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TITLE_CHS
 
 BEGIN_TITLE_CHT
-PRINT  設定
+PRINT // 設定 // |一般| |VT100 設定|
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TITLE_CHT
 
-BEGIN_VERBOSE_1
-PRINT  ____________________
-PRINT  | Verbose: On      |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_VERBOSE_1
+// Verbose Boot
 
-BEGIN_VERBOSE_0
-PRINT  ____________________
-PRINT  | Verbose: Off     |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_VERBOSE_0
+BEGIN_VERBOSEBOOTINFO_EN
+PRINT
+PRINT    Verbose Boot
+PRINT
+END_VERBOSEBOOTINFO_EN
 
-BEGIN_LOGO_1
-PRINT  ____________________
-PRINT  | Dynamic Logo     |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_LOGO_1
+BEGIN_VERBOSEBOOTINFO_CHS
+PRINT
+PRINT    详细启动讯息
+PRINT
+END_VERBOSEBOOTINFO_CHS
 
-BEGIN_LOGO_0
-PRINT  ____________________
-PRINT  | Static Logo      |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_LOGO_0
+BEGIN_VERBOSEBOOTINFO_CHT
+PRINT
+PRINT    詳細啟動訊息
+PRINT
+END_VERBOSEBOOTINFO_CHT
+
+BEGIN_VERBOSEBOOTCB_0
+PRINTAT_NB 16 2 ____
+PRINTAT_NB 16 3 |　|
+PRINTAT_NB 16 4 ‾‾‾‾
+PRINT
+END_VERBOSEBOOTCB_0
+
+BEGIN_VERBOSEBOOTCB_1
+PRINTAT_NB 16 2 ____
+PRINTAT_NB 16 3 |ｖ|
+PRINTAT_NB 16 4 ‾‾‾‾
+PRINT
+END_VERBOSEBOOTCB_1
+
+// Dynamic Logo
+
+BEGIN_DYNAMICLOGOINFO_EN
+PRINT
+PRINT    Dynamic Logo
+PRINT
+END_DYNAMICLOGOINFO_EN
+
+BEGIN_DYNAMICLOGOINFO_CHS
+PRINT
+PRINT    动态Logo
+PRINT
+END_DYNAMICLOGOINFO_CHS
+
+BEGIN_DYNAMICLOGOINFO_CHT
+PRINT
+PRINT    動態Logo
+PRINT
+END_DYNAMICLOGOINFO_CHT
+
+BEGIN_DYNAMICLOGOCB_0
+PRINTAT_NB 16 5 ____
+PRINTAT_NB 16 6 |　|
+PRINTAT_NB 16 7 ‾‾‾‾
+PRINT
+END_DYNAMICLOGOCB_0
+
+BEGIN_DYNAMICLOGOCB_1
+PRINTAT_NB 16 5 ____
+PRINTAT_NB 16 6 |ｖ|
+PRINTAT_NB 16 7 ‾‾‾‾
+PRINT
+END_DYNAMICLOGOCB_1
+
+// Language
 
 BEGIN_LANGUAGE_0
 PRINT  ____________________

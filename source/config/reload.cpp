@@ -10,11 +10,11 @@ extern Console con;
 
 void Data::Config::reload() {
     // VERBOSE
-    parent->load("data/config.hnd", vector<string>{"VERBOSE=0", "VERBOSE=1"});
-    if (parent->loaded) verbose = parent->loadNumber;
-    // VERBOSE
-    parent->load("data/config.hnd", vector<string>{"LOGO=0", "LOGO=1"});
-    if (parent->loaded) logo = parent->loadNumber;
+    parent->load("data/config.hnd", vector<string>{"VERBOSEBOOT=0", "VERBOSEBOOT=1"});
+    if (parent->loaded) verboseBoot = parent->loadNumber;
+    // DYNAMICLOGO
+    parent->load("data/config.hnd", vector<string>{"DYNAMICLOGO=0", "DYNAMICLOGO=1"});
+    if (parent->loaded) dynamicLogo = parent->loadNumber;
     // LANGUAGE
     parent->load("data/config.hnd", vector<string>{"LANGUAGE=0", "LANGUAGE=1", "LANGUAGE=2"});
     if (parent->loaded) language = parent->loadNumber;

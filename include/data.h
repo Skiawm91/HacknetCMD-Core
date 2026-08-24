@@ -16,8 +16,8 @@ public:
     public:
         Config(Data* p) : parent(p) {}
         void reload();
-        bool verbose = true; // On
-        int logo = 1; // Dynamic
+        bool verboseBoot = true; // On
+        bool dynamicLogo = true; // On
         int language = 0; // English
         int cmdsize = 0; // 1x
         int vt100color = 0; // Off
