@@ -1,16 +1,16 @@
 BEGIN_TITLE_EN
-PRINT // Settings // |General| |VT100 configure|
-PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT // Settings // |General| |VT100 Configuration|
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TITLE_EN
 
 BEGIN_TITLE_CHS
-PRINT // 设置 // |通用| |VT100 配置|
-PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT // 设置     // | 通用  | | VT100 配置        |
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TITLE_CHS
 
 BEGIN_TITLE_CHT
-PRINT // 設定 // |一般| |VT100 設定|
-PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT // 設定     // | 一般  | | VT100 設定        |
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TITLE_CHT
 
 // Verbose Boot
@@ -23,7 +23,7 @@ END_VERBOSEBOOTINFO_EN
 
 BEGIN_VERBOSEBOOTINFO_CHS
 PRINT
-PRINT    详细启动讯息
+PRINT    详细启动信息
 PRINT
 END_VERBOSEBOOTINFO_CHS
 
@@ -57,13 +57,13 @@ END_DYNAMICLOGOINFO_EN
 
 BEGIN_DYNAMICLOGOINFO_CHS
 PRINT
-PRINT    动态Logo
+PRINT    动态 Logo
 PRINT
 END_DYNAMICLOGOINFO_CHS
 
 BEGIN_DYNAMICLOGOINFO_CHT
 PRINT
-PRINT    動態Logo
+PRINT    動態 Logo
 PRINT
 END_DYNAMICLOGOINFO_CHT
 
@@ -83,47 +83,92 @@ END_DYNAMICLOGOCB_1
 
 // Language
 
-BEGIN_LANGUAGE_0
-PRINT  ____________________
-PRINT  | English          |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_LANGUAGE_0
+BEGIN_LANGUAGEINFO_EN
+PRINT
+PRINT    Language
+PRINT
+END_LANGUAGEINFO_EN
 
-BEGIN_LANGUAGE_1
-PRINT  ____________________
-PRINT  | 简体中文         |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_LANGUAGE_1
+BEGIN_LANGUAGEINFO_CHS
+PRINT
+PRINT    语言
+PRINT
+END_LANGUAGEINFO_CHS
 
-BEGIN_LANGUAGE_2
-PRINT  ____________________
-PRINT  | 繁體中文         |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_LANGUAGE_2
+BEGIN_LANGUAGEINFO_CHT
+PRINT
+PRINT    語言
+PRINT
+END_LANGUAGEINFO_CHT
 
-BEGIN_CMDSIZE_0
-PRINT  ____________________
-PRINT  | CMD Size: 144*36 |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_CMDSIZE_0
+BEGIN_LANGUAGESB_0
+PRINTAT_NB 12 8 ____________________
+PRINTAT_NB 12 9 | English          |
+PRINTAT_NB 12 10 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT
+END_LANGUAGESB_0
 
-BEGIN_CMDSIZE_1
-PRINT  ____________________
-PRINT  | CMD Size: 156*39 |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_CMDSIZE_1
+BEGIN_LANGUAGESB_1
+PRINTAT_NB 12 8 ____________________
+PRINTAT_NB 12 9 | 简体中文         |
+PRINTAT_NB 12 10 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT
+END_LANGUAGESB_1
 
-BEGIN_CMDSIZE_2
-PRINT  ____________________
-PRINT  | CMD Size: 168*42 |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_CMDSIZE_2
+BEGIN_LANGUAGESB_2
+PRINTAT_NB 12 8 ____________________
+PRINTAT_NB 12 9 | 繁體中文         |
+PRINTAT_NB 12 10 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT
+END_LANGUAGESB_2
 
-BEGIN_CMDSIZE_3
-PRINT  ____________________
-PRINT  | CMD Size: 180*45 |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_CMDSIZE_3
+// CMD Size
+
+BEGIN_CMDSIZEINFO_EN
+PRINT
+PRINT    CMD Size
+PRINT
+END_CMDSIZEINFO_EN
+
+BEGIN_CMDSIZEINFO_CHS
+PRINT
+PRINT    CMD 大小
+PRINT
+END_CMDSIZEINFO_CHS
+
+BEGIN_CMDSIZEINFO_CHT
+PRINT
+PRINT    CMD 大小
+PRINT
+END_CMDSIZEINFO_CHT
+
+BEGIN_CMDSIZESB_0
+PRINTAT_NB 12 11 ____________________
+PRINTAT_NB 12 12 | 144*36           |
+PRINTAT_NB 12 13 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT
+END_CMDSIZESB_0
+
+BEGIN_CMDSIZESB_1
+PRINTAT_NB 12 11 ____________________
+PRINTAT_NB 12 12 | 156*39           |
+PRINTAT_NB 12 13 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT
+END_CMDSIZESB_1
+
+BEGIN_CMDSIZESB_2
+PRINTAT_NB 12 11 ____________________
+PRINTAT_NB 12 12 | 168*42           |
+PRINTAT_NB 12 13 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT
+END_CMDSIZESB_2
+
+BEGIN_CMDSIZESB_3
+PRINTAT_NB 12 11 ____________________
+PRINTAT_NB 12 12 | 180*45           |
+PRINTAT_NB 12 13 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT
+END_CMDSIZESB_3
 
 BEGIN_VT100COLOR_0
 PRINT  ____________________
@@ -138,19 +183,19 @@ PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_VT100COLOR_1
 
 BEGIN_BACK_EN
-PRINT  ____________________
-PRINT  | Back             |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT    ______________________________
+PRINT    | Back                       |
+PRINT    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_BACK_EN
 
 BEGIN_BACK_CHS
-PRINT  ____________________
-PRINT  | 返回             |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT    ______________________________
+PRINT    | 返回                       |
+PRINT    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_BACK_CHS
 
 BEGIN_BACK_CHT
-PRINT  ____________________
-PRINT  | 返回             |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT    ______________________________
+PRINT    | 返回                       |
+PRINT    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_BACK_CHT

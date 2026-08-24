@@ -32,21 +32,25 @@ void UserInterface::Settings(const bool isPlaying) {
         hncip.script("settings.chns", "DYNAMICLOGOINFO_" + misc.toLangName(dta.cfg.language));
         hncip.script("settings.chns", "DYNAMICLOGOCB_" + to_string(dta.cfg.dynamicLogo));
         if (isPlaying) cout << "\n\n\n" << flush;
-        else hncip.script("settings.chns", "LANGUAGE_" + to_string(dta.cfg.language));
-        hncip.script("settings.chns", "CMDSIZE_" + to_string(dta.cfg.cmdsize));
+        else {
+            hncip.script("settings.chns", "LANGUAGEINFO_" + misc.toLangName(dta.cfg.language));
+            hncip.script("settings.chns", "LANGUAGESB_" + to_string(dta.cfg.language));
+        }
+        hncip.script("settings.chns", "CMDSIZEINFO_" + misc.toLangName(dta.cfg.language));
+        hncip.script("settings.chns", "CMDSIZESB_" + to_string(dta.cfg.cmdsize));
         #ifdef _WIN32
             hncip.script("settings.chns", "VT100COLOR_" + to_string(dta.cfg.vt100color));
         #endif
         hncip.script("settings.chns", "BACK_" + misc.toLangName(dta.cfg.language));
         mi.mouse.btnAdd("VERBOSEBOOT", 16, 2, 4, 3);
         mi.mouse.btnAdd("DYNAMICLOGO", 16, 5, 4, 3);
-        if (!isPlaying) mi.mouse.btnAdd("LANGUAGE", 1, 7, 20, 3);
-        mi.mouse.btnAdd("CMDSIZE", 1, 10, 20, 3);
+        if (!isPlaying) mi.mouse.btnAdd("LANGUAGE", 12, 8, 20, 3);
+        mi.mouse.btnAdd("CMDSIZE", 12, 11, 20, 3);
         #ifdef _WIN32
             mi.mouse.btnAdd("VT100COLOR", 1, 13, 20, 3);
-            mi.mouse.btnAdd("BACK", 1, 16, 20, 3);
+            mi.mouse.btnAdd("BACK", 1, 17, 30, 3);
         #else
-            mi.mouse.btnAdd("BACK", 1, 13, 20, 3);
+            mi.mouse.btnAdd("BACK", 1, 14, 30, 3);
         #endif
         mi.mouse.cbCreate("SETTINGS", [&](const string& btnName){
             if (btnName == "VERBOSEBOOT") dta.replace("data/config.hnd", "VERBOSEBOOT=" + to_string(dta.cfg.verboseBoot), "VERBOSEBOOT=" + to_string(!dta.cfg.verboseBoot));
