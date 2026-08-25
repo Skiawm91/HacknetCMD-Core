@@ -1,36 +1,36 @@
-// Title
+// Menu
 
-BEGIN_TITLE_EN
+BEGIN_MENU_EN
 PRINT // Settings // |General| |VT100 Configuration|
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_TITLE_EN
+END_MENU_EN
 
-BEGIN_TITLE_CHS
+BEGIN_MENU_CHS
 PRINT // 设置     // | 通用  | | VT100 配置        |
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_TITLE_CHS
+END_MENU_CHS
 
-BEGIN_TITLE_CHT
+BEGIN_MENU_CHT
 PRINT // 設定     // | 一般  | | VT100 設定        |
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_TITLE_CHT
+END_MENU_CHT
 
-// Title (No VT100 Configuration)
+// Menu (No VT100 Configuration)
 
-BEGIN_TITLENOVT100_EN
+BEGIN_MENUNOVT100_EN
 PRINT // Settings // |General|
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_TITLENOVT100_EN
+END_MENUNOVT100_EN
 
-BEGIN_TITLENOVT100_CHS
+BEGIN_MENUNOVT100_CHS
 PRINT // 设置     // | 通用  |
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_TITLENOVT100_CHS
+END_MENUNOVT100_CHS
 
-BEGIN_TITLENOVT100_CHT
+BEGIN_MENUNOVT100_CHT
 PRINT // 設定     // | 一般  |
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_TITLENOVT100_CHT
+END_MENUNOVT100_CHT
 
 // General
 

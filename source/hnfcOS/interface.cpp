@@ -33,6 +33,17 @@ string overlines(int count) {
     return result;
 }
 
+void menuBarBtn() {
+    mi.mouse.btnAdd("EXIT", 0, 0, 4, 1);
+    mi.mouse.btnAdd("SETTINGS", 4, 0, 4, 1);
+    mi.mouse.btnAdd("SAVE", 8, 0, 4, 1);
+    mi.mouse.btnAdd("TERMINAL", 14, 0, 10, 1);
+    mi.mouse.btnAdd("DISPLAY", 25, 0, 9, 1);
+    mi.mouse.btnAdd("NETMAP", 35, 0, 8, 1);
+    mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
+    mi.mouse.btnAdd("MAIL", 144 * (dta.cfg.cmdsize + 1) - 4, 0, 4, 1);
+}
+
 void menuBarCb(int& backupMode, int& mode) {
     mi.mouse.cbCreate("MENUBAR", [&](const string& btnName){
         if (btnName == "EXIT") mode = 0;
@@ -70,14 +81,7 @@ void hnfcOS::Interface() {
     extern string playerIP;
     int mode = 2; // Terminal
     int backupMode;
-    mi.mouse.btnAdd("EXIT", 0, 0, 4, 1);
-    mi.mouse.btnAdd("SETTINGS", 4, 0, 4, 1);
-    mi.mouse.btnAdd("SAVE", 8, 0, 4, 1);
-    mi.mouse.btnAdd("TERMINAL", 14, 0, 10, 1);
-    mi.mouse.btnAdd("DISPLAY", 25, 0, 9, 1);
-    mi.mouse.btnAdd("NETMAP", 35, 0, 8, 1);
-    mi.mouse.btnAdd("RAM", 44, 0, 5, 1);
-    mi.mouse.btnAdd("MAIL", 144 * (dta.cfg.cmdsize + 1) - 4, 0, 4, 1);
+    menuBarBtn();
     menuBarCb(backupMode, mode);
     while(true) {
         if (!targetIP.empty()) state = "Location: " + targetIP;
@@ -99,8 +103,10 @@ void hnfcOS::Interface() {
             mi.mouse.cbClean();
             return;
         } else if (mode == 1) {
+            mi.mouse.btnDel(vector<string>{"EXIT", "SETTINGS", "SAVE", "TERMINAL", "DISPLAY", "NETMAP", "RAM", "MAIL"});
             mi.mouse.cbClean("MENUBAR");
             UI.Settings(true);
+            menuBarBtn();
             menuBarCb(backupMode, mode);
             mode = backupMode;
         } else if (mode == 2) {
