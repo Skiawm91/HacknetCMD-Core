@@ -92,7 +92,7 @@ public:
     #endif
 
     // 同步等待
-    void async(const int type) {
+    void sync(const int type) {
         if (type == 1) { // Mouse + Keyboard
             mouseSync = true;
             while (true) {
@@ -114,18 +114,18 @@ public:
                 if (escDetected) escDetected = false;
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
-        } else if (type == 2) { // Only Keyboard
+        } else if (type == 2) { // Keyboard Only
             while (true) {
                 if (enterDetected || escDetected) break;
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
-        } else if (type == 21) { // Only keyboard (Disabled Esc)
+        } else if (type == 21) { // Keyboard Only (Disabled Esc)
             while (true) {
                 if (enterDetected) break;
                 if (escDetected) escDetected = false;
                 this_thread::sleep_for(chrono::milliseconds(10));
             }
-        } else if (type == 3) { // Only Mouse
+        } else if (type == 3) { // Mouse Only
             mouseSync = true;
             while (true) {
                 if (!mouseSync) break;

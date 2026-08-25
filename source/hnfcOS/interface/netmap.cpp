@@ -22,7 +22,7 @@ void hnfcOS::NetMap() {
     cout << "\n\n";
     cout << "NetMap is coming soon!";
     cout.flush();
-    mi.async(3);
+    mi.sync(3);
     // mi.mouse.btnDel(vector<string>{""});
     // mi.mouse.cbClean("DISPLAY");
 }

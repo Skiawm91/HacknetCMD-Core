@@ -71,7 +71,7 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
                 parent->displayChse = 0;
             }
         });
-        mi.async(3);
+        mi.sync(3);
         mi.mouse.btnDel(vector<string>{"BACK"});
         mi.mouse.cbClean("PROBE");
     }

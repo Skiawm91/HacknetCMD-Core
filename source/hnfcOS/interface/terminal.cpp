@@ -40,7 +40,7 @@ void hnfcOS::Terminal() {
         else kbPrompt = targetIP + "@> ";
     } else kbPrompt = "> ";
     mi.kb.spReset();
-    mi.async(11);
+    mi.sync(11);
     if (enterDetected) {
         enterDetected = false;
         fullCommand = mi.kb.getInput();

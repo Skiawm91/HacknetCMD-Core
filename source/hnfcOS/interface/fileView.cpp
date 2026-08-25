@@ -30,7 +30,7 @@ void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents) {
     for (const auto &c : contents) {
         std::cout << " " << c << std::endl;
     }
-    mi.async(3);
+    mi.sync(3);
     mi.mouse.btnDel(vector<string>{"BACK"});
     mi.mouse.cbClean("BACK");
 }
@@ -242,7 +242,7 @@ void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
             });
             parent->kit.viewFile(parent->file->name, parent->file->contents);
             mi.mouse.cbClean("BACK");
-        } else mi.async(3);
+        } else mi.sync(3);
         mi.mouse.btnDel(objectNames);
         for (const auto &oN : objectNames) {
             mi.mouse.cbClean(oN);

@@ -72,7 +72,7 @@ void hnfcOS::Display() {
         });
     } else hncip.script("hnfcOS/display/dced.chns", "DCED_" + playerLang);
     cout.flush();
-    mi.async(3);
+    mi.sync(3);
     mi.mouse.btnDel(vector<string>{"LOGIN", "PROBE", "FILESYSTEM", "LOGS", "SCAN", "DISCONNECT"});
     mi.mouse.cbClean("DISPLAY");
 }

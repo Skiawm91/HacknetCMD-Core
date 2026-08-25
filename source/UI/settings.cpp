@@ -72,7 +72,7 @@ void UserInterface::Settings(const bool isPlaying) {
             }
             if (btnName == "BACK") back = true;
         });
-        mi.async(1);
+        mi.sync(1);
         if (enterDetected) {
             enterDetected = false;
         } else if (escDetected) {

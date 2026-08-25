@@ -1,3 +1,5 @@
+// Title
+
 BEGIN_TITLE_EN
 PRINT // Settings // |General| |VT100 Configuration|
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
@@ -12,6 +14,25 @@ BEGIN_TITLE_CHT
 PRINT // 設定     // | 一般  | | VT100 設定        |
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_TITLE_CHT
+
+// Title (No VT100 Configuration)
+
+BEGIN_TITLENOVT100_EN
+PRINT // Settings // |General|
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_TITLENOVT100_EN
+
+BEGIN_TITLENOVT100_CHS
+PRINT // 设置     // | 通用  |
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_TITLENOVT100_CHS
+
+BEGIN_TITLENOVT100_CHT
+PRINT // 設定     // | 一般  |
+PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_TITLENOVT100_CHT
+
+// General
 
 // Verbose Boot
 
@@ -169,6 +190,8 @@ PRINTAT_NB 12 12 | 180*45           |
 PRINTAT_NB 12 13 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINT
 END_CMDSIZESB_3
+
+// VT100 Configuration
 
 BEGIN_VT100COLOR_0
 PRINT  ____________________

@@ -76,7 +76,7 @@ void UserInterface::Login() {
             if (btnName == "REGISTER") chse = 3;
             if (btnName == "BACK") chse = 4;
         });
-        mi.async(1);
+        mi.sync(1);
         if (escDetected) {
             escDetected = false;
             chse = 4;
@@ -96,7 +96,7 @@ void UserInterface::Login() {
                     hncip.script("logUI/login.chns", "NAME_" + misc.toLangName(dta.cfg.language));
                     mi.kb.historyClear();
                     mi.kb.spReset();
-                    mi.async(2);
+                    mi.sync(2);
                     if (escDetected) {
                         escDetected = false;
                         break;
@@ -113,7 +113,7 @@ void UserInterface::Login() {
                             hncip.script("logUI/login.chns", "PASSWD_" + misc.toLangName(dta.cfg.language));
                             mi.kb.historyClear();
                             mi.kb.spReset();
-                            mi.async(2);
+                            mi.sync(2);
                             if (escDetected) {
                                 escDetected = false;
                                 break;
@@ -158,7 +158,7 @@ void UserInterface::Login() {
                         hncip.script("logUI/register.chns", "NAME_" + misc.toLangName(dta.cfg.language));
                         mi.kb.historyClear();
                         mi.kb.spReset();
-                        mi.async(2);
+                        mi.sync(2);
                         if (escDetected) {
                             escDetected = false;
                             break;
@@ -170,7 +170,7 @@ void UserInterface::Login() {
                         hncip.script("logUI/register.chns", "PASSWD_" + misc.toLangName(dta.cfg.language));
                         mi.kb.historyClear();
                         mi.kb.spReset();
-                        mi.async(2);
+                        mi.sync(2);
                         if (escDetected) {
                             escDetected = false;
                             break;
@@ -182,7 +182,7 @@ void UserInterface::Login() {
                         hncip.script("logUI/register.chns", "CONFIRM_" + misc.toLangName(dta.cfg.language));
                         mi.kb.historyClear();
                         mi.kb.spReset();
-                        mi.async(2);
+                        mi.sync(2);
                         if (escDetected) {
                             escDetected = false;
                             break;
@@ -202,7 +202,7 @@ void UserInterface::Login() {
                             });
                             mouseSync = true;
                             mi.kb.spReset();
-                            mi.async(1);
+                            mi.sync(1);
                             if (escDetected) {
                                 escDetected = false;
                                 chse = 2;

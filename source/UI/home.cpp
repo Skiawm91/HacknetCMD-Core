@@ -62,7 +62,7 @@ void UserInterface::Home(){
             if (btnName == "SETTINGS") chse = 3;
             if (btnName == "QUIT") chse = 4;
         });
-        mi.async(3);
+        mi.sync(3);
         if (dta.cfg.dynamicLogo == 1) {
             logoAnimation = false;
             while(running);
@@ -87,7 +87,7 @@ void UserInterface::Home(){
                             if (btnName == "QUIT") chse = 1;
                             if (btnName == "CANCEL") chse = 2;
                         });
-                        mi.async(3);
+                        mi.sync(3);
                         mi.mouse.btnDel(vector<string>{"QUIT", "CANCEL"});
                         mi.mouse.cbClean();
                         if (chse == 1) {
