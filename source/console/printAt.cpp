@@ -26,7 +26,7 @@ FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, pos, &written);
 FillConsoleOutputAttribute(hOut, csbi.wAttributes, csbi.dwSize.X - x, pos, &written);
     WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     // 自動重置
-    if (dta.cfg.vt100color == 1) {
+    if (dta.cfg.vt100Color == 1) {
         cout << "\033[0m";
         cout.flush();
     } else {
@@ -61,7 +61,7 @@ FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, pos, &written);
 FillConsoleOutputAttribute(hOut, csbi.wAttributes, csbi.dwSize.X - x, pos, &written);
     WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     // 自動重置
-    if (dta.cfg.vt100color == 1) {
+    if (dta.cfg.vt100Color == 1) {
         cout << "\033[0m";
         cout.flush();
     } else {

@@ -61,7 +61,7 @@ END_QUIT_EN
 BEGIN_QUIT_CHS
 CLEAR
 PRINT
-PRINT  真的吗？
+PRINT  你确定吗？
 PRINT  ______________________________
 PRINT  | 重复                       |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾

@@ -41,7 +41,7 @@ void Console::colorbg(const string& hexColor) {
     int r, g, b;
     parseHex(hexColor, r, g, b);
 #ifdef _WIN32
-    if (dta.cfg.vt100color == 1) {
+    if (dta.cfg.vt100Color == 1) {
         cout << "\033[48;2;" << r << ";" << g << ";" << b << "m";
         cout.flush();
     } else {
@@ -62,7 +62,7 @@ void Console::color(const string& hexColor) {
     int r, g, b;
     parseHex(hexColor, r, g, b);
 #ifdef _WIN32
-    if (dta.cfg.vt100color == 1) {
+    if (dta.cfg.vt100Color == 1) {
         cout << "\033[38;2;" << r << ";" << g << ";" << b << "m";
         cout.flush();
     } else {

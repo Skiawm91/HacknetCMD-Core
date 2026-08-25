@@ -23,10 +23,10 @@ void Data::Config::reload() {
     if (parent->loaded) cmdsize = parent->loadNumber;
     con.resize(144 + 12 * cmdsize, 36 + 3 * cmdsize);
     parent->load("data/config.hnd", vector<string>{"VT100COLOR=0", "VT100COLOR=1"});
-    if (parent->loaded) vt100color = parent->loadNumber;
+    if (parent->loaded) vt100Color = parent->loadNumber;
     #ifdef _WIN32
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (vt100color == 1) {
+    if (vt100Color == 1) {
         DWORD outMode;
         GetConsoleMode(hOut, &outMode);
         outMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;

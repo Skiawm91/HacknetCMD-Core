@@ -193,17 +193,76 @@ END_CMDSIZESB_3
 
 // VT100 Configuration
 
-BEGIN_VT100COLOR_0
-PRINT  ____________________
-PRINT  | VT100 Color: Off |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_VT100COLOR_0
+BEGIN_VT100COLORINFO_EN
+PRINT
+PRINT    VT100 Color Support
+PRINT
+END_VT100COLORINFO_EN
 
-BEGIN_VT100COLOR_1
-PRINT  ____________________
-PRINT  | VT100 Color: On  |
-PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_VT100COLOR_1
+BEGIN_VT100COLORINFO_CHS
+PRINT
+PRINT    VT100 色彩支持
+PRINT
+END_VT100COLORINFO_CHS
+
+BEGIN_VT100COLORINFO_CHT
+PRINT
+PRINT    VT100 色彩支援
+PRINT
+END_VT100COLORINFO_CHT
+
+BEGIN_VT100COLORCB_0
+PRINTAT_NB 23 2 ____
+PRINTAT_NB 23 3 |　|
+PRINTAT_NB 23 4 ‾‾‾‾
+PRINT
+END_VT100COLORCB_0
+
+BEGIN_VT100COLORCB_1
+PRINTAT_NB 23 2 ____
+PRINTAT_NB 23 3 |ｖ|
+PRINTAT_NB 23 4 ‾‾‾‾
+PRINT
+END_VT100COLORCB_1
+
+BEGIN_VT100COLORWARN_EN
+PRINT
+PRINT  // WARNING //
+PRINT  If VT100 color is disabled,
+PRINT  color accuracy will drop significantly.
+PRINT  ______________________________
+PRINT  | Confirm                    |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | Cancel                     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VT100COLORWARN_EN
+
+BEGIN_VT100COLORWARN_CHS
+PRINT
+PRINT  // 警告 //
+PRINT  若VT100色彩被关闭，
+PRINT  颜色准确率将会大幅下降。
+PRINT  ______________________________
+PRINT  | 重复                       |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | 取消                       |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VT100COLORWARN_CHS
+
+BEGIN_VT100COLORWARN_CHT
+PRINT
+PRINT  // 警告 //
+PRINT  若VT100色彩被關閉，
+PRINT  顏色準確度將會大幅下降。
+PRINT  ______________________________
+PRINT  | 確認                       |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | 取消                       |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VT100COLORWARN_CHT
 
 BEGIN_BACK_EN
 PRINT    ______________________________

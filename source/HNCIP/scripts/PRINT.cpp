@@ -23,7 +23,7 @@ inline void Sleep(const int& ms) {usleep(ms * 1000);}
 
 static void resetColor() {
 #ifdef _WIN32
-    if (dta.cfg.vt100color == 1) {
+    if (dta.cfg.vt100Color == 1) {
         cout << "\033[0m";
         cout.flush();
     } else {

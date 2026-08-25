@@ -16,11 +16,14 @@ public:
     public:
         Config(Data* p) : parent(p) {}
         void reload();
+        // General
         bool verboseBoot = true; // On
         bool dynamicLogo = true; // On
         int language = 0; // English
         int cmdsize = 0; // 1x
-        int vt100color = 0; // Off
+        // VT100 Configuration (Windows)
+        bool vt100Color = 1; // On
+        bool vt100Input = 0; // Off
     private:
         Data* parent;
     };
