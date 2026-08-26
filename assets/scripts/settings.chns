@@ -228,7 +228,7 @@ END_VT100COLORCB_1
 BEGIN_VT100COLORWARN_EN
 PRINT
 PRINT  // WARNING //
-PRINT  If VT100 color is disabled,
+PRINT  If VT100 Color Support is disabled,
 PRINT  color accuracy will drop significantly.
 PRINT  ______________________________
 PRINT  | Confirm                    |
@@ -241,7 +241,7 @@ END_VT100COLORWARN_EN
 BEGIN_VT100COLORWARN_CHS
 PRINT
 PRINT  // 警告 //
-PRINT  若VT100色彩被关闭，
+PRINT  若 VT100 色彩支持被关闭，
 PRINT  颜色准确率将会大幅下降。
 PRINT  ______________________________
 PRINT  | 重复                       |
@@ -254,7 +254,7 @@ END_VT100COLORWARN_CHS
 BEGIN_VT100COLORWARN_CHT
 PRINT
 PRINT  // 警告 //
-PRINT  若VT100色彩被關閉，
+PRINT  若 VT100 色彩支援被關閉，
 PRINT  顏色準確度將會大幅下降。
 PRINT  ______________________________
 PRINT  | 確認                       |
@@ -263,6 +263,79 @@ PRINT  ______________________________
 PRINT  | 取消                       |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_VT100COLORWARN_CHT
+
+// VT100 CMD Resize
+
+BEGIN_VT100CMDRESIZEINFO_EN
+PRINT
+PRINT    VT100 CMD Resize
+PRINT
+END_VT100CMDRESIZEINFO_EN
+
+BEGIN_VT100CMDRESIZEINFO_CHS
+PRINT
+PRINT    VT100 CMD 大小调整
+PRINT
+END_VT100CMDRESIZEINFO_CHS
+
+BEGIN_VT100CMDRESIZEINFO_CHT
+PRINT
+PRINT    VT100 CMD 大小調整
+PRINT
+END_VT100CMDRESIZEINFO_CHT
+
+BEGIN_VT100CMDRESIZECB_0
+PRINTAT_NB 21 5 ____
+PRINTAT_NB 21 6 |　|
+PRINTAT_NB 21 7 ‾‾‾‾
+PRINT
+END_VT100CMDRESIZECB_0
+
+BEGIN_VT100CMDRESIZECB_1
+PRINTAT_NB 21 5 ____
+PRINTAT_NB 21 6 |ｖ|
+PRINTAT_NB 21 7 ‾‾‾‾
+PRINT
+END_VT100CMDRESIZECB_1
+
+BEGIN_VT100CMDRESIZEWARN_EN
+PRINT
+PRINT  // WARNING //
+PRINT  If VT100 CMD Resize is disabled,
+PRINT  Some terminals might keep the default size.
+PRINT  ______________________________
+PRINT  | Confirm                    |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | Cancel                     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VT100CMDRESIZEWARN_EN
+
+BEGIN_VT100CMDRESIZEWARN_CHS
+PRINT
+PRINT  // 警告 //
+PRINT  若 VT100 CMD 大小调整被关闭，
+PRINT  某些终端机可能会保持在默认大小。
+PRINT  ______________________________
+PRINT  | 重复                       |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | 取消                       |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VT100CMDRESIZEWARN_CHS
+
+BEGIN_VT100CMDRESIZEWARN_CHT
+PRINT
+PRINT  // 警告 //
+PRINT  若 VT100 CMD 大小調整被關閉，
+PRINT  某些終端機可能會維持在預設大小。
+PRINT  ______________________________
+PRINT  | 確認                       |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | 取消                       |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_VT100CMDRESIZEWARN_CHT
 
 BEGIN_BACK_EN
 PRINT    ______________________________

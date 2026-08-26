@@ -105,21 +105,24 @@ void Console::fillScreenBg(const string& hexColor) {
 
     if (dta.cfg.vt100Color == 1) {
         // VT100: 清屏並刷滿當前背景色
-        cout << "\033[2J" << flush;
+        print("\033[2J");
         SetConsoleCursorPosition(hOut, savedPos);
     } else {
-        // Win32 API: 刷滿屬性
+        // Win32 API 降級模式：同時清除字元與刷滿屬性！
         COORD origin = {0, 0};
-        DWORD written;
         DWORD totalCells = csbi.dwSize.X * csbi.dwSize.Y;
+        DWORD written;
+
+        // 1. 把所有格子的字元全部清空為空白 ' '
+        FillConsoleOutputCharacter(hOut, ' ', totalCells, origin, &written);
+        // 2. 把所有格子的顏色屬性設為當前背景色
         FillConsoleOutputAttribute(hOut, csbi.wAttributes, totalCells, origin, &written);
         
-        // ⭐️ 關鍵：將預設控制台屬性設為當前背景，讓後續換行 (\n) 也自帶背景色
         SetConsoleTextAttribute(hOut, csbi.wAttributes);
         SetConsoleCursorPosition(hOut, savedPos);
     }
     #else
-    cout << "\033[s\033[2J\033[u" << flush;
+    print("\033[s\033[2J\033[u");
     #endif
 }
 

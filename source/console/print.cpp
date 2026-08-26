@@ -75,7 +75,14 @@ Console::PrintAtBuilder::~PrintAtBuilder() {
     // 2. 套用顏色與繪製文字
     parent->applyFg(parent->getFg());
     parent->applyBg(parent->getBg());
-    std::cout << text << std::flush;
+    #ifdef _WIN32
+    DWORD written;
+    FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, targetPos, &written);
+    WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
+    #elif defined(__APPLE__) || defined(__linux__)
+    parent->print("\033[K");
+    parent->print(text);
+    #endif
 
     // 3. ⭐️ 關鍵：判斷是否需要返回 (Back) 舊游標
     if (!isNoBack) {
