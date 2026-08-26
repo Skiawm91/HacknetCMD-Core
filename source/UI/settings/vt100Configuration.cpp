@@ -39,12 +39,7 @@ void UserInterface::SettingsOptions::VT100Configuration() {
     mi.mouse.cbClean("VT100CONFIGURATION");
     if (vt100ColorWarn) {
         int chse;
-        #if defined(__APPLE__) || defined(__linux__)
-        if (isPlaying) con.clearBuf2();
-        else con.clear();
-        #elif _WIN32
         con.clear();
-        #endif
         hncip.script("settings.chns", "VT100COLORWARN_" + misc.toLangName(dta.cfg.language));
         mi.mouse.btnAdd("CONFIRM", 1, 4, 30, 3);
         mi.mouse.btnAdd("CANCEL", 1, 7, 30, 3);

@@ -198,11 +198,7 @@ void hnfcOS::Kit::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string thi
 void hnfcOS::Application::FileView(HNCInterPreter::NodeInfo& node) {
     bool back = false;
     while (!back) {
-        #ifdef _WIN32
         con.clear();
-        #elif defined(__APPLE__) || defined(__linux__)
-        con.clearBuf2();
-        #endif
         parent->MenuBar();
         int i = 0, indent = 0;
         vector<string> objectNames;

@@ -65,7 +65,9 @@ Console::PrintAtBuilder::~PrintAtBuilder() {
     #else
     // POSIX VT100: 使用 ANSI 保存/移動游標
     if (!isNoBack) {
-        std::cout << "\033[s"; // 保存當前相對游標位置
+        std::cout << "\033[6n" << flush;
+        isQuary = true;
+        while(isQuary);
     }
     std::cout << "\033[" << (y + 1) << ";" << (x + 1) << "H";
     #endif
@@ -81,7 +83,8 @@ Console::PrintAtBuilder::~PrintAtBuilder() {
         #ifdef _WIN32
         SetConsoleCursorPosition(hOut, originalPos);
         #else
-        std::cout << "\033[u"; // 還原 ANSI 保存的游標
+        std::cout << "\033[" << cursorRow << ";" << cursorCol << "H";
+        std::cout.flush();
         #endif
     } else {
         // ⭐️ PRINTAT_NB (No Back)：不返回！

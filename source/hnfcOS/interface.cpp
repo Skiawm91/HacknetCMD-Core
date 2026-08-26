@@ -91,10 +91,6 @@ void hnfcOS::Interface() {
         else state = "Location: Not Connected";
         drp.state = state.c_str();
         Discord_UpdatePresence(&drp);
-        #if defined(__APPLE__) || defined(__linux__)
-        if (mode == 2) con.bufferChange(0);
-        else if (mode == 1 || mode == 3 || mode == 4 || mode == 5 || mode == 6) con.bufferChange(1);
-        #endif
         con.setColorBg("0c1013");
         MenuBar();
         if (mode == 0) {

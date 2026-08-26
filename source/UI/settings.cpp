@@ -30,12 +30,7 @@ void UserInterface::Settings(const bool isPlaying) {
     while(!back) {
         // 重新載入Config
         dta.cfg.reload();
-        #if defined(__APPLE__) || defined(__linux__)
-        if (isPlaying) con.clearBuf2();
-        else con.clear();
-        #elif _WIN32
         con.clear();
-        #endif
         #ifdef _WIN32
         hncip.script("settings.chns", "MENU_" + misc.toLangName(dta.cfg.language));
         #else
