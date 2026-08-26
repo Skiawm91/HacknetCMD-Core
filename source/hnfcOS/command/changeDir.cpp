@@ -1,9 +1,12 @@
 #include "os.h"
+#include "console.h"
 #include <iostream>
 #include <string>
 #include <functional>
 #include <vector>
 using std::cout, std::endl, std::string, std::vector;
+
+extern Console con;
 
 void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& dir) {
     if (dir.empty()) return;
@@ -117,7 +120,7 @@ void hnfcOS::Command::ChangeDir(HNCInterPreter::NodeInfo& node, const string& di
                 }
             }
             if (!found) {
-                cout << "Invalid Path" << endl;
+                con.println("Invalid Path").save();
                 return;
             }
         }

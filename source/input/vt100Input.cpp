@@ -13,6 +13,7 @@
 using namespace std;
 
 string kbPrompt;
+atomic<bool> inputSave{false};
 atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, inputAte, kbEnabled, mouseSync, isQuary;
 atomic<int> cursorRow, cursorCol;
 
@@ -366,13 +367,30 @@ void ManageInput::initial() {
                         lock_guard<mutex> lock(inputMutex);
                         lastInput = buffer;
                     }
+
+                    // 1. 先把輸入內容組好 (要在 buffer.clear() 之前做！)
+                    string fullLine = kbPrompt + (inputMasked ? string(buffer.size(), '*') : buffer);
+
+                    // 2. 更新 History 與標記
                     if (!buffer.empty()) history.push_back(buffer);
                     historyIndex = history.size();
+                    enterDetected = true;
+                    con.println();
+
+                    // 3. 畫面處理與存檔
+                    if (inputSave) {
+                        con.addRecord({
+                            -1, -1,
+                            fullLine + "\n",
+                            con.getFg(), con.getBg(),
+                            false, true
+                        });
+                    }
+
+                    // 4. 最後才清空暫存 buffer (絕對不能放在前面！)
                     buffer.clear();
                     cursorPos = 0;
-                    enterDetected = true;
-                    cout << "\n";
-                    // after newline, spReset caller may update startCol if necessary
+
                     i++;
                     continue;
                 }

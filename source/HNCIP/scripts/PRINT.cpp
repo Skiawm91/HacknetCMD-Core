@@ -21,42 +21,26 @@ extern Data dta;
 inline void Sleep(const int& ms) {usleep(ms * 1000);}
 #endif
 
-static void resetColor() {
-#ifdef _WIN32
-    if (dta.cfg.vt100Color == 1) {
-        cout << "\033[0m";
-        cout.flush();
-    } else {
-        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(hOut, 7);
-    }
-#else
-    cout << "\033[0m";
-    cout.flush();
-#endif
+void HNCIPScript::PRINT(const string& content, bool save) {
+    if (content.empty() && save) con.println().save();
+    else if (save) con.println(content).save();
+    else if (content.empty()) con.println();
+    else con.println(content);
 }
 
-void HNCIPScript::PRINT(const string& content) {
-    if (content.empty()) {
-        cout << endl;
+void HNCIPScript::PRINTR(const string& content, bool save) {
+    if (content.empty() && save) {
+        con.print("\r").save();
+    } else if (save) {
+        con.print("\r" + content).save();
+    } else if (content.empty()) {
+        con.print("\r");
     } else {
-        cout << content << endl;
+        con.print("\r" + content);
     }
-    resetColor();
 }
 
-void HNCIPScript::PRINTR(const string& content) {
-    if (content.empty()) {
-        cout << "\r";
-        cout.flush();
-    } else {
-        cout << "\r" << content;
-        cout.flush();
-    }
-    resetColor();
-}
-
-void HNCIPScript::PRINTWFW(const string& content) {
+void HNCIPScript::PRINTWFW(const string& content, bool save) {
     vector<string> text;
     istringstream iss(content);
     string word;
@@ -67,16 +51,29 @@ void HNCIPScript::PRINTWFW(const string& content) {
             text.push_back(word);
         }
     }
+
+    // 組合出特效播完後的「完整字串」（把單字跟空白組回來）
+    string fullSentence = "";
     srand((unsigned int)time(nullptr));
-    for (const string& t : text) {
-        cout << t << flush;
+    
+    for (size_t i = 0; i < text.size(); ++i) {
+        con.print(text[i]);
+        fullSentence += text[i]; // 這裡面已經自然包含被還原的 " " 空白了！
         Sleep(rand() % 21 + 30);
     }
-    cout << endl;
-    resetColor();
+    con.println();
+    // 增加一筆流式紀錄
+    if (save) {
+        con.addRecord({ 
+            -1, -1, 
+            fullSentence + "\n", 
+            con.getFg(), con.getBg(), 
+            false, true 
+        });
+    }
 }
 
-void HNCIPScript::PRINTAT(const string& content) {
+void HNCIPScript::PRINTAT(const string& content, bool save) {
     int x = 0, y = 0;
     string xS, yS, str;
     istringstream iss(content);
@@ -87,12 +84,14 @@ void HNCIPScript::PRINTAT(const string& content) {
         x = stoi(xS);
         y = stoi(yS);
     } catch (...) { return; }
-    if (!str.empty()) con.printAt(x, y, str);
+    if (!str.empty() && save) con.printAt(x, y, str).save();
+    else if (!str.empty()) con.printAt(x, y, str);
+    else if (save) con.printAt(x, y, " ").save();
     else con.printAt(x, y, " ");
     // printAt 已經自動重置，不需要再呼叫
 }
 
-void HNCIPScript::PRINTAT_NB(const string& content) {
+void HNCIPScript::PRINTAT_NB(const string& content, bool save) {
     int x = 0, y = 0;
     string xS, yS, str;
     istringstream iss(content);
@@ -103,7 +102,9 @@ void HNCIPScript::PRINTAT_NB(const string& content) {
         x = stoi(xS);
         y = stoi(yS);
     } catch (...) { return; }
-    if (!str.empty()) con.pae.noBack(x, y, str);
-    else con.pae.noBack(x, y, " ");
+    if (!str.empty() && save) con.printAt(x, y, str).noBack().save();
+    else if (!str.empty()) con.printAt(x, y, str).noBack();
+    else if (save) con.printAt(x, y, " ").noBack().save();
+    else con.printAt(x, y, " ").noBack();
     // noBack 已經自動重置，不需要再呼叫
 }

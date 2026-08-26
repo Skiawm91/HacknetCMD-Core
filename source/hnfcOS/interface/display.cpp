@@ -41,9 +41,9 @@ void hnfcOS::Display() {
             if (btnName == "FILESYSTEM") {
                 termTasks.push_back([targetIP = targetIP, path = path, this](){
                     if (!targetIP.empty()) {
-                        if (!path.empty()) std::cout << targetIP << path << "> ls" << std::endl;
-                        else std::cout << targetIP << "@> ls" << std::endl;
-                    } else cout << "> ls" << std::endl;
+                        if (!path.empty()) con.println(targetIP + path + "> ls").save();
+                        else con.println(targetIP + "@> ls").save();
+                    } else con.println("> ls").save();
                     this->cmd.ListDir(this->node);
                 });
                 displayChse = 3;
@@ -52,9 +52,9 @@ void hnfcOS::Display() {
                 cmd.ChangeDir(node, "/log");
                 termTasks.push_back([targetIP = targetIP, path = path, this](){
                     if (!targetIP.empty()) {
-                        if (!path.empty()) std::cout << targetIP << path << "> cd /log" << std::endl;
-                        else std::cout << targetIP << "@> cd /log" << std::endl;
-                    } else cout << "> cd /log" << std::endl;
+                        if (!path.empty()) con.println(targetIP + path + "> cd /log").save();
+                        else con.println(targetIP + "@> cd /log").save();
+                    } else con.println("> cd /log").save();
                     this->cmd.ListDir(this->node);
                 });
                 displayChse = 3;
@@ -62,10 +62,10 @@ void hnfcOS::Display() {
             if (btnName == "DISCONNECT") {
                 termTasks.push_back([targetIP = targetIP, path = path](){
                     if (!targetIP.empty()) {
-                        if (!path.empty()) std::cout << targetIP << path << "> disconnect" << std::endl;
-                        else std::cout << targetIP << "@> disconnect" << std::endl;
-                    } else cout << "> disconnect" << std::endl;
-                    std::cout << "Disconnected" << std::endl;
+                        if (!path.empty()) con.println(targetIP + path + "> disconnect").save();
+                        else con.println(targetIP + "@> disconnect").save();
+                    } else con.println("> disconnect").save();
+                    con.println("Disconnected").save();
                 });
                 sys.cleanNode();
             }

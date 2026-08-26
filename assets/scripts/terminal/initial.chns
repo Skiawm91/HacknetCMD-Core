@@ -2,11 +2,11 @@ BEGIN_INITIAL
 CLEAR
 PRINT
 PRINT
-PRINTWFW Initializing ␣ . . . . . . . .
-PRINTWFW L o a d i n g ␣ m o d u l e s . . . . . . Complete
-PRINTWFW L o a d i n g ␣ n o d e s . . . . . . Complete
-PRINTWFW R e t i c u l a t i n g ␣ s p l i n e s . . . . . . Complete
-PRINTWFW - - I n i t i a l i z a t i o n ␣ C o m p l e t e - -
+PRINTWFWS Initializing ␣ . . . . . . . .
+PRINTWFWS L o a d i n g ␣ m o d u l e s . . . . . . Complete
+PRINTWFWS L o a d i n g ␣ n o d e s . . . . . . Complete
+PRINTWFWS R e t i c u l a t i n g ␣ s p l i n e s . . . . . . Complete
+PRINTWFWS - - I n i t i a l i z a t i o n ␣ C o m p l e t e - -
 END_INITIAL
 
 BEGIN_TUTORIAL
@@ -15,5 +15,5 @@ PRINT Launching Tutorial...
 END_TUTORIAL
 
 BEGIN_HELPMSG
-PRINTWFW F o r ␣ A ␣ C o m m a n d ␣ L i s t , ␣ t y p e ␣ " h e l p "
+PRINTWFWS F o r ␣ A ␣ C o m m a n d ␣ L i s t , ␣ t y p e ␣ " h e l p "
 END_HELPMSG

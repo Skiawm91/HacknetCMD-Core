@@ -42,42 +42,42 @@ END_SQL
 // Terminal
 
 BEGIN_TOPLINE_T
-PRINTWFW Probing ␣ ${NODEIP} . . . . . . . . . . . . .
-PRINT Probe Complete - Open Ports:
-PRINT -------------------------
+PRINTWFWS Probing ␣ ${NODEIP} . . . . . . . . . . . . .
+PRINTS Probe Complete - Open Ports:
+PRINTS -------------------------
 END_TOPLINE_T
 
 BEGIN_TOPLINE_T_NOWAIT
-PRINT Probing ${NODEIP}.............
-PRINT Probe Complete - Open Ports:
-PRINT -------------------------
+PRINTS Probing ${NODEIP}.............
+PRINTS Probe Complete - Open Ports:
+PRINTS -------------------------
 END_TOPLINE_T_NOWAIT
 
 BEGIN_SSH_T
-PRINT Port#: ${PORT} - SSH Server
+PRINTS Port#: ${PORT} - SSH Server
 END_SSH_T
 
 BEGIN_FTP_T
-PRINT Port#: ${PORT} - FTP Server
+PRINTS Port#: ${PORT} - FTP Server
 END_FTP_T
 
 BEGIN_HTTP_T
-PRINT Port#: ${PORT} - HTTP WebServer
+PRINTS Port#: ${PORT} - HTTP WebServer
 END_HTTP_T
 
 BEGIN_SMTP_T
-PRINT Port#: ${PORT} - SMTP Mailserver
+PRINTS Port#: ${PORT} - SMTP Mailserver
 END_SMTP_T
 
 BEGIN_SSL_T
-PRINT Port#: ${PORT} - SSL
+PRINTS Port#: ${PORT} - SSL
 END_SSL_T
 
 BEGIN_SQL_T
-PRINT Port#: ${PORT} - SQL Server
+PRINTS Port#: ${PORT} - SQL Server
 END_SQL_T
 
 BEGIN_ENDLINE
-PRINT -------------------------
-PRINT Open Ports Required for Crack : ${PORTS}
+PRINTS -------------------------
+PRINTS Open Ports Required for Crack : ${PORTS}
 END_ENDLINE

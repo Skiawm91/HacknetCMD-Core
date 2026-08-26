@@ -1,5 +1,6 @@
 #include "os.h"
 #include "HNCIP.h"
+#include "console.h"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -7,6 +8,7 @@
 using std::vector, std::string, std::cout, std::endl, std::stringstream;
 
 extern HNCInterPreter hncip;
+extern Console con;
 
 static bool resolvePath(
     const string& path, bool isAbsolute,
@@ -94,8 +96,8 @@ void hnfcOS::Command::Remove(const string& path, HNCInterPreter::NodeInfo& node)
         string displayPath = dirPath;
         if (!displayPath.empty() && displayPath.back() == '/') displayPath.pop_back();
         if (isAbsolute && !displayPath.empty() && displayPath[0] != '/') displayPath = "/" + displayPath;
-        cout << "Invalid Path" << endl;
-        cout << "Folder " << displayPath << " not found!" << endl;
+        con.println("Invalid Path").save();
+        con.println("Folder " + displayPath + " not found!").save();
         return;
     }
 
@@ -120,5 +122,5 @@ void hnfcOS::Command::Remove(const string& path, HNCInterPreter::NodeInfo& node)
         }
     }
 
-    cout << "File " << path << " not found!" << endl;
+    con.println("File " + path + " not found!").save();
 }

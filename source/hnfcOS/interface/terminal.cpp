@@ -25,9 +25,6 @@ void hnfcOS::Terminal() {
     if (!termTasks.empty()) {
         for (const auto &tT : termTasks) tT();
         termTasks.clear();
-        #ifdef _WIN32
-        con.bufferSave(2); // 儲存終端機內容
-        #endif
         return;
     }
     string fullCommand, cmd;
@@ -35,6 +32,7 @@ void hnfcOS::Terminal() {
     cmd.clear();
     command.clear();
     inputMasked = inputAte = false;
+    inputSave = true; // 啟用 inputSave 控制開關
     if (!targetIP.empty()) {
         if (!path.empty()) kbPrompt = targetIP + path + "> ";
         else kbPrompt = targetIP + "@> ";
@@ -67,28 +65,25 @@ void hnfcOS::Terminal() {
             else if (lowerCmd == "probe" || command[0] == "nmap") app.Probe(node);
             else if (command[0] == "cd") {
                 if (command.size() >= 2) this->cmd.ChangeDir(node, command[1]);
-                else std::cout << "Usage: cd [WHERE TO GO or .. TO GO BACK]" << std::endl;
+                else con.println("Usage: cd [WHERE TO GO or .. TO GO BACK]").save();
             }
             else if (command[0] == "ls" || command[0] == "dir") this->cmd.ListDir(node);
             else if (command[0] == "cat") {
                 if (command.size() >= 2) this->cmd.Concatenate(command[1], node);
-                else std::cout << "Usage: cat [FILENAME]" << std::endl;
+                else con.println("Usage: cat [FILENAME]").save();
             }
             else if (lowerCmd == "rm") {
                 if (command.size() >= 2) this->cmd.Remove(command[1], node);
-                else std::cout << "Not Enough Arguments" << std::endl;
+                else con.println("Not Enough Arguments").save();
             }
             else if (lowerCmd == "mv") {
                 if (command.size() >= 3) this->cmd.Move(command[1], command[2], node);
-                else std::cout << "Not Enough Arguments. Usage: mv [FILE] [DESTINATION]" << std::endl;
+                else con.println("Not Enough Arguments. Usage: mv [FILE] [DESTINATION]").save();
             }
             else if (command[0] == "disconnect" || command[0] == "dc") {
                 sys.cleanNode();
-                std::cout << "Disconnected" << std::endl;
-            } else cout << "No Command " << command[0] << " - Check Syntax" << endl;
+                con.println("Disconnected").save();
+            } else con.println("No Command " + command[0] + " - Check Syntax").save();
         }
-        #ifdef _WIN32
-        con.bufferSave(2); // 儲存終端機內容
-        #endif
     }
 }

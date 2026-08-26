@@ -1,8 +1,10 @@
 #include "os.h"
+#include "console.h"
 #include <vector>
 #include <string>
-#include <iostream>
 using std::vector, std::string;
+
+extern Console con;
 
 void hnfcOS::Command::ListDir(HNCInterPreter::NodeInfo& node) {
     string currentPath = parent->path.empty() ? "/" : parent->path;
@@ -37,7 +39,7 @@ void hnfcOS::Command::ListDir(HNCInterPreter::NodeInfo& node) {
 
             if (!found) {
                 if (parent->Mode == "Terminal") {
-                    std::cout << "Path error." << std::endl;
+                    con.println("Path error.").save();
                 }
                 return;
             }
@@ -50,7 +52,7 @@ void hnfcOS::Command::ListDir(HNCInterPreter::NodeInfo& node) {
     // 列資料夾
     for (const auto& sf : *folderList) {
         if (parent->Mode == "Terminal") {
-            std::cout << ":" << sf.name << std::endl;
+            con.println(":" + sf.name).save();
         } else {
             objectNames.push_back(":" + sf.name);
         }
@@ -59,7 +61,7 @@ void hnfcOS::Command::ListDir(HNCInterPreter::NodeInfo& node) {
     // 列檔案
     for (const auto& f : *fileList) {
         if (parent->Mode == "Terminal") {
-            std::cout << f.name << std::endl;
+            con.println(f.name).save();
         } else {
             objectNames.push_back(f.name);
         }
@@ -69,7 +71,7 @@ void hnfcOS::Command::ListDir(HNCInterPreter::NodeInfo& node) {
     if (parent->Mode == "Display") {
         parent->termTasks.push_back([objectNames]() {
             for (const auto& oN : objectNames) {
-                std::cout << oN << std::endl;
+                con.println(oN).save();
             }
         });
     }

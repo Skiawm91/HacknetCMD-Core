@@ -12,6 +12,7 @@
 using namespace std;
 
 string kbPrompt;
+atomic<bool> inputSave{false};
 atomic<bool> promptPrinted, escDetected, enterDetected, inputMasked, inputAte, runningKb, kbEnabled;
 
 size_t utf8_width(const string &s) {
@@ -91,12 +92,23 @@ void ManageInput::Keyboard::initial() {
                         lock_guard<mutex> lock(parent->inputMutex);
                         parent->lastInput = parent->buffer;
                     }
+
+                    // ⭐️【重點修復】若啟用 inputSave，按下 Enter 瞬間將「Prompt + 最終輸入」存入 con 的 savedBuffer
+                    if (inputSave) {
+                        string fullLine = kbPrompt + (inputMasked ? string(parent->buffer.size(), '*') : parent->buffer);
+                        con.addRecord({
+                            -1, -1,
+                            fullLine + "\n",
+                            con.getFg(), con.getBg(),
+                            false, true
+                        });
+                    }
                     if (!parent->buffer.empty()) parent->history.push_back(parent->buffer);
                     parent->historyIndex = parent->history.size();
                     parent->buffer.clear();
                     parent->cursorPos = 0;
                     enterDetected = true;
-                    cout << "\n";
+                    con.println();
                     GetConsoleScreenBufferInfo(hOut, &csbi);
                     parent->startPos = csbi.dwCursorPosition; // 新行起始
                 } else if (c == '\b') { // Backspace

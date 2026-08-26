@@ -37,20 +37,26 @@ void HNCInterPreter::script(const string& fileName, const string& partName, cons
                     ++i;
                 }
             }
-            if (command=="WAIT") {hncips.WAIT(content);}
-            else if (command=="CLEAR") {hncips.CLEAR();}
-            else if (command=="PRINT") {hncips.PRINT(content);}
-            else if (command=="PRINTR") {hncips.PRINTR(content);}
-            else if (command=="PRINTWFW") {hncips.PRINTWFW(content);}
-            else if (command=="PRINTAT") {hncips.PRINTAT(content);}
-            else if (command=="PRINTAT_NB") {hncips.PRINTAT_NB(content);}
-            else if (command=="PLAYAUDIO") {hncips.PLAYAUDIO(content);}
-            else if (command=="GETINPUT") {hncips.GETINPUT(content);}
-            else if (command=="GETINPUTR") {hncips.GETINPUTR(content);}
-            else if (command=="GETINPUTPWD") {hncips.GETINPUTPWD(content);}
-            else if (command=="GETINPUTPWDR") {hncips.GETINPUTPWDR(content);}
-            else if (command=="GETINPUTNUL") {hncips.GETINPUTNUL(content);}
-            else if (command=="GOTO") {hncips.GOTO(fileName, content);}
+            if (command=="WAIT") hncips.WAIT(content);
+            else if (command=="CLEAR") hncips.CLEAR();
+            else if (command=="PRINT") hncips.PRINT(content);
+            else if (command=="PRINTR") hncips.PRINTR(content);
+            else if (command=="PRINTWFW") hncips.PRINTWFW(content);
+            else if (command=="PRINTAT") hncips.PRINTAT(content);
+            else if (command=="PRINTAT_NB") hncips.PRINTAT_NB(content);
+            // Print w/Save
+            else if (command=="PRINTS") hncips.PRINT(content, true);
+            else if (command=="PRINTRS") hncips.PRINTR(content, true);
+            else if (command=="PRINTWFWS") hncips.PRINTWFW(content, true);
+            else if (command=="PRINTATS") hncips.PRINTAT(content, true);
+            else if (command=="PRINTATS_NB") hncips.PRINTAT_NB(content, true);
+            else if (command=="PLAYAUDIO") hncips.PLAYAUDIO(content);
+            else if (command=="GETINPUT") hncips.GETINPUT(content);
+            else if (command=="GETINPUTR") hncips.GETINPUTR(content);
+            else if (command=="GETINPUTPWD") hncips.GETINPUTPWD(content);
+            else if (command=="GETINPUTPWDR") hncips.GETINPUTPWDR(content);
+            else if (command=="GETINPUTNUL") hncips.GETINPUTNUL(content);
+            else if (command=="GOTO") hncips.GOTO(fileName, content);
         }
     }
 }

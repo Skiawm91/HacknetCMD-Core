@@ -1,4 +1,5 @@
 #pragma once
+#include "console.h"
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -14,6 +15,8 @@
 using namespace std;
 
 extern string kbPrompt;
+extern std::atomic<bool> inputSave; // inputSave 控制開關
+extern Console con;
 extern atomic<bool> escDetected;
 extern atomic<bool> enterDetected;
 extern atomic<bool> inputMasked;

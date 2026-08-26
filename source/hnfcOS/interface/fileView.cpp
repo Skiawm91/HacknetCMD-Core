@@ -14,13 +14,9 @@ extern ManageInput mi;
 extern string playerLang;
 
 void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents) {
-    #ifdef _WIN32
     con.clear();
-    #elif defined(__APPLE__) || defined(__linux__)
-    con.clearBuf2();
-    #endif
     parent->MenuBar();
-    std::cout << "\n\n " << name << " | Back |" << std::endl;
+    con.println("\n\n " + name + " | Back |");
     mi.mouse.btnAdd("BACK", 2 + name.size(), 2, 8, 1);
     mi.mouse.cbCreate("BACK2", [path = parent->path, this](const string &btnName){
         if (btnName == "BACK") {
@@ -28,7 +24,7 @@ void hnfcOS::Kit::viewFile(const string &name, const vector<string> &contents) {
         }
     });
     for (const auto &c : contents) {
-        std::cout << " " << c << std::endl;
+        con.println(" " + c);
     }
     mi.sync(3);
     mi.mouse.btnDel(vector<string>{"BACK"});
@@ -101,9 +97,9 @@ void hnfcOS::Kit::regFile(HNCInterPreter::NodeInfo::FileEntry &f, string &path, 
             // 顯示 cat 命令
             parent->termTasks.push_back([filePath = filePath, targetIP = parent->targetIP, path = parent->path](){
                 if (!targetIP.empty()) {
-                    if (!path.empty()) std::cout << targetIP << path << "> cat " << filePath << std::endl;
-                    else std::cout << targetIP << "@> cat " << filePath << std::endl;
-                } else cout << "> cat " << filePath << std::endl;
+                    if (!path.empty()) con.println(targetIP + path + "> cat " + filePath).save();
+                    else con.println("@> cat " + filePath).save();
+                } else con.println("> cat " + filePath).save();
             });
             
             parent->cmd.Concatenate(filePath, parent->node);
@@ -125,9 +121,9 @@ void collapseAll(HNCInterPreter::NodeInfo::FolderEntry* f, vector<function<void(
 
     tasks.push_back([targetIP, path]() {
         if (!targetIP.empty()) {
-            if (!path.empty()) std::cout << targetIP << path << "> cd .." << std::endl;
-            else std::cout << targetIP << "@> cd .." << std::endl;
-        } else cout << "> cd .." << std::endl;
+            if (!path.empty()) con.println(targetIP + path + "> cd ..");
+            else con.println(targetIP + "@> cd ..");
+        } else con.println("> cd ..");
     });
 
     if (!path.empty()) {
@@ -160,9 +156,9 @@ void hnfcOS::Kit::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string thi
                 }
                 parent->termTasks.push_back([targetIP = parent->targetIP, path = path, ptr](){
                     if (!targetIP.empty()) {
-                        if (!path.empty()) std::cout << targetIP << path << "> cd " << ptr->name << std::endl;
-                        else std::cout << targetIP << "@> cd " << ptr->name << std::endl;
-                    } else cout << "> cd " << ptr->name << std::endl;
+                        if (!path.empty()) con.println(targetIP + path + "> cd " + ptr->name).save();
+                        else con.println(targetIP + "@> cd " + ptr->name).save();
+                    } else con.println("> cd " + ptr->name).save();
                 });
                 path = (path.empty() ? "/" : path) + ptr->name + "/";
                 ptr->expand = 2;
@@ -175,9 +171,9 @@ void hnfcOS::Kit::regFolder(HNCInterPreter::NodeInfo::FolderEntry &f, string thi
                 }
                 parent->termTasks.push_back([targetIP = parent->targetIP, path = path, ptr](){
                     if (!targetIP.empty()) {
-                        if (!path.empty()) std::cout << targetIP << path << "> cd .." << std::endl;
-                        else std::cout << targetIP << "@> cd .." << std::endl;
-                    } else cout << "> cd .." << std::endl;
+                        if (!path.empty()) con.println(targetIP + path + "> cd ..").save();
+                        else con.println(targetIP + "@> cd ..").save();
+                    } else con.println("> cd ..").save();
                 });
                 if (path.back() == '/') path.pop_back();
                 size_t pos = path.rfind('/');

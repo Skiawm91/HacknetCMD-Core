@@ -7,6 +7,9 @@
 #include "input.h"
 #include "HNCIP.h"
 #include "discord-rpc/discord_rpc.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -66,8 +69,8 @@ void hnfcOS::MenuBar() {
     #elif defined(__APPLE__) || defined(__linux__)
     int preRemove = 51;
     #endif
-    con.colorbg("AA5523");
-    con.color("eef2ed");
+    con.setColorBg("AA5523").singleLine();
+    con.setColor("eef2ed").singleLine();
     con.printAt(0, 0, string(" ❌  ⚙️  💾    TERMINAL   DISPLAY   NETMAP   RAM ") + string(144 + 12 * dta.cfg.cmdsize - preRemove, ' ') + string(" ✉️ "));
     con.printAt(0, 1, overlines(144 + 12 * dta.cfg.cmdsize));
 }
@@ -92,12 +95,10 @@ void hnfcOS::Interface() {
         if (mode == 2) con.bufferChange(0);
         else if (mode == 1 || mode == 3 || mode == 4 || mode == 5 || mode == 6) con.bufferChange(1);
         #endif
+        con.setColorBg("0c1013");
         MenuBar();
         if (mode == 0) {
             sys.cleanNode();
-            #if defined(__APPLE__) || defined(__linux__)
-            con.bufferChange(0);
-            #endif
             termTasks.clear();
             mi.mouse.btnDel(vector<string>{"EXIT", "SETTINGS", "SAVE", "TERMINAL", "DISPLAY", "NETMAP", "RAM", "MAIL"});
             mi.mouse.cbClean();
@@ -110,18 +111,14 @@ void hnfcOS::Interface() {
             menuBarCb(backupMode, mode);
             mode = backupMode;
         } else if (mode == 2) {
-            #ifdef _WIN32
-            con.bufferRestore();
-            #elif defined(__APPLE__) || defined(__linux__)
-            cout << "\033[2K\r" << flush; // 先清掉
-            #endif
+            con.bufferRestore(2);
+            MenuBar();
             Terminal();
-        } else if (mode == 3) Display();
+        }
+        else if (mode == 3) Display();
         else if (mode == 4) NetMap();
         else if (mode == 5) RAMUI();
         else if (mode == 6) MailUI();
-        #ifdef _WIN32
         con.clear();
-        #endif
     }
 }

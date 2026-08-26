@@ -80,30 +80,21 @@ void hnfcOS::Initial(bool full) {
             if (dta.loadNumber == 0) {
                 hncip.script("terminal/initial.chns", "INITIAL");
                 hncip.script("terminal/initial.chns", "HELPMSG");
-                #ifdef _WIN32
-                con.bufferSave(2);
-                #endif
             }
         } else {
             hncip.script("tutorial/failsafe.chns", "FAILSAFE_" + playerLang);
             hncip.script("terminal/initial.chns", "INITIAL");
             // hncip.script("terminal/initial.chns", "TUTORIAL");
             // s.Tutorial();
-            #ifdef _WIN32
-            con.bufferSave(2);
-            #endif
         }
         os.Interface();
     } else {
-        con.clear();
-        cout << "\n\n> connect " << playerIP;
+        con.clear(true);
+        con.print("\n\n");
+        con.setColorBg("0c1013").singleLine(); // 先暫時這樣
+        con.println("> connect " + playerIP).save();
         targetIP = playerIP;
         node = sys.getNode(targetIP);
-        #ifdef _WIN32
-        con.bufferSave(2);
-        #elif defined(__APPLE__) || defined(__linux__)
-        cout << "\n";
-        #endif
         mi.kb.historyClear();
         os.Interface();
     }

@@ -1,8 +1,11 @@
 #include "os.h"
+#include "console.h"
 #include <vector>
 #include <string>
 #include <iostream>
 using std::vector, std::string;
+
+extern Console con;
 
 void hnfcOS::Command::Concatenate(const string &targetName, HNCInterPreter::NodeInfo& node) {
     string currentWorkingDir = parent->path.empty() ? "/" : parent->path;
@@ -87,7 +90,7 @@ void hnfcOS::Command::Concatenate(const string &targetName, HNCInterPreter::Node
 
     for (const auto &fC : *fileContents) {
         if (parent->Mode == "Terminal") {
-            std::cout << fC << std::endl;
+            con.println(fC).save();
         } else {
             objectContents.push_back(fC);
         }
@@ -96,7 +99,7 @@ void hnfcOS::Command::Concatenate(const string &targetName, HNCInterPreter::Node
     if (parent->Mode == "Display") {
         parent->termTasks.push_back([objectContents]() {
             for (const auto& oC : objectContents) {
-                std::cout << oC << std::endl;
+                con.println(oC).save();
             }
         });
     }

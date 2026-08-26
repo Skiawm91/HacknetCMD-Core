@@ -15,17 +15,13 @@ extern ManageInput mi;
 void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
     if (parent->Mode == "Display" && !Probed) {
         std::this_thread::sleep_for(std::chrono::milliseconds(400));
-        #ifdef _WIN32
         con.clear();
-        #elif defined(__APPLE__) || defined(__linux__)
-        con.clearBuf2();
-        #endif
         parent->MenuBar();
         parent->termTasks.push_back([targetIP = parent->targetIP, path = parent->path, node = node](){
             if (!targetIP.empty()) {
-                if (!path.empty()) std::cout << targetIP << path << "> Probe" << std::endl;
-                else std::cout << targetIP << "@> Probe" << std::endl;
-            } else cout << "> Probe" << std::endl;
+                if (!path.empty()) con.println(targetIP + path + "> Probe").save();
+                else con.println(targetIP + "@> Probe").save();
+            } else con.println("> Probe").save();
             hncip.script("hnfcOS/application/probe.chns", "TOPLINE_T_NOWAIT", vector<string>{"NODENAME", "NODEIP", "PORTS"}, vector<string>{node.Name, node.IP, to_string(node.Ports)});
             int i = 0;
             for (const auto &pN : node.portNames) {
@@ -40,11 +36,7 @@ void hnfcOS::Application::Probe(HNCInterPreter::NodeInfo& node) {
             hncip.script("hnfcOS/application/probe.chns", "ENDLINE", vector<string>{"PORTS"}, vector<string>{to_string(node.Ports)});
         });
     } else if (parent->Mode == "Display" && Probed) {
-        #ifdef _WIN32
         con.clear();
-        #elif defined(__APPLE__) || defined(__linux__)
-        con.clearBuf2();
-        #endif
         parent->MenuBar();
     }
     hncip.script("hnfcOS/application/probe.chns", "TOPLINE" + ((parent->Mode == "Terminal") ? "_T" : string("")), vector<string>{"NODENAME", "NODEIP", "PORTS"}, vector<string>{node.Name, node.IP, to_string(node.Ports)});

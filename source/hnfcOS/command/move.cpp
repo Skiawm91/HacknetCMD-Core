@@ -1,10 +1,13 @@
 #include "os.h"
 #include "HNCIP.h"
+#include "console.h"
 #include <vector>
 #include <string>
 #include <iostream>
 #include <sstream>
 using std::vector, std::string, std::cout, std::endl, std::stringstream;
+
+extern Console con;
 
 static bool resolvePath(
     const string& path, bool isAbsolute,
@@ -134,16 +137,16 @@ void hnfcOS::Command::Move(const string& src, const string& dst, HNCInterPreter:
 
     // 報錯
     if (!dstDirValid && !srcEntry) {
-        cout << "Invalid Path" << endl;
-        cout << "File not found!" << endl;
+        con.println("Invalid Path").save();
+        con.println("File not found!").save();
         return;
     }
     if (!dstDirValid) {
-        cout << "Invalid Path" << endl;
+        con.println("Invalid Path").save();
         return;
     }
     if (!srcEntry) {
-        cout << "File not found!" << endl;
+        con.println("File not found!").save();
         return;
     }
 

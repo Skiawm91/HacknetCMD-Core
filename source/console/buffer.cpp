@@ -1,100 +1,69 @@
 #define _HAS_STD_BYTE 0
 #include "console.h"
+#include <iostream>
+
 #ifdef _WIN32
 #include <windows.h>
-#elif defined(__APPLE__) || defined(__linux__)
-#include "input.h"
 #endif
-#include <iostream>
-#include <vector>
+
 using namespace std;
 
-#ifdef _WIN32
-void Console::bufferSave(int startRow) {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (hOut == INVALID_HANDLE_VALUE) return;
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    if (!GetConsoleScreenBufferInfo(hOut, &csbi)) return;
-    int totalRows = csbi.dwSize.Y;
-    int width = csbi.dwSize.X;
-    vector<CHAR_INFO> screenBuffer(totalRows * width);
-    COORD bufferSize = { (SHORT)width, (SHORT)totalRows };
-    COORD bufferCoord = { 0, 0 };
-    SMALL_RECT readRegion = { 0, (SHORT)startRow, (SHORT)(width - 1), (SHORT)(totalRows - 1) };
-    ReadConsoleOutputW(hOut, screenBuffer.data(), bufferSize, bufferCoord, &readRegion);
-    int lastContentRow = -1;
-    for (int row = 0; row < totalRows - startRow; ++row) {
-        bool hasContent = false;
-        for (int col = 0; col < width; ++col) {
-            if (screenBuffer[row * width + col].Char.AsciiChar != ' ') {
-                hasContent = true;
-                break;
-            }
-        }
-        if (hasContent) lastContentRow = row;
-    }
-    if (lastContentRow < 0) {
-        savedBuffer.clear();
-        savedWidth = savedHeight = savedRow = 0;
-        return;
-    }
-    savedWidth = width;
-    savedHeight = lastContentRow + 1;
-    savedRow = startRow;
-    savedBuffer.resize(savedWidth * savedHeight);
-    for (int row = 0; row < savedHeight; ++row) {
-        for (int col = 0; col < savedWidth; ++col) {
-            savedBuffer[row * savedWidth + col] = screenBuffer[row * width + col];
-        }
-    }
-}
-void Console::bufferRestore() {
+void Console::bufferRestore(int minY) {
     if (savedBuffer.empty()) return;
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (hOut == INVALID_HANDLE_VALUE) return;
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    if (!GetConsoleScreenBufferInfo(hOut, &csbi)) return;
-    COORD bufferSize = { (SHORT)savedWidth, (SHORT)savedHeight };
-    COORD bufferCoord = { 0, 0 };
-    SMALL_RECT writeRegion = { 0, (SHORT)savedRow, (SHORT)(savedWidth - 1), (SHORT)(savedRow + savedHeight - 1) };
-    WriteConsoleOutputW(hOut, savedBuffer.data(), bufferSize, bufferCoord, &writeRegion);
-    SHORT newCursorY = (SHORT)(savedRow + savedHeight);
-    if (newCursorY >= csbi.dwSize.Y) {
-        SHORT scrollAmount = newCursorY - (csbi.dwSize.Y - 1);
-        SMALL_RECT scrollRect = { 0, 0, csbi.dwSize.X - 1, csbi.dwSize.Y - 1 };
-        COORD destOrigin = { 0, (SHORT)(-scrollAmount) };
-        CHAR_INFO fill{};
-        fill.Char.AsciiChar = ' ';
-        fill.Attributes = csbi.wAttributes;
-        ScrollConsoleScreenBufferW(hOut, &scrollRect, nullptr, destOrigin, &fill);
-        newCursorY = (SHORT)(csbi.dwSize.Y - 1);
-    }
-    COORD newCursor = { 0, newCursorY };
-    SetConsoleCursorPosition(hOut, newCursor);
-}
-#endif
 
-#if defined(__APPLE__) || defined(__linux__)
-bool modeNow = 0;
-int backupX, backupY;
-void Console::bufferChange(int mode) {
-    if (modeNow == 0) {
-        std::cout << "\033[6n" << flush; // 透過 Input 函式來幫助取得
-        isQuary = true;
-        while(isQuary); // 換成等待完成
-        backupX = cursorCol;
-        backupY = cursorRow;
+    applyFg(globalFgColor);
+    applyBg(globalBgColor);
+
+    #ifdef _WIN32
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    #endif
+
+    // ⭐️ 流式水位的起跑點 (預設從選單下方，例如 minY = 2 開始)
+    int streamY = minY;
+
+    for (const auto& rec : savedBuffer) {
+        applyFg(rec.fg);
+        applyBg(rec.bg);
+
+        // 1. 絕對座標 (printAt) ➔ 繪製 UI，完全不干擾 streamY
+        if (rec.x != -1 && rec.y != -1) {
+            #ifdef _WIN32
+            COORD pos = { (SHORT)rec.x, (SHORT)rec.y };
+            SetConsoleCursorPosition(hOut, pos);
+            DWORD written;
+            WriteConsoleA(hOut, rec.text.c_str(), (DWORD)rec.text.size(), &written, NULL);
+            #else
+            cout << "\033[" << (rec.y + 1) << ";" << (rec.x + 1) << "H" << rec.text;
+            #endif
+        } 
+        // 2. 流式輸出 (println) ➔ 永遠順著 streamY 往下接
+        else {
+            #ifdef _WIN32
+            COORD pos = { 0, (SHORT)streamY };
+            SetConsoleCursorPosition(hOut, pos);
+            DWORD written;
+            WriteConsoleA(hOut, rec.text.c_str(), (DWORD)rec.text.size(), &written, NULL);
+            #else
+            cout << "\033[" << (streamY + 1) << ";1H" << rec.text;
+            #endif
+
+            // 計算字串內部的 \n，推進水位
+            int lines = 0;
+            for (char c : rec.text) {
+                if (c == '\n') lines++;
+            }
+            streamY += (lines > 0 ? lines : 1);
+        }
     }
-    if (mode == 0) {
-        cout << "\033[?1049l" << flush;
-        cout << "\033[" << backupY << ";" << backupX << "H";
-        cout.flush();
-        modeNow = 0;
-    }
-    else if (mode == 1) {
-        cout << "\033[?1049h" << flush;
-        cout << "\033[H\033[2J" << flush; // 切換後立即清除
-        modeNow = 1;
-    }
+
+    applyFg(globalFgColor);
+    applyBg(globalBgColor);
+
+    // ⭐️ 3. 重繪結束，將游標精準停留在流式水位的最新末端！
+    #ifdef _WIN32
+    COORD finalPos = { 0, (SHORT)streamY };
+    SetConsoleCursorPosition(hOut, finalPos);
+    #else
+    cout << "\033[" << (streamY + 1) << ";1H" << flush;
+    #endif
 }
-#endif

@@ -54,6 +54,9 @@ int main() {
     SetCurrentConsoleFontEx(hOut, FALSE, &cfi);
     // 初始化: 標題
     SetConsoleTitleA("Hacknet for CMD");
+    // 初始化: 建立Data資料夾 / 載入配置檔案
+    if (!filesystem::exists("data")) filesystem::create_directory("data");
+    dta.cfg.reload();
     // 初始化: 終端機輸入
     mi.hIn = GetStdHandle(STD_INPUT_HANDLE);
     DWORD prevMode;
@@ -86,6 +89,9 @@ int main() {
     con.resize(144, 36);
     // 初始化: 標題
     cout << "\033]0;Hacknet for CMD\007";
+    // 初始化: 建立Data資料夾 / 載入配置檔案
+    if (!filesystem::exists("data")) filesystem::create_directory("data");
+    dta.cfg.reload();
     // 初始化: 終端機輸入
     termios origTermios;
     tcgetattr(STDIN_FILENO, &origTermios);
@@ -97,9 +103,6 @@ int main() {
     cout << "\033[?1000h";
     cout.flush();
     #endif
-    // 初始化: 建立Data資料夾 / 載入配置檔案
-    if (!filesystem::exists("data")) filesystem::create_directory("data");
-    dta.cfg.reload();
     // 初始化: 輸入
     mi.initial();
     // 初始化: Discord Presence
