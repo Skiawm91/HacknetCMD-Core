@@ -105,7 +105,7 @@ void Console::fillScreenBg(const string& hexColor) {
 
     if (dta.cfg.vt100Color == 1) {
         // VT100: 清屏並刷滿當前背景色
-        print("\033[2J");
+        print("\033[2J\033[3J");
         SetConsoleCursorPosition(hOut, savedPos);
     } else {
         // Win32 API 降級模式：同時清除字元與刷滿屬性！
@@ -122,7 +122,11 @@ void Console::fillScreenBg(const string& hexColor) {
         SetConsoleCursorPosition(hOut, savedPos);
     }
     #else
-    print("\033[s\033[2J\033[u");
+    print("\033[6n");
+    isQuary = true;
+    while(isQuary);
+    print("\033[2J\033[3J");
+    print("\033[" + std::to_string(cursorRow) + ";" + std::to_string(cursorCol) + "H");
     #endif
 }
 

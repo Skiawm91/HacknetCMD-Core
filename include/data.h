@@ -19,11 +19,12 @@ public:
         // VT100 Configuration (Windows)
         bool vt100Color = 1; // On
         bool vt100Resize = 1; // On
+        bool vt100Clear = 1; // On
         // General
         bool verboseBoot = true; // On
         bool dynamicLogo = true; // On
         int language = 0; // English
-        int cmdsize = 0; // 1x
+        int cmdsize = 0; // 144*36
     private:
         Data* parent;
     };

@@ -16,14 +16,14 @@ extern HNCInterPreter hncip;
 void UserInterface::SettingsOptions::VT100Configuration() {
     bool vt100ColorWarn = false;
     bool vt100CMDResizeWarn = false;
-    hncip.script("settings.chns", "VT100COLORINFO_" + misc.toLangName(dta.cfg.language));
     hncip.script("settings.chns", "VT100COLORCB_" + to_string(dta.cfg.vt100Color));
-    hncip.script("settings.chns", "VT100CMDRESIZEINFO_" + misc.toLangName(dta.cfg.language));
+    hncip.script("settings.chns", "VT100COLORINFO_" + misc.toLangName(dta.cfg.language));
     hncip.script("settings.chns", "VT100CMDRESIZECB_" + to_string(dta.cfg.vt100Resize));
+    hncip.script("settings.chns", "VT100CMDRESIZEINFO_" + misc.toLangName(dta.cfg.language));
     hncip.script("settings.chns", "BACK_" + misc.toLangName(dta.cfg.language));
-    mi.mouse.btnAdd("VT100COLOR", 23, 2, 4, 3);
-    mi.mouse.btnAdd("VT100CMDRESIZE", 21, 5, 4, 3);
-    mi.mouse.btnAdd("BACK", 1, 8, 30, 3);
+    mi.mouse.btnAdd("VT100COLOR", 3, 2, 4, 3);
+    mi.mouse.btnAdd("VT100CMDRESIZE", 3, 5, 4, 3);
+    mi.mouse.btnAdd("BACK", 3, 8, 30, 3);
     mi.mouse.cbCreate("VT100CONFIGURATION", [&](const string& btnName){
         if (btnName == "VT100COLOR") {
             if (dta.cfg.vt100Color == 1) vt100ColorWarn = true;

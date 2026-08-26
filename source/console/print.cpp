@@ -76,9 +76,14 @@ Console::PrintAtBuilder::~PrintAtBuilder() {
     parent->applyFg(parent->getFg());
     parent->applyBg(parent->getBg());
     #ifdef _WIN32
-    DWORD written;
-    FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, targetPos, &written);
-    WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
+    if (dta.cfg.vt100Color == 1) {
+        parent->print("\033[K");
+        parent->print(text);
+    } else {
+        DWORD written;
+        FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, targetPos, &written);
+        WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
+    }
     #elif defined(__APPLE__) || defined(__linux__)
     parent->print("\033[K");
     parent->print(text);
@@ -90,8 +95,7 @@ Console::PrintAtBuilder::~PrintAtBuilder() {
         #ifdef _WIN32
         SetConsoleCursorPosition(hOut, originalPos);
         #else
-        std::cout << "\033[" << cursorRow << ";" << cursorCol << "H";
-        std::cout.flush();
+        parent->print("\033[" + std::to_string(cursorRow) + ";" + std::to_string(cursorCol) + "H");
         #endif
     } else {
         // ⭐️ PRINTAT_NB (No Back)：不返回！
