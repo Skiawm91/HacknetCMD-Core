@@ -50,6 +50,11 @@ void UserInterface::SettingsOptions::General(const bool &isPlaying) {
     mi.sync(1);
     if (enterDetected) {
         enterDetected = false;
+        // Easter Egg: 讓非 Windows 玩家也能進入 VT100 Configuration
+        #if defined(__APPLE__) || defined(__linux__)
+        string secret = mi.kb.getInput();
+        if (secret == "Please let me enter VT100 Configuration.") parent->mode = 1;
+        #endif
     } else if (escDetected) {
         escDetected = false;
         parent->back = true;

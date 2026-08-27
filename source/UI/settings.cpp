@@ -17,7 +17,7 @@ void UserInterface::Settings(const bool isPlaying) {
     con.cursor.hide();
     mi.kb.enable();
     inputAte = true; // 防止在設定頁面中看到文字被輸入
-    int mode = 0; // General
+    mode = 0; // General
     mi.mouse.btnAdd("GENERAL", 15, 0, 9, 1);
     #ifdef _WIN32
     mi.mouse.btnAdd("VT100CONFIGURATION", 25, 0, 21, 1);

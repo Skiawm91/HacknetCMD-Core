@@ -1,12 +1,13 @@
 #include "console.h"
 #include "data.h"
+#include "input.h"
 #ifdef _WIN32
 #include <windows.h>
 #endif
 #include <string>
 #include <iostream>
 
-using std::string, std::cout, std::flush;
+using std::string, std::to_string, std::cout, std::flush;
 
 extern Data dta;
 
@@ -43,13 +44,15 @@ static int nearestColor(int r, int g, int b) {
 }
 #endif
 
-// ⭐️ 套用前景 (Fg: 文字顏色)
+// ⭐️ 套用前景 (Fg: 文字顏色) - 已改為絕對安全直出，絕不呼叫 print()
 void Console::applyFg(const string& hex) {
     if (hex.empty()) return;
     int r = 255, g = 255, b = 255;
     parseHex(hex, r, g, b);
+    
     #ifdef _WIN32
     if (dta.cfg.vt100Color == 1) {
+        // 修正原本的字串拼寫錯誤，並改用安全的 cout
         cout << "\033[38;2;" << r << ";" << g << ";" << b << "m" << flush;
     } else {
         int colorIdx = nearestColor(r, g, b);
@@ -60,15 +63,17 @@ void Console::applyFg(const string& hex) {
         SetConsoleTextAttribute(hOut, attr);
     }
     #elif defined(__APPLE__) || defined(__linux__)
+    // ⭐️ Mac / Linux 端改用 cout 替代 print，徹底斷絕無限遞迴！
     cout << "\033[38;2;" << r << ";" << g << ";" << b << "m" << flush;
     #endif
 }
 
-// ⭐️ 套用背景 (Bg: 底色)
+// ⭐️ 套用背景 (Bg: 底色) - 同樣改為絕對安全直出
 void Console::applyBg(const string& hex) {
     if (hex.empty()) return;
     int r = 0, g = 0, b = 0;
     parseHex(hex, r, g, b);
+    
     #ifdef _WIN32
     if (dta.cfg.vt100Color == 1) {
         cout << "\033[48;2;" << r << ";" << g << ";" << b << "m" << flush;
@@ -81,6 +86,7 @@ void Console::applyBg(const string& hex) {
         SetConsoleTextAttribute(hOut, attr);
     }
     #elif defined(__APPLE__) || defined(__linux__)
+    // ⭐️ Mac / Linux 端改用 cout 替代 print
     cout << "\033[48;2;" << r << ";" << g << ";" << b << "m" << flush;
     #endif
 }
@@ -94,7 +100,7 @@ Console::ColorSetter Console::setColor(const string& hexColor) {
 
 // 1. fillScreenBg：除了刷滿，還要將這個顏色設為 Windows 控制台的預設屬性
 void Console::fillScreenBg(const string& hexColor) {
-    globalBgColor = hexColor; // ⭐️ 更新全域背景色記錄
+    globalBgColor = hexColor; 
     applyBg(hexColor);
 
     #ifdef _WIN32
@@ -104,29 +110,26 @@ void Console::fillScreenBg(const string& hexColor) {
     COORD savedPos = csbi.dwCursorPosition;
 
     if (dta.cfg.vt100Color == 1) {
-        // VT100: 清屏並刷滿當前背景色
-        print("\033[2J\033[3J");
+        cout << "\033[2J\033[3J" << flush; // 這裡用 cout 很安全
         SetConsoleCursorPosition(hOut, savedPos);
     } else {
-        // Win32 API 降級模式：同時清除字元與刷滿屬性！
         COORD origin = {0, 0};
         DWORD totalCells = csbi.dwSize.X * csbi.dwSize.Y;
         DWORD written;
 
-        // 1. 把所有格子的字元全部清空為空白 ' '
         FillConsoleOutputCharacter(hOut, ' ', totalCells, origin, &written);
-        // 2. 把所有格子的顏色屬性設為當前背景色
         FillConsoleOutputAttribute(hOut, csbi.wAttributes, totalCells, origin, &written);
         
         SetConsoleTextAttribute(hOut, csbi.wAttributes);
         SetConsoleCursorPosition(hOut, savedPos);
     }
     #else
-    print("\033[6n");
+    // 這裡如果要在 Mac 用 cout 替代 print 也可以保持一致性
+    cout << "\033[6n" << flush;
     isQuary = true;
     while(isQuary);
-    print("\033[2J\033[3J");
-    print("\033[" + std::to_string(cursorRow) + ";" + std::to_string(cursorCol) + "H");
+    cout << "\033[2J\033[3J" << flush;
+    cout << "\033[" << cursorRow << ";" << cursorCol << "H" << flush;
     #endif
 }
 
@@ -138,13 +141,10 @@ Console::ColorSetter Console::setColorBg(const string& hexColor) {
     return ColorSetter(this, true, hexColor, backup);
 }
 
-// 1. singleLine(): 只是設定「當前這行要用 hex，但只用一次，下一次 resetColor 時恢復為 backup」
 void Console::ColorSetter::singleLine() {
-    isSingleLine = true; // 標記為單行，阻止 ~ColorSetter() 觸發 fillScreenBg 全螢幕刷色
+    isSingleLine = true; 
     
     if (isBg) {
-        // ⭐️ 保持當前的 globalBgColor 為 hex (橘色)
-        // 記錄下 backup，讓後續 printAt 印完呼叫 resetColor() 時才還原！
         parent->singleLineBg = true;
         parent->singleLineBgBackup = backup;
     } else {
@@ -153,7 +153,6 @@ void Console::ColorSetter::singleLine() {
     }
 }
 
-// 2. resetColor(): 當 printAt 印完解構時，由 resetColor 把單行顏色還原回去！
 void Console::resetColor() {
     if (singleLineFg) {
         globalFgColor = singleLineFgBackup;
@@ -161,14 +160,12 @@ void Console::resetColor() {
         singleLineFg = false;
     }
     if (singleLineBg) {
-        // ⭐️ 這裡才是真正還原全域背景色的地方！
         globalBgColor = singleLineBgBackup;
         applyBg(globalBgColor);
         singleLineBg = false;
     }
 }
 
-// 4. ColorSetter 的解構子 (Destructor)：決定要不要刷滿全螢幕
 Console::ColorSetter::~ColorSetter() {
     if (isBg && !isSingleLine) {
         parent->fillScreenBg(hex);

@@ -77,25 +77,28 @@ Console::PrintAtBuilder::~PrintAtBuilder() {
     parent->applyBg(parent->getBg());
     #ifdef _WIN32
     if (dta.cfg.vt100Color == 1) {
-        parent->print("\033[K");
-        parent->print(text);
+        cout << "\033[K";
+        cout << text;
+        cout.flush();
     } else {
         DWORD written;
         FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, targetPos, &written);
         WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     }
     #elif defined(__APPLE__) || defined(__linux__)
-    parent->print("\033[K");
-    parent->print(text);
+    cout << "\033[K";
+    cout << text;
+    cout.flush();
     #endif
 
     // 3. ⭐️ 關鍵：判斷是否需要返回 (Back) 舊游標
-    if (!isNoBack) {
+if (!isNoBack) {
         // 普通 PRINTAT：印完必須跳回原本的相對游標點！
         #ifdef _WIN32
         SetConsoleCursorPosition(hOut, originalPos);
         #else
-        parent->print("\033[" + std::to_string(cursorRow) + ";" + std::to_string(cursorCol) + "H");
+        // ⭐️ 改用 cout 直出，絕對不在解構子裡呼叫 print()
+        cout << "\033[" << cursorRow << ";" << cursorCol << "H" << flush;
         #endif
     } else {
         // ⭐️ PRINTAT_NB (No Back)：不返回！

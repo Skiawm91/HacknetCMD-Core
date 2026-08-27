@@ -12,6 +12,7 @@ extern Data dta;
 
 void Console::resize(const int width, const int height) {
     #ifdef _WIN32
+    // ... Windows 原本的程式碼保持不變 ...
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hOut, &csbi);
@@ -22,22 +23,15 @@ void Console::resize(const int width, const int height) {
     SMALL_RECT windowSize = {0, 0, (SHORT)(width - 1), (SHORT)(height - 1)};
 
     if (dta.cfg.vt100Resize) {
-        // --- 模式 A：VT100 模式 (Windows Terminal) ---
         if (enlarge) {
-            // 放大時：先放大緩衝區，再發送 VT 放大視窗
             SetConsoleScreenBufferSize(hOut, bufferSize);
-            print("\033[8;" + to_string(height) + ";" + to_string(width) + "t");
+            cout << "\033[8;" << height << ";" << width << "t" << flush;
         } else {
-            // 縮小時：必須先發送 VT 序列讓視窗縮小
-            print("\033[8;" + to_string(height) + ";" + to_string(width) + "t");
-            
-            // 為了讓 Windows Terminal 有時間反應，或強行讓 Buffer 縮小
-            // 如果 WinAPI 直接改 Buffer 失敗，可以加上這行 WinAPI 視窗同步輔助
+            cout << "\033[8;" << height << ";" << width << "t" << flush;
             SetConsoleWindowInfo(hOut, TRUE, &windowSize);
             SetConsoleScreenBufferSize(hOut, bufferSize);
         }
     } else {
-        // --- 模式 B：傳統 Conhost 模式 (純 WinAPI) ---
         if (enlarge) {
             SetConsoleScreenBufferSize(hOut, bufferSize);
             SetConsoleWindowInfo(hOut, TRUE, &windowSize);
@@ -47,6 +41,7 @@ void Console::resize(const int width, const int height) {
         }
     }
     #elif defined(__APPLE__) || defined(__linux__)
-    print("\033[8;" + to_string(height) + ";" + to_string(width) + "t");
+    // ⭐️ Mac / Linux 端改用 cout 直出，避開 PrintBuilder 暫時物件帶來的風險
+    cout << "\033[8;" << height << ";" << width << "t" << flush;
     #endif
 }
