@@ -58,20 +58,24 @@ public:
     void resetColor();
 
     // ⭐️ ColorSetter 升級：加入 ~ColorSetter 與 isSingleLine 標記
-    struct ColorSetter {
-    public:
-        ColorSetter(Console* c, bool isBg, const std::string& hex, const std::string& backup)
-            : parent(c), isBg(isBg), hex(hex), backup(backup), isSingleLine(false) {}
-        
-        ~ColorSetter(); // RAII: 鏈式呼叫結束時判斷是否刷滿全螢幕
-
-        void singleLine();
+    class ColorSetter {
     private:
         Console* parent;
         bool isBg;
+        bool isFill; // 控制析構時是否 fillScreenBg (預設: isBg 的值)
+        bool isOnce; // 是否只用一次
         std::string hex;
         std::string backup;
-        bool isSingleLine = false; // ⭐️ 是否為單行標記
+
+    public:
+        ColorSetter(Console* p, bool bg, const std::string& h, const std::string& b)
+            : parent(p), isBg(bg), isFill(bg), isOnce(false), hex(h), backup(b) {}
+
+        // 鏈式調用方法
+        ColorSetter& noFill();
+        ColorSetter& once();
+
+        ~ColorSetter();
     };
 
     ColorSetter setColor(const std::string& hexColor);
@@ -96,10 +100,10 @@ public:
 private:
     std::string globalFgColor = "FFFFFF";
     std::string globalBgColor = "000000";
-    bool singleLineFg = false;
-    bool singleLineBg = false;
-    std::string singleLineFgBackup;
-    std::string singleLineBgBackup;
+    bool onceFg = false;
+    bool onceBg = false;
+    std::string onceFgBackup;
+    std::string onceBgBackup;
 
     std::vector<BufferRecord> savedBuffer; // ⭐️ 全平台共用
 };

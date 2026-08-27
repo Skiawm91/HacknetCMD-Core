@@ -91,7 +91,7 @@ void hnfcOS::Initial(bool full) {
     } else {
         con.clear(true);
         con.print("\n\n");
-        con.setColorBg("0c1013").singleLine(); // 先暫時這樣
+        con.setColorBg("0c1013").once().noFill(); // 先暫時這樣
         con.println("> connect " + playerIP).save();
         targetIP = playerIP;
         node = sys.getNode(targetIP);

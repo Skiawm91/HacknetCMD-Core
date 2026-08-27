@@ -72,12 +72,12 @@ void UserInterface::Home(){
             if (verStage != "Release") hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver + " [" + verStage + "]"});
             else hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
         }
-        mi.mouse.btnAdd("NEWSESSION", 2, 8, 30, 3);
-        mi.mouse.btnAdd("CONTINUE", 2, 11, 30, 3);
-        mi.mouse.btnAdd("LOGIN", 2, 14, 30, 3);
-        // mi.mouse.btnAdd("EXTENSIONS", 2, 17, 30, 3); // 還沒做
-        mi.mouse.btnAdd("SETTINGS", 2, 20, 30, 3);
-        mi.mouse.btnAdd("QUIT", 2, 23, 30, 3);
+        mi.mouse.btnAdd("NEWSESSION", 2, 8, 50, 3);
+        mi.mouse.btnAdd("CONTINUE", 2, 11, 50, 3);
+        mi.mouse.btnAdd("LOGIN", 2, 14, 50, 3);
+        // mi.mouse.btnAdd("EXTENSIONS", 2, 17, 50, 3); // 還沒做
+        mi.mouse.btnAdd("SETTINGS", 2, 20, 50, 3);
+        mi.mouse.btnAdd("QUIT", 2, 23, 50, 3);
         mi.mouse.cbCreate("HOME", [&](const string& btnName){
             if (btnName == "NEWSESSION") chse = 1;
             if (btnName == "CONTINUE") chse = 2;

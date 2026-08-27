@@ -69,8 +69,8 @@ void hnfcOS::MenuBar() {
     #elif defined(__APPLE__) || defined(__linux__)
     int preRemove = 51;
     #endif
-    con.setColorBg("AA5523").singleLine();
-    con.setColor("eef2ed").singleLine();
+    con.setColorBg("AA5523").noFill().once();
+    con.setColor("eef2ed").noFill().once();
     con.printAt(0, 0, string(" ❌  ⚙️  💾    TERMINAL   DISPLAY   NETMAP   RAM ") + string(144 + 12 * dta.cfg.cmdsize - preRemove, ' ') + string(" ✉️ "));
     con.printAt(0, 1, overlines(144 + 12 * dta.cfg.cmdsize));
 }
