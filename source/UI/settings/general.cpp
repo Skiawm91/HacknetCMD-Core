@@ -4,6 +4,7 @@
 #include "console.h"
 #include "misc.h"
 #include "HNCIP.h"
+#include "crypto.h"
 #include <iostream>
 using namespace std;
 
@@ -50,10 +51,9 @@ void UserInterface::SettingsOptions::General(const bool &isPlaying) {
     mi.sync(1);
     if (enterDetected) {
         enterDetected = false;
-        // Easter Egg: 讓非 Windows 玩家也能進入 VT100 Configuration
+        // EE
         #if defined(__APPLE__) || defined(__linux__)
-        string secret = mi.kb.getInput();
-        if (secret == "Please let me enter VT100 Configuration.") parent->mode = 1;
+        if (SHA256Encrypt(mi.kb.getInput()) == "87b3d1fffafad14f7557b3acb40c406682163f21e2dab830d13925ee24478a4b") parent->mode = 1;
         #endif
     } else if (escDetected) {
         escDetected = false;
