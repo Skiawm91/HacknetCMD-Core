@@ -87,6 +87,7 @@ void hnfcOS::Initial(bool full) {
             // hncip.script("terminal/initial.chns", "TUTORIAL");
             // s.Tutorial();
         }
+        dta.replace("data/lastPlayer.hnd", 0, playerName);
         os.Interface();
     } else {
         con.clear(true);
@@ -96,6 +97,7 @@ void hnfcOS::Initial(bool full) {
         targetIP = playerIP;
         node = sys.getNode(targetIP);
         mi.kb.historyClear();
+        dta.replace("data/lastPlayer.hnd", 0, playerName);
         os.Interface();
     }
 }

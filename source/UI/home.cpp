@@ -36,10 +36,14 @@ extern DiscordRichPresence drp;
 extern Console con;
 string playerName, playerLang;
 
+#ifndef _WIN32
+inline void Sleep(const int& ms) {usleep(ms * 1000);}
+#endif
+
 void UserInterface::Home(){
     string input, shapwd;
     string name, tgshapwd;
-    playerName = dta.load("data/booted.hnd", 0);
+    playerName = dta.load("data/lastPlayer.hnd", 0);
     int chse;
     atomic<bool> running, logoAnimation;
     func.audio.stop();
@@ -53,7 +57,10 @@ void UserInterface::Home(){
         mi.kb.disable();
         chse = 0;
         if (!playerName.empty()) hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(34 - playerName.size(), ' ')});
-        else hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(31, ' ')});
+        else {
+            hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(31, ' ')});
+            hncip.script("ui.chns", "NOACCOUNTS_" + misc.toLangName(dta.cfg.language));
+        }
         if (dta.cfg.dynamicLogo == 1) {
             logoAnimation = true;
             thread([&]{
@@ -73,7 +80,7 @@ void UserInterface::Home(){
             else hncip.script("logo.chns", "LOGO", vector<string>{"VER"}, vector<string>{ver});
         }
         mi.mouse.btnAdd("NEWSESSION", 2, 8, 50, 3);
-        mi.mouse.btnAdd("CONTINUE", 2, 11, 50, 3);
+        if (!playerName.empty()) mi.mouse.btnAdd("CONTINUE", 2, 11, 50, 3);
         mi.mouse.btnAdd("LOGIN", 2, 14, 50, 3);
         mi.mouse.btnAdd("SETTINGS", 2, 17, 50, 3);
         // mi.mouse.btnAdd("EXTENSIONS", 2, 20, 50, 3); // 還沒做
@@ -97,7 +104,9 @@ void UserInterface::Home(){
             case 1:
                 {
                     string pwd[2];
+                    bool isExit = false;
                     while (true) {
+                        if (isExit) break;
                         con.cursor.show();
                         mi.kb.enable();
                         hncip.script("logUI/register.chns", "REGISTER");
@@ -159,6 +168,8 @@ void UserInterface::Home(){
                             mi.mouse.cbClean();
                             if (chse == 2) break;
                             else {
+                                func.audio.play("Bip", vector<string>{"Bip.wav"}, "assets/sounds/");
+                                Sleep(2000);
                                 if (name.length() > 13) {
                                     hncip.script("logUI/register.chns", "TOOLONG");
                                 }
@@ -182,17 +193,18 @@ void UserInterface::Home(){
                                 // Register ended
                                 playerName = dta.load("data/" + name + "/info.hnd", 0);
                                 playerLang = dta.load("data/" + name + "/info.hnd", 1);
-                                dta.del("data/booted.hnd", playerName);
                                 os.Boot();
                                 func.audio.stop();
                                 func.audio.playL("ADC", vector<string>{"AmbientDrone_Clipped.ogg"});
+                                isExit = true;
+                                break;
                             }
                         }
                     }
                 }
                 break;
             case 2:
-                    {
+                {
                     string lowerName;
                     lowerName.resize(playerName.size());
                     transform(playerName.begin(), playerName.end(), lowerName.begin(), ::tolower);
@@ -201,7 +213,7 @@ void UserInterface::Home(){
                     func.audio.stop();
                     func.audio.playL("ADC", vector<string>{"AmbientDrone_Clipped.ogg"});
                 }
-            break;
+                break;
             case 3:
                 while(true) {
                     con.cursor.show();
@@ -238,10 +250,11 @@ void UserInterface::Home(){
                             if (shapwd == tgshapwd) {
                                 playerName = dta.load("data/" + name + "/info.hnd", 0);
                                 playerLang = dta.load("data/" + name + "/info.hnd", 1);
-                                dta.del("data/booted.hnd", playerName);
-                                os.Boot();
+                                dta.replace("data/lastPlayer.hnd", 0, playerName);
+                                os.Initial(false);
                                 func.audio.stop();
                                 func.audio.playL("ADC", vector<string>{"AmbientDrone_Clipped.ogg"});
+                                break;
                             } else {
                                 hncip.script("logUI/login.chns", "ERROR");
                             }

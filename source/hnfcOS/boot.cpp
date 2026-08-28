@@ -54,7 +54,6 @@ void hnfcOS::Boot() {
             Sleep(150 + rand() % 11);
         }
     }
-    dta.replace("data/booted.hnd", 0, playerName);
     os.Initial(true);
     return;
 }

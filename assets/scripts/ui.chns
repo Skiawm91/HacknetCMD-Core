@@ -8,6 +8,8 @@ PRINTAT.NEOL_NB 2 9
 PRINTAT_NB 0 11  __________________________________________________
 PRINTAT_NB 0 12  | | Continue [${PLAYER}|
 PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 12
 PRINTAT_NB 0 14  ┌─┌──────────────────────────────────────────────┐
 PRINTAT_NB 0 15  | | Login                                        |
 PRINTAT_NB 0 16  └─└──────────────────────────────────────────────┘
@@ -30,6 +32,16 @@ COLORBGNF_ONCE 896b6b
 PRINTAT.NEOL_NB 2 24
 END_HOME_EN
 
+BEGIN_NOACCOUNTS_EN
+PRINTAT_NB 0 11  __________________________________________________
+PRINTAT_NB 0 12  | | No Accounts                                  |
+PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 12
+COLORBGNF_ONCE 000000
+PRINTAT.NEOL_NB 2 15
+END_NOACCOUNTS_EN
+
 BEGIN_HOME_CHS
 PRINTAT_NB 0 7
 PRINTAT_NB 0 8  ┌─┌──────────────────────────────────────────────┐
@@ -38,7 +50,7 @@ PRINTAT_NB 0 10  └─└──────────────────
 COLORBGNF_ONCE a1b2c2
 PRINTAT.NEOL_NB 2 9
 PRINTAT_NB 0 11  __________________________________________________
-PRINTAT_NB 0 12  | | 继续 [${PLAYER}   |
+PRINTAT_NB 0 12  | | 继续 [${PLAYER}    |
 PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINTAT_NB 0 14  ┌─┌──────────────────────────────────────────────┐
 PRINTAT_NB 0 15  | | 登录                                         |
@@ -62,6 +74,16 @@ COLORBGNF_ONCE 896b6b
 PRINTAT.NEOL_NB 2 24
 END_HOME_CHS
 
+BEGIN_NOACCOUNTS_CHS
+PRINTAT_NB 0 11  __________________________________________________
+PRINTAT_NB 0 12  | | 没有账户                                     |
+PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 12
+COLORBGNF_ONCE 000000
+PRINTAT.NEOL_NB 2 15
+END_NOACCOUNTS_CHS
+
 BEGIN_HOME_CHT
 PRINTAT_NB 0 7
 PRINTAT_NB 0 8  ┌─┌──────────────────────────────────────────────┐
@@ -70,7 +92,7 @@ PRINTAT_NB 0 10  └─└──────────────────
 COLORBGNF_ONCE a1b2c2
 PRINTAT.NEOL_NB 2 9
 PRINTAT_NB 0 11  __________________________________________________
-PRINTAT_NB 0 12  | | 繼續 [${PLAYER}   |
+PRINTAT_NB 0 12  | | 繼續 [${PLAYER}    |
 PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINTAT_NB 0 14  ┌─┌──────────────────────────────────────────────┐
 PRINTAT_NB 0 15  | | 登入                                         |
@@ -93,6 +115,16 @@ PRINTAT_NB 0 25  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 COLORBGNF_ONCE 896b6b
 PRINTAT.NEOL_NB 2 24
 END_HOME_CHT
+
+BEGIN_NOACCOUNTS_CHT
+PRINTAT_NB 0 11  __________________________________________________
+PRINTAT_NB 0 12  | | 沒有帳號                                     |
+PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 12
+COLORBGNF_ONCE 000000
+PRINTAT.NEOL_NB 2 15
+END_NOACCOUNTS_CHT
 
 BEGIN_QUIT_EN
 CLEAR
