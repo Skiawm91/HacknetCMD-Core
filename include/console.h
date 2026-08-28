@@ -39,6 +39,7 @@ public:
 
         PrintAtBuilder& noBack();
         PrintAtBuilder& save();
+        PrintAtBuilder& noEraseEOL();
 
     private:
         Console* parent;
@@ -46,6 +47,7 @@ public:
         std::string text;
         bool isNoBack = false;
         bool shouldSave = false;
+        bool isNoEraseEOL = false;
     };
 
     // API 主入口

@@ -52,6 +52,11 @@ Console::PrintAtBuilder& Console::PrintAtBuilder::save() {
     return *this;
 }
 
+Console::PrintAtBuilder& Console::PrintAtBuilder::noEraseEOL() {
+    isNoEraseEOL = true;
+    return *this;
+}
+
 Console::PrintAtBuilder::~PrintAtBuilder() {
     #ifdef _WIN32
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -77,22 +82,22 @@ Console::PrintAtBuilder::~PrintAtBuilder() {
     parent->applyBg(parent->getBg());
     #ifdef _WIN32
     if (dta.cfg.vt100Color == 1) {
-        cout << "\033[K";
+        if (!isNoEraseEOL) cout << "\033[K";
         cout << text;
         cout.flush();
     } else {
         DWORD written;
-        FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, targetPos, &written);
+        if (!isNoEraseEOL) FillConsoleOutputCharacter(hOut, ' ', csbi.dwSize.X - x, targetPos, &written);
         WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     }
     #elif defined(__APPLE__) || defined(__linux__)
-    cout << "\033[K";
+    if (!noEraseEOL) cout << "\033[K";
     cout << text;
     cout.flush();
     #endif
 
     // 3. ⭐️ 關鍵：判斷是否需要返回 (Back) 舊游標
-if (!isNoBack) {
+    if (!isNoBack) {
         // 普通 PRINTAT：印完必須跳回原本的相對游標點！
         #ifdef _WIN32
         SetConsoleCursorPosition(hOut, originalPos);

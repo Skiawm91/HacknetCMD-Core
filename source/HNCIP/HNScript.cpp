@@ -38,18 +38,34 @@ void HNCInterPreter::script(const string& fileName, const string& partName, cons
                 }
             }
             if (command=="WAIT") hncips.WAIT(content);
+            // Print
             else if (command=="CLEAR") hncips.CLEAR();
             else if (command=="PRINT") hncips.PRINT(content);
             else if (command=="PRINTR") hncips.PRINTR(content);
             else if (command=="PRINTWFW") hncips.PRINTWFW(content);
             else if (command=="PRINTAT") hncips.PRINTAT(content);
             else if (command=="PRINTAT_NB") hncips.PRINTAT_NB(content);
+            else if (command=="PRINTAT.NEOL") hncips.PRINTAT(content, false, true);
+            else if (command=="PRINTAT.NEOL_NB") hncips.PRINTAT_NB(content, false, true);
             // Print w/Save
             else if (command=="PRINTS") hncips.PRINT(content, true);
             else if (command=="PRINTRS") hncips.PRINTR(content, true);
             else if (command=="PRINTWFWS") hncips.PRINTWFW(content, true);
             else if (command=="PRINTATS") hncips.PRINTAT(content, true);
             else if (command=="PRINTATS_NB") hncips.PRINTAT_NB(content, true);
+            else if (command=="PRINTATS.NEOL") hncips.PRINTAT(content, true, true);
+            else if (command=="PRINTATS.NEOL_NB") hncips.PRINTAT_NB(content, true, true);
+            // Color
+            else if (command=="COLOR") hncips.COLOR(content);
+            else if (command=="COLORBG") hncips.COLORBG(content);
+            else if (command=="COLORNF") hncips.COLOR(content, true);
+            else if (command=="COLORBGNF") hncips.COLORBG(content, true);
+            // Color (once)
+            else if (command=="COLOR_ONCE") hncips.COLOR(content, false, true);
+            else if (command=="COLORBG_ONCE") hncips.COLORBG(content, false, true);
+            else if (command=="COLORNF_ONCE") hncips.COLOR(content, true, true);
+            else if (command=="COLORBGNF_ONCE") hncips.COLORBG(content, true, true);
+            // others
             else if (command=="PLAYAUDIO") hncips.PLAYAUDIO(content);
             else if (command=="GETINPUT") hncips.GETINPUT(content);
             else if (command=="GETINPUTR") hncips.GETINPUTR(content);

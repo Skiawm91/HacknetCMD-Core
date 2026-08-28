@@ -73,7 +73,7 @@ void HNCIPScript::PRINTWFW(const string& content, bool save) {
     }
 }
 
-void HNCIPScript::PRINTAT(const string& content, bool save) {
+void HNCIPScript::PRINTAT(const string& content, bool save, bool noEraseEOL) {
     int x = 0, y = 0;
     string xS, yS, str;
     istringstream iss(content);
@@ -91,7 +91,7 @@ void HNCIPScript::PRINTAT(const string& content, bool save) {
     // printAt 已經自動重置，不需要再呼叫
 }
 
-void HNCIPScript::PRINTAT_NB(const string& content, bool save) {
+void HNCIPScript::PRINTAT_NB(const string& content, bool save, bool noEraseEOL) {
     int x = 0, y = 0;
     string xS, yS, str;
     istringstream iss(content);
@@ -102,9 +102,10 @@ void HNCIPScript::PRINTAT_NB(const string& content, bool save) {
         x = stoi(xS);
         y = stoi(yS);
     } catch (...) { return; }
-    if (!str.empty() && save) con.printAt(x, y, str).noBack().save();
-    else if (!str.empty()) con.printAt(x, y, str).noBack();
-    else if (save) con.printAt(x, y, " ").noBack().save();
-    else con.printAt(x, y, " ").noBack();
+    if (str.empty()) str = " ";
+    if (save && noEraseEOL) con.printAt(x, y, str).noBack().noEraseEOL().save();
+    else if (noEraseEOL) con.printAt(x, y, str).noBack().noEraseEOL();
+    else if (save) con.printAt(x, y, str).noBack().save();
+    else con.printAt(x, y, str).noBack();
     // noBack 已經自動重置，不需要再呼叫
 }

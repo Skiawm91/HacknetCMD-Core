@@ -1,67 +1,97 @@
 BEGIN_HOME_EN
 PRINTAT_NB 0 7
-PRINTAT_NB 0 8  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 9  || New Session                                   |
-PRINTAT_NB 0 10  └└───────────────────────────────────────────────┘
+PRINTAT_NB 0 8  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 9  | | New Session                                  |
+PRINTAT_NB 0 10  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 9
 PRINTAT_NB 0 11  __________________________________________________
-PRINTAT_NB 0 12  || Continue [${PLAYER}|
+PRINTAT_NB 0 12  | | Continue [${PLAYER}|
 PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 14  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 15  || Login                                         |
-PRINTAT_NB 0 16  └└───────────────────────────────────────────────┘
-PRINTAT_NB 0 17  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 18  || Extensions                                    |
-PRINTAT_NB 0 19  └└───────────────────────────────────────────────┘
-PRINTAT_NB 0 20  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 21  || Settings                                      |
-PRINTAT_NB 0 22  └└───────────────────────────────────────────────┘
+PRINTAT_NB 0 14  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 15  | | Login                                        |
+PRINTAT_NB 0 16  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 15
+PRINTAT_NB 0 17  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 18  | | Settings                                     |
+PRINTAT_NB 0 19  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 18
+PRINTAT_NB 0 20  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 21  | | Extensions                                   |
+PRINTAT_NB 0 22  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 21
 PRINTAT_NB 0 23  __________________________________________________
-PRINTAT_NB 0 24  || Quit                                          |
+PRINTAT_NB 0 24  | | Quit                                         |
 PRINTAT_NB 0 25  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+COLORBGNF_ONCE 896b6b
+PRINTAT.NEOL_NB 2 24
 END_HOME_EN
 
 BEGIN_HOME_CHS
 PRINTAT_NB 0 7
-PRINTAT_NB 0 8  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 9  || 新游戏                                        |
-PRINTAT_NB 0 10  └└───────────────────────────────────────────────┘
+PRINTAT_NB 0 8  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 9  | | 新游戏                                       |
+PRINTAT_NB 0 10  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 9
 PRINTAT_NB 0 11  __________________________________________________
-PRINTAT_NB 0 12  || 继续 [${PLAYER}    |
+PRINTAT_NB 0 12  | | 继续 [${PLAYER}   |
 PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 14  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 15  || 登录                                          |
-PRINTAT_NB 0 16  └└───────────────────────────────────────────────┘
-PRINTAT_NB 0 17  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 18  || Extensions                                    |
-PRINTAT_NB 0 19  └└───────────────────────────────────────────────┘
-PRINTAT_NB 0 20  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 21  || 设置                                          |
-PRINTAT_NB 0 22  └└───────────────────────────────────────────────┘
+PRINTAT_NB 0 14  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 15  | | 登录                                         |
+PRINTAT_NB 0 16  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 15
+PRINTAT_NB 0 17  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 18  | | 设置                                         |
+PRINTAT_NB 0 19  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 18
+PRINTAT_NB 0 20  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 21  | | Extensions                                   |
+PRINTAT_NB 0 22  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 21
 PRINTAT_NB 0 23  __________________________________________________
-PRINTAT_NB 0 24  || 退出                                          |
+PRINTAT_NB 0 24  | | 退出                                         |
 PRINTAT_NB 0 25  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+COLORBGNF_ONCE 896b6b
+PRINTAT.NEOL_NB 2 24
 END_HOME_CHS
 
 BEGIN_HOME_CHT
 PRINTAT_NB 0 7
-PRINTAT_NB 0 8  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 9  || 新會話                                        |
-PRINTAT_NB 0 10  └└───────────────────────────────────────────────┘
+PRINTAT_NB 0 8  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 9  | | 新會話                                       |
+PRINTAT_NB 0 10  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 9
 PRINTAT_NB 0 11  __________________________________________________
-PRINTAT_NB 0 12  || 繼續 [${PLAYER}    |
+PRINTAT_NB 0 12  | | 繼續 [${PLAYER}   |
 PRINTAT_NB 0 13  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 14  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 15  || 登入                                          |
-PRINTAT_NB 0 16  └└───────────────────────────────────────────────┘
-PRINTAT_NB 0 17  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 18  || Extensions                                    |
-PRINTAT_NB 0 19  └└───────────────────────────────────────────────┘
-PRINTAT_NB 0 20  ┌┌───────────────────────────────────────────────┐
-PRINTAT_NB 0 21  || 設定                                          |
-PRINTAT_NB 0 22  └└───────────────────────────────────────────────┘
+PRINTAT_NB 0 14  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 15  | | 登入                                         |
+PRINTAT_NB 0 16  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 15
+PRINTAT_NB 0 17  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 18  | | 設定                                         |
+PRINTAT_NB 0 19  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 18
+PRINTAT_NB 0 20  ┌─┌──────────────────────────────────────────────┐
+PRINTAT_NB 0 21  | | Extensions                                   |
+PRINTAT_NB 0 22  └─└──────────────────────────────────────────────┘
+COLORBGNF_ONCE a1b2c2
+PRINTAT.NEOL_NB 2 21
 PRINTAT_NB 0 23  __________________________________________________
-PRINTAT_NB 0 24  || 退出                                          |
+PRINTAT_NB 0 24  | | 退出                                         |
 PRINTAT_NB 0 25  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+COLORBGNF_ONCE 896b6b
+PRINTAT.NEOL_NB 2 24
 END_HOME_CHT
 
 BEGIN_QUIT_EN
@@ -69,10 +99,10 @@ CLEAR
 PRINT
 PRINT  Are you sure?
 PRINT  ______________________________
-PRINT  | Confirm                    |
+PRINT  | | Confirm                  |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINT  ______________________________
-PRINT  | Cancel                     |
+PRINT  | | Cancel                   |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_QUIT_EN
 
@@ -81,10 +111,10 @@ CLEAR
 PRINT
 PRINT  你确定吗？
 PRINT  ______________________________
-PRINT  | 重复                       |
+PRINT  | | 重复                     |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINT  ______________________________
-PRINT  | 取消                       |
+PRINT  | | 取消                     |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_QUIT_CHS
 
@@ -93,63 +123,12 @@ CLEAR
 PRINT
 PRINT  真的嗎？
 PRINT  ______________________________
-PRINT  | 確認                       |
+PRINT  | | 確認                     |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 PRINT  ______________________________
-PRINT  | 取消                       |
+PRINT  | | 取消                     |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_QUIT_CHT
-
-BEGIN_USER_EN
-PRINTAT_NB 0 7
-PRINTAT_NB 0 8   ______________________________
-PRINTAT_NB 0 9   | Login                      |
-PRINTAT_NB 0 10   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 11   ______________________________
-PRINTAT_NB 0 12   | Continue [${PLAYER}|
-PRINTAT_NB 0 13   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 14   ______________________________
-PRINTAT_NB 0 15   | Register                   |
-PRINTAT_NB 0 16   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 17   ______________________________
-PRINTAT_NB 0 18   | Back                       |
-PRINTAT_NB 0 19   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-GETINPUTNUL
-END_USER_EN
-
-BEGIN_USER_CHS
-PRINTAT_NB 0 7
-PRINTAT_NB 0 8   ______________________________
-PRINTAT_NB 0 9   | 登录                       |
-PRINTAT_NB 0 10   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 11   ______________________________
-PRINTAT_NB 0 12   | 继续 [${PLAYER}    |
-PRINTAT_NB 0 13   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 14   ______________________________
-PRINTAT_NB 0 15   | 注册                       |
-PRINTAT_NB 0 16   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 17   ______________________________
-PRINTAT_NB 0 18   | 返回                       |
-PRINTAT_NB 0 19   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-GETINPUTNUL
-END_USER_CHS
-
-BEGIN_USER_CHT
-PRINTAT_NB 0 7
-PRINTAT_NB 0 8   ______________________________
-PRINTAT_NB 0 9   | 登入                       |
-PRINTAT_NB 0 10   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 11   ______________________________
-PRINTAT_NB 0 12   | 繼續 [${PLAYER}    |
-PRINTAT_NB 0 13   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 14   ______________________________
-PRINTAT_NB 0 15   | 註冊                       |
-PRINTAT_NB 0 16   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-PRINTAT_NB 0 17   ______________________________
-PRINTAT_NB 0 18   | 返回                       |
-PRINTAT_NB 0 19   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-GETINPUTNUL
-END_USER_CHT
 
 BEGIN_NULL
 PRINT

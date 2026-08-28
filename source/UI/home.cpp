@@ -52,8 +52,8 @@ void UserInterface::Home(){
         Discord_UpdatePresence(&drp);
         mi.kb.disable();
         chse = 0;
-        if (!playerName.empty()) hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(35 - playerName.size(), ' ')});
-        else hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(32, ' ')});
+        if (!playerName.empty()) hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string(playerName + "]") + string(34 - playerName.size(), ' ')});
+        else hncip.script("ui.chns", "HOME_" + misc.toLangName(dta.cfg.language), vector<string>{"PLAYER"}, vector<string>{string("N/A]") + string(31, ' ')});
         if (dta.cfg.dynamicLogo == 1) {
             logoAnimation = true;
             thread([&]{
@@ -75,15 +75,15 @@ void UserInterface::Home(){
         mi.mouse.btnAdd("NEWSESSION", 2, 8, 50, 3);
         mi.mouse.btnAdd("CONTINUE", 2, 11, 50, 3);
         mi.mouse.btnAdd("LOGIN", 2, 14, 50, 3);
-        // mi.mouse.btnAdd("EXTENSIONS", 2, 17, 50, 3); // 還沒做
-        mi.mouse.btnAdd("SETTINGS", 2, 20, 50, 3);
+        mi.mouse.btnAdd("SETTINGS", 2, 17, 50, 3);
+        // mi.mouse.btnAdd("EXTENSIONS", 2, 20, 50, 3); // 還沒做
         mi.mouse.btnAdd("QUIT", 2, 23, 50, 3);
         mi.mouse.cbCreate("HOME", [&](const string& btnName){
             if (btnName == "NEWSESSION") chse = 1;
             if (btnName == "CONTINUE") chse = 2;
             if (btnName == "LOGIN") chse = 3;
-            if (btnName == "EXTENSIONS") chse = 4;
-            if (btnName == "SETTINGS") chse = 5;
+            if (btnName == "SETTINGS") chse = 4;
+            if (btnName == "EXTENSIONS") chse = 5;
             if (btnName == "QUIT") chse = 6;
         });
         mi.sync(3);
@@ -250,12 +250,12 @@ void UserInterface::Home(){
                 }
                 break;
             case 4:
+                UI.Settings();
+                break;
+            case 5:
                 {
                     // 什麼都沒有
                 }
-                break;
-            case 5:
-                UI.Settings();
                 break;
             case 6:
                 {
