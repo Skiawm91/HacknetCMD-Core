@@ -91,7 +91,7 @@ Console::PrintAtBuilder::~PrintAtBuilder() {
         WriteConsoleA(hOut, text.c_str(), (DWORD)text.size(), &written, NULL);
     }
     #elif defined(__APPLE__) || defined(__linux__)
-    if (!noEraseEOL) cout << "\033[K";
+    if (!isNoEraseEOL) cout << "\033[K";
     cout << text;
     cout.flush();
     #endif

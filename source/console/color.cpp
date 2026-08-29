@@ -6,6 +6,7 @@
 #endif
 #include <string>
 #include <iostream>
+#include <cmath>
 
 using std::string, std::to_string, std::cout, std::flush;
 
@@ -23,24 +24,44 @@ static void parseHex(const string& hexColor, int& r, int& g, int& b) {
 }
 
 #ifdef _WIN32
-static const int palette[16][3] = {
+// Windows API 16色 Palette 對齊
+static const int palette16[16][3] = {
     {0,0,0},       {0,0,128},     {0,128,0},     {0,128,128},
     {128,0,0},     {128,0,128},   {128,128,0},   {192,192,192},
     {128,128,128}, {0,0,255},     {0,255,0},     {0,255,255},
     {255,0,0},     {255,0,255},   {255,255,0},   {255,255,255},
 };
 
-static int nearestColor(int r, int g, int b) {
+static int nearestColorIdx16(int r, int g, int b) {
     int best = 0;
     double bestDist = 1e18;
     for (int i = 0; i < 16; i++) {
-        double dr = r - palette[i][0];
-        double dg = g - palette[i][1];
-        double db = b - palette[i][2];
+        double dr = r - palette16[i][0];
+        double dg = g - palette16[i][1];
+        double db = b - palette16[i][2];
         double dist = dr*dr + dg*dg + db*db;
         if (dist < bestDist) { bestDist = dist; best = i; }
     }
     return best;
+}
+#endif
+
+#if defined(__APPLE__) || defined(__linux__)
+// ⭐️ 將 24-bit RGB 轉換為精準的 256 色 (xterm-256color) Index (16 - 255)
+static int rgbTo256Color(int r, int g, int b) {
+    // 1. 優先判斷灰階 (當 R, G, B 非常接近時，走 232-255 灰階色階效果比 Color Cube 更好)
+    if (std::abs(r - g) < 8 && std::abs(g - b) < 8) {
+        if (r < 8) return 16;       // 純黑
+        if (r > 248) return 231;    // 純白
+        return 232 + (int)(((r - 8) / 247.0) * 24);
+    }
+
+    // 2. 對齊 6x6x6 色彩立方體 (Color Cube: 16 - 231)
+    int rIdx = (r * 5 + 127) / 255;
+    int gIdx = (g * 5 + 127) / 255;
+    int bIdx = (b * 5 + 127) / 255;
+
+    return 16 + (36 * rIdx) + (6 * gIdx) + bIdx;
 }
 #endif
 
@@ -54,7 +75,7 @@ void Console::applyFg(const string& hex) {
     if (dta.cfg.vt100Color == 1) {
         cout << "\033[38;2;" << r << ";" << g << ";" << b << "m" << flush;
     } else {
-        int colorIdx = nearestColor(r, g, b);
+        int colorIdx = nearestColorIdx16(r, g, b);
         HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(hOut, &csbi);
@@ -62,6 +83,14 @@ void Console::applyFg(const string& hex) {
         SetConsoleTextAttribute(hOut, attr);
     }
     #elif defined(__APPLE__) || defined(__linux__)
+    if (dta.cfg.true24BitColor) {
+        // macOS Tahoe (26.0+) / iTerm2 / Ghostty 走原生 True Color
+        cout << "\033[38;2;" << r << ";" << g << ";" << b << "m" << flush;
+    } else {
+        // Sequoia 及更早舊版 Terminal.app：轉為精準 256 色 ANSI 控制碼 (\033[38;5;Nm)
+        int color256 = rgbTo256Color(r, g, b);
+        cout << "\033[38;5;" << color256 << "m" << flush;
+    }
     cout << "\033[38;2;" << r << ";" << g << ";" << b << "m" << flush;
     #endif
 }
@@ -76,7 +105,7 @@ void Console::applyBg(const string& hex) {
     if (dta.cfg.vt100Color == 1) {
         cout << "\033[48;2;" << r << ";" << g << ";" << b << "m" << flush;
     } else {
-        int colorIdx = nearestColor(r, g, b);
+        int colorIdx = nearestColorIdx16(r, g, b);
         HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(hOut, &csbi);
@@ -84,7 +113,13 @@ void Console::applyBg(const string& hex) {
         SetConsoleTextAttribute(hOut, attr);
     }
     #elif defined(__APPLE__) || defined(__linux__)
-    cout << "\033[48;2;" << r << ";" << g << ";" << b << "m" << flush;
+    if (dta.cfg.true24BitColor) {
+        cout << "\033[48;2;" << r << ";" << g << ";" << b << "m" << flush;
+    } else {
+        // 背景 256 色 ANSI 控制碼 (\033[48;5;Nm)
+        int color256 = rgbTo256Color(r, g, b);
+        cout << "\033[48;5;" << color256 << "m" << flush;
+    }
     #endif
 }
 
@@ -137,13 +172,13 @@ Console::ColorSetter Console::setColorBg(const string& hexColor) {
     return ColorSetter(this, true, hexColor, backup);
 }
 
-// ⭐️ 新增：取消析構時的 fillScreenBg
+// 取消析構時的 fillScreenBg
 Console::ColorSetter& Console::ColorSetter::noFill() {
     isFill = false;
     return *this;
 }
 
-// ⭐️ 新增：設定為一次性顏色，輸出一次後還原
+// 設定為一次性顏色，輸出一次後還原
 Console::ColorSetter& Console::ColorSetter::once() {
     isOnce = true;
     if (isBg) {

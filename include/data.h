@@ -20,6 +20,8 @@ public:
         bool vt100Color = 1; // On
         bool vt100Resize = 1; // On
         bool vt100Clear = 1; // On
+        // VT100 Configuration (POSIX)
+        bool true24BitColor = 1; // On
         // General
         bool verboseBoot = true; // On
         bool dynamicLogo = true; // On

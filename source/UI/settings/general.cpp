@@ -51,10 +51,6 @@ void UserInterface::SettingsOptions::General(const bool &isPlaying) {
     mi.sync(1);
     if (enterDetected) {
         enterDetected = false;
-        // EE
-        #if defined(__APPLE__) || defined(__linux__)
-        if (SHA256Encrypt(mi.kb.getInput()) == "87b3d1fffafad14f7557b3acb40c406682163f21e2dab830d13925ee24478a4b") parent->mode = 1;
-        #endif
     } else if (escDetected) {
         escDetected = false;
         parent->back = true;

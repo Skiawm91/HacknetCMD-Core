@@ -19,9 +19,7 @@ void UserInterface::Settings(const bool isPlaying) {
     inputAte = true; // 防止在設定頁面中看到文字被輸入
     mode = 0; // General
     mi.mouse.btnAdd("GENERAL", 15, 0, 9, 1);
-    #ifdef _WIN32
     mi.mouse.btnAdd("VT100CONFIGURATION", 25, 0, 21, 1);
-    #endif
     mi.mouse.cbCreate("SETTINGSMENU", [&](const string& btnName){
         if (btnName == "GENERAL") mode = 0;
         if (btnName == "VT100CONFIGURATION") mode = 1;
@@ -31,11 +29,7 @@ void UserInterface::Settings(const bool isPlaying) {
         // 重新載入Config
         dta.cfg.reload();
         con.clear();
-        #ifdef _WIN32
         hncip.script("settings.chns", "MENU_" + misc.toLangName(dta.cfg.language));
-        #else
-        hncip.script("settings.chns", "MENUNOVT100_" + misc.toLangName(dta.cfg.language));
-        #endif
         if (mode == 0) settings.General(isPlaying);
         else if (mode == 1) settings.VT100Configuration();
     }

@@ -15,23 +15,6 @@ PRINT // 設定     // | 一般  | | VT100 設定        |
 PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_MENU_CHT
 
-// Menu (No VT100 Configuration)
-
-BEGIN_MENUNOVT100_EN
-PRINT // Settings // |General|
-PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_MENUNOVT100_EN
-
-BEGIN_MENUNOVT100_CHS
-PRINT // 设置     // | 通用  |
-PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_MENUNOVT100_CHS
-
-BEGIN_MENUNOVT100_CHT
-PRINT // 設定     // | 一般  |
-PRINT ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-END_MENUNOVT100_CHT
-
 // General
 
 // Verbose Boot
@@ -315,6 +298,74 @@ PRINT  ______________________________
 PRINT  | | 取消                     |
 PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 END_VT100CMDRESIZEWARN_CHT
+
+// True 24-bit Color
+
+BEGIN_TRUE24BITCOLORINFO_EN
+PRINTAT_NB 8 3 True 24-Bit Color Support
+PRINT
+END_TRUE24BITCOLORINFO_EN
+
+BEGIN_TRUE24BITCOLORINFO_CHS
+PRINTAT_NB 8 3 真 24 位色彩支持
+PRINT
+END_TRUE24BITCOLORINFO_CHS
+
+BEGIN_TRUE24BITCOLORINFO_CHT
+PRINTAT_NB 8 3 真 24 位色彩支援
+PRINT
+END_TRUE24BITCOLORINFO_CHT
+
+BEGIN_TRUE24BITCOLORCB_0
+PRINTAT_NB 3 2 ____
+PRINTAT_NB 3 3 |　|
+PRINTAT_NB 3 4 ‾‾‾‾
+END_TRUE24BITCOLORCB_0
+
+BEGIN_TRUE24BITCOLORCB_1
+PRINTAT_NB 3 2 ____
+PRINTAT_NB 3 3 |ｖ|
+PRINTAT_NB 3 4 ‾‾‾‾
+END_TRUE24BITCOLORCB_1
+
+BEGIN_TRUE24BITCOLORWARN_EN
+PRINT
+PRINT  // WARNING //
+PRINT  If True 24-bit Color Support is disabled,
+PRINT  color accuracy will drop significantly.
+PRINT  ______________________________
+PRINT  | | Confirm                  |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | | Cancel                   |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_TRUE24BITCOLORWARN_EN
+
+BEGIN_TRUE24BITCOLORWARN_CHS
+PRINT
+PRINT  // 警告 //
+PRINT  若真 24 位色彩支持被关闭，
+PRINT  颜色准确率将会大幅下降。
+PRINT  ______________________________
+PRINT  | | 重复                     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | | 取消                     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_TRUE24BITCOLORWARN_CHS
+
+BEGIN_TRUE24BITCOLORWARN_CHT
+PRINT
+PRINT  // 警告 //
+PRINT  若真 24 位色彩支援被關閉，
+PRINT  顏色準確度將會大幅下降。
+PRINT  ______________________________
+PRINT  | | 確認                     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+PRINT  ______________________________
+PRINT  | | 取消                     |
+PRINT  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+END_TRUE24BITCOLORWARN_CHT
 
 BEGIN_BACK_EN
 PRINT

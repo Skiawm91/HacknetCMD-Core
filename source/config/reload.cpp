@@ -24,12 +24,14 @@ static void VT100Enable(bool enable) {
 
 void Data::Config::reload() {
     // VT100 Configuration (Load first)
-    // VT1000 Color
+    // VT100 Color
     parent->load("data/config.hnd", vector<string>{"VT100COLOR=0", "VT100COLOR=1"});
     if (parent->loaded) vt100Color = parent->loadNumber;
     // VT100 CMD Resize
     parent->load("data/config.hnd", vector<string>{"VT100CMDRESIZE=0", "VT100CMDRESIZE=1"});
     if (parent->loaded) vt100Resize = parent->loadNumber;
+    parent->load("data/config.hnd", vector<string>{"TRUE24BITCOLOR=0", "TRUE24BITCOLOR=1"});
+    if (parent->loaded) true24BitColor = parent->loadNumber;
     #ifdef _WIN32
     if (vt100Color == 1 || vt100Resize == 1) VT100Enable(true);
     else VT100Enable(false); 
