@@ -13,6 +13,8 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <conio.h>
+#elif defined(__APPLE__) || defined(__linux__)
+#include <unistd.h>
 #endif
 #include <fstream>
 #include <filesystem>
