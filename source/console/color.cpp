@@ -47,7 +47,6 @@ static int nearestColorIdx16(int r, int g, int b) {
 }
 #endif
 
-#if defined(__APPLE__) || defined(__linux__)
 // ⭐️ 將 24-bit RGB 轉換為精準的 256 色 (xterm-256color) Index (16 - 255)
 
 static int rgbTo256Color(int r, int g, int b) {
@@ -75,17 +74,22 @@ static int rgbTo256Color(int r, int g, int b) {
 
     return 16 + (36 * rIdx) + (6 * gIdx) + bIdx;
 }
-#endif
 
 // ⭐️ 套用前景 (Fg: 文字顏色)
 void Console::applyFg(const string& hex) {
     if (hex.empty()) return;
     int r = 255, g = 255, b = 255;
     parseHex(hex, r, g, b);
-    
     #ifdef _WIN32
     if (dta.cfg.vt100Color == 1) {
-        cout << "\033[38;2;" << r << ";" << g << ";" << b << "m" << flush;
+        if (dta.cfg.true24BitColor) {
+            // macOS Tahoe (26.0+) / iTerm2 / Ghostty 走原生 True Color
+            cout << "\033[38;2;" << r << ";" << g << ";" << b << "m" << flush;
+        } else {
+            // Sequoia 及更早舊版 Terminal.app：轉為精準 256 色 ANSI 控制碼 (\033[38;5;Nm)
+            int color256 = rgbTo256Color(r, g, b);
+            cout << "\033[38;5;" << color256 << "m" << flush;
+        }
     } else {
         int colorIdx = nearestColorIdx16(r, g, b);
         HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -114,7 +118,14 @@ void Console::applyBg(const string& hex) {
     
     #ifdef _WIN32
     if (dta.cfg.vt100Color == 1) {
-        cout << "\033[48;2;" << r << ";" << g << ";" << b << "m" << flush;
+        if (dta.cfg.true24BitColor) {
+            // macOS Tahoe (26.0+) / iTerm2 / Ghostty 走原生 True Color
+            cout << "\033[48;2;" << r << ";" << g << ";" << b << "m" << flush;
+        } else {
+            // Sequoia 及更早舊版 Terminal.app：轉為精準 256 色 ANSI 控制碼 (\033[38;5;Nm)
+            int color256 = rgbTo256Color(r, g, b);
+            cout << "\033[48;5;" << color256 << "m" << flush;
+        }
     } else {
         int colorIdx = nearestColorIdx16(r, g, b);
         HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);

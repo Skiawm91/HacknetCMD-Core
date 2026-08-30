@@ -59,12 +59,11 @@ void UserInterface::SettingsOptions::VT100Configuration() {
             if (dta.cfg.vt100Resize == 1) vt100CMDResizeWarn = true;
             else dta.replace("data/config.hnd", "VT100CMDRESIZE=" + to_string(dta.cfg.vt100Resize), "VT100CMDRESIZE=" + to_string(dta.cfg.vt100Resize + 1));
         }
-        #elif defined(__APPLE__) || defined(__linux__)
+        #endif
         if (btnName == "TRUE24BITCOLOR") {
             if (dta.cfg.true24BitColor == 1) true24BitColorWarn = true;
             else dta.replace("data/config.hnd", "TRUE24BITCOLOR=" + to_string(dta.cfg.true24BitColor), "TRUE24BITCOLOR=" + to_string(dta.cfg.true24BitColor + 1));
         }
-        #endif
         if (btnName == "BACK") parent->back = true;
     });
     mi.sync(1);
