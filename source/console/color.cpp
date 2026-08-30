@@ -103,7 +103,6 @@ void Console::applyFg(const string& hex) {
         int color256 = rgbTo256Color(r, g, b);
         cout << "\033[38;5;" << color256 << "m" << flush;
     }
-    cout << "\033[38;2;" << r << ";" << g << ";" << b << "m" << flush;
     #endif
 }
 
