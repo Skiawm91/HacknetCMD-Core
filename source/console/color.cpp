@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 using std::string, std::to_string, std::cout, std::flush;
 
@@ -48,15 +49,26 @@ static int nearestColorIdx16(int r, int g, int b) {
 
 #if defined(__APPLE__) || defined(__linux__)
 // ⭐️ 將 24-bit RGB 轉換為精準的 256 色 (xterm-256color) Index (16 - 255)
+
 static int rgbTo256Color(int r, int g, int b) {
-    // 1. 優先判斷灰階 (當 R, G, B 非常接近時，走 232-255 灰階色階效果比 Color Cube 更好)
+    // 確保 RGB 值落在合法的 0~255 範圍
+    r = std::clamp(r, 0, 255);
+    g = std::clamp(g, 0, 255);
+    b = std::clamp(b, 0, 255);
+
+    // 1. 優先判斷灰階 (當 R, G, B 極度接近時，走 232-255 灰階色階效果更好)
     if (std::abs(r - g) < 8 && std::abs(g - b) < 8) {
-        if (r < 8) return 16;       // 純黑
-        if (r > 248) return 231;    // 純白
-        return 232 + (int)(((r - 8) / 247.0) * 24);
+        if (r < 8)   return 16;   // 純黑 (Color Cube 的底色)
+        if (r > 247) return 231;  // 純白 (Color Cube 的頂色)
+        
+        // 純整數映射 24 階灰階 (232 ~ 255)
+        // 相當於 ((r - 8) * 24) / 240，簡化後為 (r - 8) / 10
+        int grayIdx = (r - 8) / 10;
+        return 232 + std::clamp(grayIdx, 0, 23);
     }
 
     // 2. 對齊 6x6x6 色彩立方體 (Color Cube: 16 - 231)
+    // 利用 (val * 5 + 127) / 255 實現快速四捨五入 integer division
     int rIdx = (r * 5 + 127) / 255;
     int gIdx = (g * 5 + 127) / 255;
     int bIdx = (b * 5 + 127) / 255;

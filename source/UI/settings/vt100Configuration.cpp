@@ -17,23 +17,37 @@ void UserInterface::SettingsOptions::VT100Configuration() {
     #ifdef _WIN32
     bool vt100ColorWarn = false;
     bool vt100CMDResizeWarn = false;
+    bool true24BitColorWarn = false;
     hncip.script("settings.chns", "VT100COLORCB_" + to_string(dta.cfg.vt100Color));
     hncip.script("settings.chns", "VT100COLORINFO_" + misc.toLangName(dta.cfg.language));
-    hncip.script("settings.chns", "VT100CMDRESIZECB_" + to_string(dta.cfg.vt100Resize));
-    hncip.script("settings.chns", "VT100CMDRESIZEINFO_" + misc.toLangName(dta.cfg.language));
+    if (dta.cfg.vt100Color) {
+        hncip.script("settings.chns", "TRUE24BITCOLORCB_" + to_string(dta.cfg.true24BitColor), vector<string>{"Y1", "Y2", "Y3"}, vector<string>{"5", "6", "7"});
+        hncip.script("settings.chns", "TRUE24BITCOLORINFO_" + misc.toLangName(dta.cfg.language), vector<string>{"Y1"}, vector<string>{"6"});
+        hncip.script("settings.chns", "VT100CMDRESIZECB_" + to_string(dta.cfg.vt100Resize), vector<string>{"Y1", "Y2", "Y3"}, vector<string>{"8", "9", "10"});
+        hncip.script("settings.chns", "VT100CMDRESIZEINFO_" + misc.toLangName(dta.cfg.language), vector<string>{"Y1"}, vector<string>{"9"});
+    } else {
+        hncip.script("settings.chns", "VT100CMDRESIZECB_" + to_string(dta.cfg.vt100Resize), vector<string>{"Y1", "Y2", "Y3"}, vector<string>{"5", "6", "7"});
+        hncip.script("settings.chns", "VT100CMDRESIZEINFO_" + misc.toLangName(dta.cfg.language), vector<string>{"Y1"}, vector<string>{"6"});
+    }
     #elif defined(__APPLE__) || defined(__linux__)
     bool true24BitColorWarn = false;
-    hncip.script("settings.chns", "TRUE24BITCOLORCB_" + to_string(dta.cfg.true24BitColor));
-    hncip.script("settings.chns", "TRUE24BITCOLORINFO_" + misc.toLangName(dta.cfg.language));
+    hncip.script("settings.chns", "TRUE24BITCOLORCB_" + to_string(dta.cfg.true24BitColor), vector<string>{"Y1", "Y2", "Y3"}, vector<string>{"2", "3", "4"});
+    hncip.script("settings.chns", "TRUE24BITCOLORINFO_" + misc.toLangName(dta.cfg.language), vector<string>{"Y1"}, vector<string>{"3"});
     #endif
     hncip.script("settings.chns", "BACK_" + misc.toLangName(dta.cfg.language));
     #ifdef _WIN32
     mi.mouse.btnAdd("VT100COLOR", 3, 2, 4, 3);
-    mi.mouse.btnAdd("VT100CMDRESIZE", 3, 5, 4, 3);
-    mi.mouse.btnAdd("BACK", 3, 8, 30, 3);
+    if (dta.cfg.vt100Color) {
+        mi.mouse.btnAdd("TRUE24BITCOLOR", 3, 5, 4, 3);
+        mi.mouse.btnAdd("VT100CMDRESIZE", 3, 8, 4, 3);
+        mi.mouse.btnAdd("BACK", 3, 11, 30, 3);
+    } else {
+        mi.mouse.btnAdd("VT100CMDRESIZE", 3, 5, 4, 3);
+        mi.mouse.btnAdd("BACK", 3, 8, 30, 3);
+    }
     #elif defined(__APPLE__) || defined(__linux__)
     mi.mouse.btnAdd("TRUE24BITCOLOR", 3, 2, 4, 3);
-mi.mouse.btnAdd("BACK", 3, 5, 30, 3);
+    mi.mouse.btnAdd("BACK", 3, 5, 30, 3);
     #endif
     mi.mouse.cbCreate("VT100CONFIGURATION", [&](const string& btnName){
         #ifdef _WIN32
@@ -105,9 +119,10 @@ mi.mouse.btnAdd("BACK", 3, 5, 30, 3);
         if (chse == 1) dta.replace("data/config.hnd", "VT100CMDRESIZE=" + to_string(dta.cfg.vt100Resize), "VT100CMDRESIZE=0");
         mi.mouse.btnDel(vector<string>{"CONFIRM", "CANCEL"});
         mi.mouse.cbClean("VT100CMDRESIZEWARN");
-    }
+    } else if (true24BitColorWarn) {
     #elif defined(__APPLE__) || defined(__linux__)
     if (true24BitColorWarn) {
+    #endif
         int chse;
         con.clear();
         hncip.script("settings.chns", "TRUE24BITCOLORWARN_" + misc.toLangName(dta.cfg.language));
@@ -129,5 +144,4 @@ mi.mouse.btnAdd("BACK", 3, 5, 30, 3);
         mi.mouse.btnDel(vector<string>{"CONFIRM", "CANCEL"});
         mi.mouse.cbClean("TRUE24BITCOLORWARN");
     }
-    #endif
 }
